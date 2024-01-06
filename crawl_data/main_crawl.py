@@ -26,6 +26,7 @@ def click_website_and_get_data(config):
         # print(key, item)
         DRIVER.get(config.news[key])
         DRIVER.maximize_window()
+        # ACTIONS_MAP[key]
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ crawl_data/outputs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
+crawl_data/__pycache__/
 *.py[cod]
 
 # Installer logs
