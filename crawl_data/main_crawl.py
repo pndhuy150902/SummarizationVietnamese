@@ -26,6 +26,7 @@ def click_website_and_get_data(config):
         # print(key, item)
         DRIVER.get(config.news[key])
         DRIVER.maximize_window()
+        crawl_thanhnien_news.click_topic(DRIVER)
         # ACTIONS_MAP[key]
 
 

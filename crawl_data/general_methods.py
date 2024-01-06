@@ -24,14 +24,14 @@ def find_elements_by_css(driver, css_selector):
     return driver.find_elements(by=By.CSS_SELECTOR, value=css_selector)
 
 
-def scroll_down(driver, scroll_value):
-    scroll_height = driver.execute_script("return document.body.scrollHeight;")
-    scroll_value += 500
-    if scroll_value > scroll_height:
-        scroll_value = scroll_height
-    driver.execute_script(f"window.scrollTo(0, {scroll_value});")
-    time.sleep(3)
-    return scroll_value
+def scroll_down(driver):
+    while True:
+        try:
+            scroll_height = driver.execute_script("return document.body.scrollHeight;")
+            driver.execute_script(f"window.scrollTo(0, {scroll_height});")
+            driver.implicitly_wait(10)
+        except:
+            break
 
 
 def driver_wait_by_xpath(driver, xpath, seconds):
