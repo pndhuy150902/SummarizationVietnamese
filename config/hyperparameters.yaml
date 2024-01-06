@@ -1,0 +1,7 @@
+processed_data:
+  train_data: ../data/
+  val_data: ../data/
+  test_data: ../data/
+
+metrics:
+  score: rouge
