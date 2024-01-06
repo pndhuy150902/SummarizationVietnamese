@@ -1,5 +1,7 @@
 import warnings
 import time
+
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -30,7 +32,7 @@ def scroll_down(driver):
             scroll_height = driver.execute_script("return document.body.scrollHeight;")
             driver.execute_script(f"window.scrollTo(0, {scroll_height});")
             driver.implicitly_wait(10)
-        except:
+        except NoSuchElementException:
             break
 
 
