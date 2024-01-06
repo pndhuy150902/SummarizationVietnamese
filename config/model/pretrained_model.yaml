@@ -1,0 +1,11 @@
+model: bigscience/mt0-xxl-mt
+
+deepspeed:
+  stage_2: deepspeed_stage_2
+  stage_3: deepspeed_stage_3
+
+device: -1
+
+batch_size:
+  text: 4096
+  summary: 1024
