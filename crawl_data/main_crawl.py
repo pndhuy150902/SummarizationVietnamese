@@ -23,10 +23,10 @@ def save_data(data):
 @hydra.main(config_path='../config', config_name='crawlparameters')
 def click_website_and_get_data(config):
     for key, item in config.news.items():
-        # print(key, item)
         DRIVER.get(config.news[key])
         DRIVER.maximize_window()
         crawl_thanhnien_news.click_topic(DRIVER)
+        break
         # ACTIONS_MAP[key]
 
 

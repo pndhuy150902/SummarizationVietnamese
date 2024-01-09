@@ -35,6 +35,6 @@ def scroll_down(driver):
 
 
 def driver_wait_by_xpath(driver, xpath, seconds):
-    return WebDriverWait(driver, seconds).until(
+    WebDriverWait(driver, seconds).until(
         ec.presence_of_element_located((By.XPATH, xpath))
     )
