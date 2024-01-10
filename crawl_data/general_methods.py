@@ -1,11 +1,16 @@
+import time
 import warnings
-
+import pandas as pd
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
 warnings.filterwarnings('ignore')
+DATA_SUMMARIZATION = {
+    'context': [],
+    'summarization': []
+}
 
 
 def find_element_by_xpath(driver, xpath):
@@ -24,11 +29,27 @@ def find_elements_by_css(driver, css_selector):
     return driver.find_elements(by=By.CSS_SELECTOR, value=css_selector)
 
 
-def scroll_down(driver):
-    while True:
+def scroll_down(driver, key):
+    reached_page_end = False
+    last_height = driver.execute_script("return document.body.scrollHeight;")
+    while not reached_page_end:
         try:
+            driver.execute_script(f"window.scrollTo(0, {last_height});")
+            if key == 'thanhnien':
+                btn_more = find_element_by_xpath(driver, xpath='//div[@class="container"]/div[@class="list__stream-flex"]//a[@class="list__center view-more list__viewmore"]')
+                if btn_more.value_of_css_property('display') == 'block':
+                    driver.execute_script("arguments[0].click();", btn_more)
+            elif key == 'tuoitre':
+                btn_more = find_element_by_xpath(driver, xpath='//div[@class="container"]/div[@class="list__listing-flex"]//div[@class="box-viewmore"]//a[@class="view-more"]')
+                driver.execute_script("arguments[0].click();", btn_more)
+            elif key == 'vnexpress':
+                pass
+            time.sleep(10)
             scroll_height = driver.execute_script("return document.body.scrollHeight;")
-            driver.execute_script(f"window.scrollTo(0, {scroll_height});")
+            if last_height == scroll_height:
+                reached_page_end = True
+            else:
+                last_height = scroll_height
             driver.implicitly_wait(10)
         except NoSuchElementException:
             break
@@ -38,3 +59,7 @@ def driver_wait_by_xpath(driver, xpath, seconds):
     WebDriverWait(driver, seconds).until(
         ec.presence_of_element_located((By.XPATH, xpath))
     )
+    
+    
+def save_data(data, path_data):
+    pd.DataFrame(data).to_csv(path_data, index=False)
