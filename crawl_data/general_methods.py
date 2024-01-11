@@ -42,7 +42,7 @@ def scroll_down(driver, key):
             elif key == 'tuoitre':
                 btn_more = find_element_by_xpath(driver, xpath='//div[@class="container"]/div[@class="list__listing-flex"]//div[@class="box-viewmore"]//a[@class="view-more"]')
                 driver.execute_script("arguments[0].click();", btn_more)
-            elif key == 'vnexpress':
+            elif key == 'dantri':
                 pass
             time.sleep(10)
             scroll_height = driver.execute_script("return document.body.scrollHeight;")
