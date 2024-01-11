@@ -20,7 +20,7 @@ ACTIONS_MAP = {
 @hydra.main(config_path='../config', config_name='crawlparameters')
 def click_websites_and_get_data(config):
     for key, item in config.news.items():
-        if key == 'vnexpress':
+        if key == 'tuoitre':
             DRIVER.get(config.news[key])
             DRIVER.maximize_window()
             ACTIONS_MAP[key](DRIVER)

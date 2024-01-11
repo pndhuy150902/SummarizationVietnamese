@@ -7,19 +7,11 @@ warnings.filterwarnings('ignore')
 
 def get_news(driver):
     try:
-        driver_wait_by_xpath(driver, xpath='//section[@class="section wrap-main-nav" and @id="wrap-main-nav"]//ul[@class="parent"]', seconds=60)
-        list_menu_nav = find_elements_by_xpath(driver, xpath='//section[@class="section wrap-main-nav" and @id="wrap-main-nav"]//ul[@class="parent"]/li')
-        del list_menu_nav[-1]
-        del list_menu_nav[1]
-        del list_menu_nav[0:5:2]
-        del list_menu_nav[2]
+        driver_wait_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]', seconds=300)
+        list_menu_nav = find_elements_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]/li[@class="has-child"]')
         original_window = driver.current_window_handle
         for idx in range(len(list_menu_nav)):
-            list_menu_nav = find_elements_by_xpath(driver, xpath='//section[@class="section wrap-main-nav" and @id="wrap-main-nav"]//ul[@class="parent"]/li')
-            del list_menu_nav[-1]
-            del list_menu_nav[1]
-            del list_menu_nav[0:5:2]
-            del list_menu_nav[2]
+            list_menu_nav = find_elements_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]/li[@class="has-child"]')
             link = find_element_by_css(list_menu_nav[idx], css_selector='a').get_attribute('href')
             driver.switch_to.new_window('tab')
             driver.get(link)
@@ -27,16 +19,16 @@ def get_news(driver):
             time.sleep(5)
             driver.close()
             driver.switch_to.window(original_window)
-            driver_wait_by_xpath(driver, xpath='//section[@class="section wrap-main-nav" and @id="wrap-main-nav"]//ul[@class="parent"]', seconds=60)
+            driver_wait_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]', seconds=300)
     except Exception as err:
         raise Exception("Have error in get_news function") from err
 
 
 def click_news_from_topic(driver):
-    for i in range(0, 20):
-        driver_wait_by_xpath(driver, xpath='//div[@class="container flexbox"]//article[@class="item-news item-news-common thumb-left"]/p[@class="description"]', seconds=60)
+    for i in range(0, 30):
+        driver_wait_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="article list"]/article[@class="article-item"]', seconds=300)
         scroll_down(driver, 'dantri')
-        list_news = find_elements_by_xpath(driver, xpath='//div[@class="container flexbox"]//article[@class="item-news item-news-common thumb-left"]/p[@class="description"]')
+        list_news = find_elements_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="article list"]/article[@class="article-item"]/div[@class="article-thumb"]')
         original_window = driver.current_window_handle
         for item in list_news:
             link = find_element_by_css(item, css_selector='a').get_attribute('href')
@@ -44,30 +36,61 @@ def click_news_from_topic(driver):
             driver.get(link)
             summarization = get_summarization(driver)
             content = get_content(driver)
-            # DATA_SUMMARIZATION['content'].append(content)
-            # DATA_SUMMARIZATION['summarization'].append(summarization)
-            print(summarization)
-            # print(content)
+            DATA_SUMMARIZATION['context'].append(content)
+            DATA_SUMMARIZATION['summarization'].append(summarization)
             driver.close()
             driver.switch_to.window(original_window)
-        if i == 19:
+        if i == 29:
             break
         else:
-            btn_next = find_element_by_xpath(driver, xpath='//div[@class="width_common pagination flexbox"]//div[@class="button-page flexbox"]/a[@class="btn-page next-page "]')
+            btn_next = find_element_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="pagination"]/a[@class="page-item next"]')
             driver.execute_script("arguments[0].click();", btn_next)
     
 
 def get_summarization(driver):
-    driver_wait_by_xpath(driver, xpath='//div[@class="container"]', seconds=60)
-    summarization = find_element_by_xpath(driver, xpath='//div[@class="container"]//p[@class="description"]').text.strip()
+    try:
+        driver_wait_by_xpath(driver, xpath='//div[@class="singular-wrap"]/article[@class="singular-container"]', seconds=5)
+        summarization = find_element_by_xpath(driver, xpath='//div[@class="singular-wrap"]/article[@class="singular-container"]/h2[@class="singular-sapo"]').text.strip().replace('(Dân trí) -', '').strip()
+    except:
+        try:
+            driver_wait_by_xpath(driver, xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap photo-story"]', seconds=5)
+            summarization = find_element_by_xpath(driver, xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap photo-story"]/h2[@class="e-magazine__sapo sapo-top"]').text.strip().replace('(Dân trí) -', '').strip()
+        except:
+            try:
+                driver_wait_by_xpath(driver, xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap d-magazine"]', seconds=5)
+                summarization = find_element_by_xpath(driver, xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap d-magazine"]/h2[@class="e-magazine__sapo"]').text.strip().replace('(Dân trí) -', '').strip()
+            except:
+                driver_wait_by_xpath(driver, xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap infographic"]', seconds=5)
+                summarization = find_element_by_xpath(driver, xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap infographic"]/h2[@class="e-magazine__sapo"]').text.strip().replace('(Dân trí) -', '').strip()
     return summarization
 
 
 def get_content(driver):
-    driver_wait_by_xpath(driver,
-                         xpath='//div[@class="container"]//article[@class="fck_detail "]',
-                         seconds=60)
-    lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
-                                                                        xpath='//div[@class="container"]//article[@class="fck_detail "]/p[@class="Normal"]')]
+    try:
+        driver_wait_by_xpath(driver,
+                             xpath='//div[@class="singular-wrap"]/article[@class="singular-container"]',
+                             seconds=5)
+        lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
+                                                                            xpath='//div[@class="singular-wrap"]/article[@class="singular-container"]/div[@class="singular-content"]/p')]
+    except:
+        try:
+            driver_wait_by_xpath(driver,
+                                 xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap photo-story"]',
+                                 seconds=5)
+            lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
+                                                                                xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap photo-story"]/div[@class="e-magazine__body"]/p')]
+        except:
+            try:
+                driver_wait_by_xpath(driver,
+                                     xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap d-magazine"]',
+                                     seconds=5)
+                lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
+                                                                                    xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap d-magazine"]/div[@class="e-magazine__body dnews__body"]/p')]
+            except:
+                driver_wait_by_xpath(driver,
+                                     xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap infographic"]',
+                                     seconds=5)
+                lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
+                                                                                    xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap infographic"]/div[@class="e-magazine__body"]/p')]
     content = '\n'.join(lst_content)
     return content

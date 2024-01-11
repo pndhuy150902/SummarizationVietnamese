@@ -35,7 +35,7 @@ def click_news_from_topic(driver):
         driver.get(link)
         summarization = get_summarization(driver)
         content = get_content(driver)
-        DATA_SUMMARIZATION['content'].append(content)
+        DATA_SUMMARIZATION['context'].append(content)
         DATA_SUMMARIZATION['summarization'].append(summarization)
         driver.close()
         driver.switch_to.window(original_window)

@@ -33,14 +33,15 @@ def click_news_from_topic(driver):
         driver.get(link)
         summarization = get_summarization(driver)
         content = get_content(driver)
-        DATA_SUMMARIZATION['content'].append(content)
-        DATA_SUMMARIZATION['summarization'].append(summarization)
+        print(content)
+        # DATA_SUMMARIZATION['context'].append(content)
+        # DATA_SUMMARIZATION['summarization'].append(summarization)
         driver.close()
         driver.switch_to.window(original_window)
 
 
 def get_summarization(driver):
-    driver_wait_by_xpath(driver, xpath='//div[@class="main" and @id="content"]//div[@class="container"]', seconds=300)
+    driver_wait_by_xpath(driver, xpath='//div[@class="main" and @id="content"]//div[@class="container"]', seconds=5)
     summarization = find_element_by_xpath(driver, xpath='//div[@class="main" and @id="content"]//div[@class="container"]//h2[@class="detail-sapo"]').text.strip()
     return summarization
 
@@ -48,7 +49,7 @@ def get_summarization(driver):
 def get_content(driver):
     driver_wait_by_xpath(driver,
                          xpath='//div[@class="main" and @id="content"]//div[@class="container"]//div[@class="detail-cmain"]/div[@class="detail-content afcbc-body"]',
-                         seconds=300)
+                         seconds=5)
     lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
                                                                         xpath='//div[@class="main" and @id="content"]//div[@class="container"]//div[@class="detail-cmain"]/div[@class="detail-content afcbc-body"]/p')]
     content = '\n'.join(lst_content)
