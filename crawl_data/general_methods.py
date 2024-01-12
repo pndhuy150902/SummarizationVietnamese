@@ -33,27 +33,29 @@ def scroll_down(driver, key):
     reached_page_end = False
     last_height = driver.execute_script("return document.body.scrollHeight;")
     count_btn_tuoitre = 0
+    count_btn_thanhnien = 0
     while not reached_page_end:
         try:
             driver.execute_script(f"window.scrollTo(0, {last_height});")
             if key == 'thanhnien':
                 btn_more = find_element_by_xpath(driver, xpath='//div[@class="container"]/div[@class="list__stream-flex"]//a[@class="list__center view-more list__viewmore"]')
+                count_btn_thanhnien += 1
                 if btn_more.value_of_css_property('display') == 'block':
                     driver.execute_script("arguments[0].click();", btn_more)
             elif key == 'tuoitre':
+                count_btn_tuoitre += 1
                 btn_more = find_element_by_xpath(driver, xpath='//div[@class="container"]/div[@class="list__listing-flex"]//div[@class="box-viewmore"]//a[@class="view-more"]')
                 driver.execute_script("arguments[0].click();", btn_more)
-                count_btn_tuoitre += 1
             elif key == 'dantri':
                 pass
             time.sleep(10)
             scroll_height = driver.execute_script("return document.body.scrollHeight;")
-            if (last_height == scroll_height) or (count_btn_tuoitre == 1):
+            if (last_height == scroll_height) or (count_btn_tuoitre == 40) or (count_btn_thanhnien == 1):
                 reached_page_end = True
             else:
                 last_height = scroll_height
             driver.implicitly_wait(10)
-        except NoSuchElementException:
+        except:
             break
 
 
@@ -64,4 +66,7 @@ def driver_wait_by_xpath(driver, xpath, seconds):
     
     
 def save_data(data, path_data):
-    pd.DataFrame(data).to_csv(path_data, index=False)
+    df = pd.DataFrame(data)
+    df.drop_duplicates(inplace=True)
+    df = df[~((df['context'].str.len() < 100) | (df['context'].str == ''))]
+    df.to_csv(path_data, index=False)

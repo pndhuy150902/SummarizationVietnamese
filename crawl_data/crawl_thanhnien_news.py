@@ -17,6 +17,7 @@ def get_news(driver):
             del list_menu_nav[13:16:2]
             list_menu_nav[idx].click()
             click_news_from_topic(driver)
+            print(driver.current_url)
             time.sleep(5)
             driver.back()
             driver_wait_by_xpath(driver, xpath='//div[@class="header__nav"]//ul[@class="menu-nav"]', seconds=300)
@@ -30,28 +31,31 @@ def click_news_from_topic(driver):
     list_news = find_elements_by_xpath(driver, xpath='//div[@class="list__stream"]/div[@class="container"]//div[@class="box-category-middle list__main_check"]/div[@class="box-category-item"]')
     original_window = driver.current_window_handle
     for item in list_news:
-        link = find_element_by_css(item, css_selector='a').get_attribute('href')
-        driver.switch_to.new_window('tab')
-        driver.get(link)
-        summarization = get_summarization(driver)
-        content = get_content(driver)
-        DATA_SUMMARIZATION['context'].append(content)
-        DATA_SUMMARIZATION['summarization'].append(summarization)
-        driver.close()
-        driver.switch_to.window(original_window)
+        try:
+            link = find_element_by_css(item, css_selector='a').get_attribute('href')
+            driver.switch_to.new_window('tab')
+            driver.get(link)
+            summarization = get_summarization(driver)
+            content = get_content(driver)
+            DATA_SUMMARIZATION['context'].append(content)
+            DATA_SUMMARIZATION['summarization'].append(summarization)
+            driver.close()
+            driver.switch_to.window(original_window)
+        except:
+            pass
 
 
 def get_summarization(driver):
-    driver_wait_by_xpath(driver, xpath='//div[@class="main"]/div[@id="content"]//div[@class="container"]', seconds=300)
-    summarization = find_element_by_xpath(driver, xpath='//div[@class="main"]/div[@id="content"]//div[@class="container"]//h2[@class="detail-sapo"]').text.strip()
+    driver_wait_by_xpath(driver, xpath='//div[@class="main "]/div[@id="content"]//div[@class="container"]', seconds=10)
+    summarization = find_element_by_xpath(driver, xpath='//div[@class="main "]/div[@id="content"]//div[@class="container"]//h2[@class="detail-sapo"]').text.strip()
     return summarization
 
 
 def get_content(driver):
     driver_wait_by_xpath(driver,
-                         xpath='//div[@class="main"]/div[@id="content"]//div[@class="container"]//div[@class="detail-cmain"]/div[@class="detail-content afcbc-body"]',
-                         seconds=300)
+                         xpath='//div[@class="main "]/div[@id="content"]//div[@class="container"]//div[@class="detail-cmain"]/div[@class="detail-content afcbc-body"]',
+                         seconds=10)
     lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
-                                                                        xpath='//div[@class="main"]/div[@id="content"]//div[@class="container"]//div[@class="detail-cmain"]/div[@class="detail-content afcbc-body"]/p')]
+                                                                        xpath='//div[@class="main "]/div[@id="content"]//div[@class="container"]//div[@class="detail-cmain"]/div[@class="detail-content afcbc-body"]/p')]
     content = '\n'.join(lst_content)
     return content
