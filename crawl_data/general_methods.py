@@ -50,7 +50,7 @@ def scroll_down(driver, key):
                 pass
             time.sleep(10)
             scroll_height = driver.execute_script("return document.body.scrollHeight;")
-            if (last_height == scroll_height) or (count_btn_tuoitre == 40) or (count_btn_thanhnien == 1):
+            if (last_height == scroll_height) or (count_btn_tuoitre == 40) or (count_btn_thanhnien == 40):
                 reached_page_end = True
             else:
                 last_height = scroll_height
@@ -68,5 +68,6 @@ def driver_wait_by_xpath(driver, xpath, seconds):
 def save_data(data, path_data):
     df = pd.DataFrame(data)
     df.drop_duplicates(inplace=True)
-    df = df[~((df['context'].str.len() < 100) | (df['context'].str == ''))]
+    df.dropna(inplace=True)
+    df = df[~((df['context'].str.len() < 512) | (df['context'].str == '') | (df['summarization'].str.len() < 128) | (df['summarization'].str.contains('kết quả xổ số')))]
     df.to_csv(path_data, index=False)
