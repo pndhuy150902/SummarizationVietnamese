@@ -1,7 +1,7 @@
 import time
+import re
 import warnings
 import pandas as pd
-from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -65,9 +65,16 @@ def driver_wait_by_xpath(driver, xpath, seconds):
     )
     
     
-def save_data(data, path_data):
-    df = pd.DataFrame(data)
+def preprocessing_data(df):
     df.drop_duplicates(inplace=True)
     df.dropna(inplace=True)
     df = df[~((df['context'].str.len() < 512) | (df['context'].str == '') | (df['summarization'].str.len() < 128) | (df['summarization'].str.contains('kết quả xổ số')))]
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'(\d+)\.(\d+)(?![\d%])', r'\1\2', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'(\d+)\.(\d+)(?![\d%])', r'\1\2', x))
+    return df
+    
+    
+def save_data(data, path_data):
+    df = pd.DataFrame(data)
+    df = preprocessing_data(df)
     df.to_csv(path_data, index=False)
