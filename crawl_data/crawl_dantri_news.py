@@ -19,6 +19,7 @@ def get_news(driver):
             time.sleep(5)
             driver.close()
             driver.switch_to.window(original_window)
+            print(driver.current_url)
             driver_wait_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]', seconds=120)
     except Exception as err:
         raise Exception("Have error in get_news function") from err

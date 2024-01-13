@@ -16,7 +16,6 @@ def get_news(driver):
             list_menu_nav[idx].click()
             click_news_from_topic(driver)
             time.sleep(5)
-            print(driver.current_url)
             driver_wait_by_xpath(driver, xpath='//div[@class="header"]//div[@class="container"]//ul[@class="menu-nav"]', seconds=120)
     except Exception as err:
         raise Exception("Have error in get_news function") from err
