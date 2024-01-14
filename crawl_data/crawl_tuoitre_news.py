@@ -22,26 +22,29 @@ def get_news(driver):
 
 
 def click_news_from_topic(driver):
-    driver_wait_by_xpath(driver, xpath='//div[@class="list__listing"]/div[@class="container"]//div[@class="box-category-middle" and @id="load-list-news"]/div[@class="box-category-item"]', seconds=120)
-    scroll_down(driver, 'tuoitre')
-    list_news = find_elements_by_xpath(driver, xpath='//div[@class="list__listing"]/div[@class="container"]//div[@class="box-category-middle" and @id="load-list-news"]/div[@class="box-category-item"]')
-    original_window = driver.current_window_handle
-    for item in list_news:
-        try:
-            link = find_element_by_css(item, css_selector='a').get_attribute('href')
-            driver.switch_to.new_window('tab')
-            driver.get(link)
+    try:
+        driver_wait_by_xpath(driver, xpath='//div[@class="list__listing"]/div[@class="container"]//div[@class="box-category-middle" and @id="load-list-news"]/div[@class="box-category-item"]', seconds=120)
+        scroll_down(driver, 'tuoitre')
+        list_news = find_elements_by_xpath(driver, xpath='//div[@class="list__listing"]/div[@class="container"]//div[@class="box-category-middle" and @id="load-list-news"]/div[@class="box-category-item"]')
+        original_window = driver.current_window_handle
+        for item in list_news:
             try:
-                summarization = get_summarization(driver)
-                content = get_content(driver)
-                DATA_SUMMARIZATION['context'].append(content)
-                DATA_SUMMARIZATION['summarization'].append(summarization)
+                link = find_element_by_css(item, css_selector='a').get_attribute('href')
+                driver.switch_to.new_window('tab')
+                driver.get(link)
+                try:
+                    summarization = get_summarization(driver)
+                    content = get_content(driver)
+                    DATA_SUMMARIZATION['context'].append(content)
+                    DATA_SUMMARIZATION['summarization'].append(summarization)
+                except:
+                    pass
+                driver.close()
+                driver.switch_to.window(original_window)
             except:
                 pass
-            driver.close()
-            driver.switch_to.window(original_window)
-        except:
-            pass
+    except:
+        pass
 
 
 def get_summarization(driver):

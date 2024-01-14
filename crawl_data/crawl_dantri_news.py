@@ -19,7 +19,6 @@ def get_news(driver):
             time.sleep(5)
             driver.close()
             driver.switch_to.window(original_window)
-            print(driver.current_url)
             driver_wait_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]', seconds=120)
     except Exception as err:
         raise Exception("Have error in get_news function") from err
@@ -27,31 +26,37 @@ def get_news(driver):
 
 def click_news_from_topic(driver):
     for i in range(0, 30):
-        driver_wait_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="article list"]/article[@class="article-item"]', seconds=120)
-        scroll_down(driver, 'dantri')
-        list_news = find_elements_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="article list"]/article[@class="article-item"]/div[@class="article-thumb"]')
-        original_window = driver.current_window_handle
-        for item in list_news:
-            try:
-                link = find_element_by_css(item, css_selector='a').get_attribute('href')
-                driver.switch_to.new_window('tab')
-                driver.get(link)
+        try:
+            driver_wait_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="article list"]/article[@class="article-item"]', seconds=120)
+            scroll_down(driver, 'dantri')
+            list_news = find_elements_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="article list"]/article[@class="article-item"]/div[@class="article-thumb"]')
+            original_window = driver.current_window_handle
+            for item in list_news:
                 try:
-                    summarization = get_summarization(driver)
-                    content = get_content(driver)
-                    DATA_SUMMARIZATION['context'].append(content)
-                    DATA_SUMMARIZATION['summarization'].append(summarization)
+                    link = find_element_by_css(item, css_selector='a').get_attribute('href')
+                    driver.switch_to.new_window('tab')
+                    driver.get(link)
+                    try:
+                        summarization = get_summarization(driver)
+                        content = get_content(driver)
+                        DATA_SUMMARIZATION['context'].append(content)
+                        DATA_SUMMARIZATION['summarization'].append(summarization)
+                    except:
+                        pass
+                    driver.close()
+                    driver.switch_to.window(original_window)
                 except:
                     pass
-                driver.close()
-                driver.switch_to.window(original_window)
-            except:
-                pass
-        if i == 29:
+            if i == 29:
+                break
+            else:
+                try:
+                    btn_next = find_element_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="pagination"]/a[@class="page-item next"]')
+                    driver.execute_script("arguments[0].click();", btn_next)
+                except:
+                    break
+        except:
             break
-        else:
-            btn_next = find_element_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="pagination"]/a[@class="page-item next"]')
-            driver.execute_script("arguments[0].click();", btn_next)
     
 
 def get_summarization(driver):
