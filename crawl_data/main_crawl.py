@@ -13,18 +13,17 @@ DRIVER = webdriver.Chrome(options=OPTIONS)
 ACTIONS_MAP = {
     'thanhnien': crawl_thanhnien_news.get_news,
     'tuoitre': crawl_tuoitre_news.get_news,
-    'dantri': crawl_dantri_news.get_news
+    'dantri': crawl_dantri_news.get_news,
 }
 
 
 @hydra.main(config_path='../config', config_name='crawlparameters')
 def click_websites_and_get_data(config):
     for key, item in config.news.items():
-        if key == 'dantri':
-            DRIVER.get(config.news[key])
-            DRIVER.maximize_window()
-            ACTIONS_MAP[key](DRIVER)
-    # save_data(DATA_SUMMARIZATION, path_data='../data/crawled_data.csv')
+        DRIVER.get(config.news[key])
+        DRIVER.maximize_window()
+        ACTIONS_MAP[key](DRIVER)
+    save_data(DATA_SUMMARIZATION, path_data='../data/crawled_data.csv')
 
 
 if __name__ == '__main__':

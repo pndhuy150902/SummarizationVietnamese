@@ -69,8 +69,6 @@ def preprocessing_data(df):
     df.drop_duplicates(inplace=True)
     df.dropna(inplace=True)
     df = df[~((df['context'].str.len() < 512) | (df['context'].str == '') | (df['summarization'].str.len() < 128) | (df['summarization'].str.contains('kết quả xổ số')))]
-    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'(\d+)\.(\d+)(?![\d%])', r'\1\2', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'(\d+)\.(\d+)(?![\d%])', r'\1\2', x))
     return df
     
     

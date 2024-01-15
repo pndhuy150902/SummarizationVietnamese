@@ -7,7 +7,7 @@ warnings.filterwarnings('ignore')
 
 def get_news(driver):
     try:
-        driver_wait_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]', seconds=120)
+        driver_wait_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]', seconds=60)
         list_menu_nav = find_elements_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]/li[@class="has-child"]')
         original_window = driver.current_window_handle
         for idx in range(len(list_menu_nav)):
@@ -19,7 +19,7 @@ def get_news(driver):
             time.sleep(5)
             driver.close()
             driver.switch_to.window(original_window)
-            driver_wait_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]', seconds=120)
+            driver_wait_by_xpath(driver, xpath='//nav[@class="menu container bg-wrap"]/ol[@class="menu-wrap bg-wrap"]', seconds=60)
     except Exception as err:
         raise Exception("Have error in get_news function") from err
 
@@ -27,7 +27,7 @@ def get_news(driver):
 def click_news_from_topic(driver):
     for i in range(0, 30):
         try:
-            driver_wait_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="article list"]/article[@class="article-item"]', seconds=120)
+            driver_wait_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="article list"]/article[@class="article-item"]', seconds=60)
             scroll_down(driver, 'dantri')
             list_news = find_elements_by_xpath(driver, xpath='//div[@class="grid list" and @id="bai-viet"]//div[@class="article list"]/article[@class="article-item"]/div[@class="article-thumb"]')
             original_window = driver.current_window_handle
