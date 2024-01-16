@@ -5,6 +5,7 @@ import crawl_tuoitre_news
 import crawl_dantri_news
 from general_methods import save_data, DATA_SUMMARIZATION
 from selenium import webdriver
+from tqdm import tqdm
 
 warnings.filterwarnings('ignore')
 OPTIONS = webdriver.ChromeOptions()
@@ -19,7 +20,7 @@ ACTIONS_MAP = {
 
 @hydra.main(config_path='../config', config_name='crawlparameters')
 def click_websites_and_get_data(config):
-    for key, item in config.news.items():
+    for key, item in tqdm(config.news.items()):
         DRIVER.get(config.news[key])
         DRIVER.maximize_window()
         ACTIONS_MAP[key](DRIVER)
