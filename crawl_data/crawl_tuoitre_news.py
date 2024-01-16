@@ -7,16 +7,16 @@ warnings.filterwarnings('ignore')
 
 def get_news(driver):
     try:
-        driver_wait_by_xpath(driver, xpath='//div[@class="header"]//div[@class="container"]//ul[@class="menu-nav"]', seconds=60)
-        list_menu_nav = find_elements_by_xpath(driver, xpath='//div[@class="header"]//div[@class="container"]//ul[@class="menu-nav"]/li')
+        driver_wait_by_xpath(driver, xpath='//div[@class="wapper"]//div[contains(@class, "header")]//div[@class="container"]//ul[@class="menu-nav"]', seconds=60)
+        list_menu_nav = find_elements_by_xpath(driver, xpath='//div[@class="wapper"]//div[contains(@class, "header")]//div[@class="container"]//ul[@class="menu-nav"]/li')
         del list_menu_nav[0:2]
         for idx in range(len(list_menu_nav)):
-            list_menu_nav = find_elements_by_xpath(driver, xpath='//div[@class="header"]//div[@class="container"]//ul[@class="menu-nav"]/li')
+            list_menu_nav = find_elements_by_xpath(driver, xpath='//div[@class="wapper"]//div[contains(@class, "header")]//div[@class="container"]//ul[@class="menu-nav"]/li')
             del list_menu_nav[0:2]
             list_menu_nav[idx].click()
             click_news_from_topic(driver)
             time.sleep(5)
-            driver_wait_by_xpath(driver, xpath='//div[@class="header"]//div[@class="container"]//ul[@class="menu-nav"]', seconds=60)
+            driver_wait_by_xpath(driver, xpath='//div[@class="wapper"]//div[contains(@class, "header")]//div[@class="container"]//ul[@class="menu-nav"]', seconds=60)
     except Exception as err:
         raise Exception("Have error in get_news function") from err
 
