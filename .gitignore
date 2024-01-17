@@ -1,10 +1,12 @@
 # Hydra folder
-crawl_data/outputs
+crawl_data/outputs/
+model/outputs/
 
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 crawl_data/__pycache__/
+model/__pycache__/
 *.py[cod]
 
 # Installer logs

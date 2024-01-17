@@ -1,11 +1,8 @@
-model: bigscience/mt0-xxl-mt
+model: mistralai/Mistral-7B-Instruct-v0.2
 
 deepspeed:
   stage_2: deepspeed_stage_2
-  stage_3: deepspeed_stage_3
 
-device: -1
-
-batch_size:
-  text: 4096
+length:
+  text: 9216
   summary: 1024
