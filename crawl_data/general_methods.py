@@ -38,8 +38,8 @@ def scroll_down(driver, key):
         try:
             driver.execute_script(f"window.scrollTo(0, {last_height});")
             if key == 'thanhnien':
-                btn_more = find_element_by_xpath(driver, xpath='//div[@class="container"]/div[@class="list__stream-flex"]//a[@class="list__center view-more list__viewmore"]')
                 count_btn_thanhnien += 1
+                btn_more = find_element_by_xpath(driver, xpath='//div[@class="container"]/div[@class="list__stream-flex"]//a[@class="list__center view-more list__viewmore"]')
                 if btn_more.value_of_css_property('display') == 'block':
                     driver.execute_script("arguments[0].click();", btn_more)
             elif key == 'tuoitre':
@@ -72,7 +72,7 @@ def preprocessing_data(df):
     return df
     
     
-def save_data(data, path_data):
+def save_data(data, path_data: str):
     df = pd.DataFrame(data)
     df = preprocessing_data(df)
-    df.to_csv(path_data, index=False)
+    df.to_csv(path_or_buf=path_data, index=False, encoding='utf-8')
