@@ -99,10 +99,17 @@ def get_content(driver):
                 lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
                                                                                     xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap d-magazine"]/div[@class="e-magazine__body dnews__body"]/p')]
             except:
-                driver_wait_by_xpath(driver,
-                                     xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap infographic"]',
-                                     seconds=10)
-                lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
-                                                                                    xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap infographic"]/div[@class="e-magazine__body"]/p')]
+                try:
+                    driver_wait_by_xpath(driver,
+                                         xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap infographic"]',
+                                         seconds=10)
+                    lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
+                                                                                        xpath='//main[@class="body container"]/article[@class="e-magazine bg-wrap infographic"]/div[@class="e-magazine__body"]/p')]
+                except:
+                    driver_wait_by_xpath(driver,
+                                         xpath='//div[@class="singular-wrap"]/article[@class="singular-container"]',
+                                         seconds=10)
+                    lst_content = [item.text.strip() for item in find_elements_by_xpath(driver,
+                                                                                        xpath='//div[@class="singular-wrap"]/article[@class="singular-container"]/div[@class="singular-content"]//p')]
     content = '\n'.join(lst_content)
     return content

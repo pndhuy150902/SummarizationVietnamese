@@ -24,7 +24,8 @@ def click_websites_and_get_data(config):
         DRIVER.get(config.news[key])
         DRIVER.maximize_window()
         ACTIONS_MAP[key](DRIVER)
-    save_data(DATA_SUMMARIZATION, path_data='../data/crawled_data.csv')
+        save_data(DATA_SUMMARIZATION, path_data=f'../data/crawled_data_{key}.csv')
+        DATA_SUMMARIZATION.clear()
 
 
 if __name__ == '__main__':
