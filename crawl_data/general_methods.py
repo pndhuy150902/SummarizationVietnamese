@@ -50,7 +50,7 @@ def scroll_down(driver, key):
                 pass
             time.sleep(10)
             scroll_height = driver.execute_script("return document.body.scrollHeight;")
-            if (last_height == scroll_height) or (count_btn_tuoitre == 50) or (count_btn_thanhnien == 50):
+            if (last_height == scroll_height) or (count_btn_tuoitre == 60) or (count_btn_thanhnien == 60):
                 reached_page_end = True
             else:
                 last_height = scroll_height
