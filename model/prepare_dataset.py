@@ -9,11 +9,11 @@ def prepare_prompt(i, df):
     context = df.iloc[i]['context']
     output = df.iloc[i]['summarization']
     prompt = f"""
-    Nội dung văn bản:
-    {context}
+Nội dung văn bản:
+{context}
 
-    [INST]Hãy tóm tắt ngắn gọn nội dung văn bản trên[/INST]
-    Kết quả: {output} </s>"""
+[INST]Hãy tóm tắt ngắn gọn nội dung văn bản trên[/INST]
+Kết quả: {output} </s>"""
     return prompt
 
 

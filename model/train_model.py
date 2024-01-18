@@ -16,7 +16,7 @@ def prepare_trainer():
         args=training_args,
         peft_config=lora_config,
         data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
-        callbacks=[EarlyStoppingCallback(early_stopping_patience=5, early_stopping_threshold=1.0)],
+        callbacks=[EarlyStoppingCallback(early_stopping_patience=3, early_stopping_threshold=1.0)],
         packing=False
     )
     return trainer

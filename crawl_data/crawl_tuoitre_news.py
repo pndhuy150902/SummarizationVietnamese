@@ -49,7 +49,7 @@ def click_news_from_topic(driver):
 
 def get_summarization(driver):
     driver_wait_by_xpath(driver, xpath='//div[@class="main" and @id="content"]//div[@class="container"]', seconds=10)
-    summarization = find_element_by_xpath(driver, xpath='//div[@class="main" and @id="content"]//div[@class="container"]//h2[@class="detail-sapo"]').text.strip().replace('TT -', '').replace('TTO -').strip()
+    summarization = find_element_by_xpath(driver, xpath='//div[@class="main" and @id="content"]//div[@class="container"]//h2[@class="detail-sapo"]').text.strip().replace('TT -', '').replace('TTO -', '').strip()
     return summarization
 
 

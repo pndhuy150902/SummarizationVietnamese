@@ -1,6 +1,7 @@
 import warnings
 import torch
 import hydra
+from nltk.translate.bleu_score import sentence_bleu
 from peft import LoraConfig, PeftConfig, PeftModel, prepare_model_for_kbit_training
 from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
 
@@ -21,7 +22,7 @@ def prepare_lora_configuration():
             'down_proj',
             'lm_head',
         ],
-        lora_dropout=0.1,
+        lora_dropout=0.05,
         bias="none",
         task_type="CAUSAL_LM"
     )
@@ -43,7 +44,8 @@ def prepare_training_arguments():
         auto_find_batch_size=True,
         num_train_epochs=30,
         learning_rate=1e-5,
-        save_total_limit=1,
+        save_total_limit=2,
+        load_best_model_at_end=True,
         logging_steps=1,
         output_dir='./model_checkpoint',
         save_strategy='epoch',
@@ -53,8 +55,34 @@ def prepare_training_arguments():
     return training_args
 
 
-def compute_metrics():
-    pass
+def compute_metrics(pred, train_dataset):
+    references = pred.label_ids
+    generated_texts = pred.predictions
+    bleu_scores_ngram_1 = []
+    bleu_scores_ngram_2 = []
+    bleu_scores_ngram_3 = []
+    bleu_scores_ngram_4 = []
+    bleu_scores_ngram_avg = []
+    for reference, generated_text in zip(references, generated_texts):
+        reference_text = train_dataset[reference]['text']
+        bleu_score_ngram_1 = sentence_bleu([reference_text], generated_text, weights=(1, 0, 0, 0))
+        bleu_score_ngram_2 = sentence_bleu([reference_text], generated_text, weights=(0, 1, 0, 0))
+        bleu_score_ngram_3 = sentence_bleu([reference_text], generated_text, weights=(0, 0, 1, 0))
+        bleu_score_ngram_4 = sentence_bleu([reference_text], generated_text, weights=(0, 0, 0, 1))
+        bleu_score_ngram_avg = sentence_bleu([reference_text], generated_text, weights=(0.25, 0.25, 0.25, 0.25))
+        bleu_scores_ngram_1.append(bleu_score_ngram_1)
+        bleu_scores_ngram_2.append(bleu_score_ngram_2)
+        bleu_scores_ngram_3.append(bleu_score_ngram_3)
+        bleu_scores_ngram_4.append(bleu_score_ngram_4)
+        bleu_scores_ngram_avg.append(bleu_score_ngram_avg)
+
+    return {
+        'bleu@1': sum(bleu_scores_ngram_1) / len(bleu_scores_ngram_1),
+        'bleu@2': sum(bleu_scores_ngram_2) / len(bleu_scores_ngram_2),
+        'bleu@3': sum(bleu_scores_ngram_3) / len(bleu_scores_ngram_3),
+        'bleu@4': sum(bleu_scores_ngram_4) / len(bleu_scores_ngram_4),
+        'bleu@avg': sum(bleu_scores_ngram_avg) / len(bleu_scores_ngram_avg)
+    }
 
 
 def prepare_tokenizer(model_name):

@@ -22,12 +22,13 @@ ACTIONS_MAP = {
 @hydra.main(config_path='../config', config_name='crawlparameters', version_base=None)
 def click_websites_and_get_data(config):
     for key, item in tqdm(config.news.items()):
-        DRIVER.get(config.news[key])
-        DRIVER.maximize_window()
-        ACTIONS_MAP[key](DRIVER)
-        path_file = os.path.join('../dataset/', f'crawled_data_{key}.csv')
-        save_data(DATA_SUMMARIZATION, path_data=path_file)
-        DATA_SUMMARIZATION.clear()
+        if key != 'thanhnien':
+            DRIVER.get(config.news[key])
+            DRIVER.maximize_window()
+            ACTIONS_MAP[key](DRIVER)
+            path_file = os.path.join('../dataset/', f'crawled_data_{key}.csv')
+            save_data(DATA_SUMMARIZATION, path_data=path_file)
+            DATA_SUMMARIZATION.clear()
 
 
 if __name__ == '__main__':
