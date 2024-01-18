@@ -1,7 +1,7 @@
 import warnings
 from trl import SFTTrainer
 from transformers import EarlyStoppingCallback, DataCollatorForLanguageModeling
-from configuration import prepare_lora_configuration, prepare_training_arguments, prepare_model
+from configuration import prepare_lora_configuration, prepare_training_arguments, prepare_model, compute_metrics, preprocess_logits_for_metrics
 
 warnings.filterwarnings('ignore')
 
@@ -16,6 +16,8 @@ def prepare_trainer():
         args=training_args,
         peft_config=lora_config,
         data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
+        compute_metrics=compute_metrics,
+        preprocess_logits_for_metrics=preprocess_logits_for_metrics,
         callbacks=[EarlyStoppingCallback(early_stopping_patience=3, early_stopping_threshold=1.0)],
         packing=False
     )

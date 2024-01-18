@@ -4,5 +4,5 @@ deepspeed:
   stage_2: deepspeed_stage_2
 
 length:
-  text: 9216
-  summary: 1024
+  text: 20480
+  summary: 2048

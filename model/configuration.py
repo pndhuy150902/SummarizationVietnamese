@@ -1,6 +1,7 @@
 import warnings
 import torch
 import hydra
+import numpy as np
 from nltk.translate.bleu_score import sentence_bleu
 from peft import LoraConfig, PeftConfig, PeftModel, prepare_model_for_kbit_training
 from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
@@ -55,16 +56,23 @@ def prepare_training_arguments():
     return training_args
 
 
-def compute_metrics(pred, train_dataset):
-    references = pred.label_ids
-    generated_texts = pred.predictions
+def preprocess_logits_for_metrics(logits, labels):
+    if isinstance(logits, tuple):
+        logits = logits[0]
+    return logits.argmax(dim=-1)
+
+
+def compute_metrics(eval_preds, tokenizer):
+    preds, labels = eval_preds
+    labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
+    references = tokenizer.batch_decode(labels.tolist(), skip_special_tokens=True)
+    generated_texts = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
     bleu_scores_ngram_1 = []
     bleu_scores_ngram_2 = []
     bleu_scores_ngram_3 = []
     bleu_scores_ngram_4 = []
     bleu_scores_ngram_avg = []
-    for reference, generated_text in zip(references, generated_texts):
-        reference_text = train_dataset[reference]['text']
+    for reference_text, generated_text in zip(references, generated_texts):
         bleu_score_ngram_1 = sentence_bleu([reference_text], generated_text, weights=(1, 0, 0, 0))
         bleu_score_ngram_2 = sentence_bleu([reference_text], generated_text, weights=(0, 1, 0, 0))
         bleu_score_ngram_3 = sentence_bleu([reference_text], generated_text, weights=(0, 0, 1, 0))
