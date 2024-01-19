@@ -1,7 +1,7 @@
 processed_data:
-  train_data: ../dataset/
-  val_data: ../dataset/
-  test_data: ../dataset/
+  train_data: "../dataset/"
+  val_data: "../dataset/"
+  test_data: "../dataset/"
 
 metrics:
   score: rouge

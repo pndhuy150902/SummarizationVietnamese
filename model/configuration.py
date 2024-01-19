@@ -40,17 +40,17 @@ def prepare_quantization_configuration():
     return bnb_config
 
 
-def prepare_training_arguments():
+def prepare_training_arguments(config):
     training_args = TrainingArguments(
         auto_find_batch_size=True,
-        num_train_epochs=30,
-        learning_rate=1e-5,
-        save_total_limit=2,
+        num_train_epochs=config.args_training.num_train_epochs,
+        learning_rate=config.args_training.learning_rate,
+        save_total_limit=config.args_training.save_total_limit,
         load_best_model_at_end=True,
-        logging_steps=1,
-        output_dir='./model_checkpoint',
-        save_strategy='epoch',
-        optim='paged_adamw_8bit',
+        logging_steps=config.args_training.logging_steps,
+        output_dir=config.args_training.dir_checkpoint,
+        save_strategy=config.args_training.save_strategy,
+        optim=config.args_training.optimizer,
         bf16=True,
     )
     return training_args
@@ -62,8 +62,13 @@ def preprocess_logits_for_metrics(logits, labels):
     return logits.argmax(dim=-1)
 
 
-def compute_metrics(eval_preds, tokenizer):
+def compute_metrics(eval_preds):
     preds, labels = eval_preds
+    
+    @hydra.main(config_path='../config/model', config_name='pretrained_model', version_base=None)
+    def use_tokenizer(config):
+        return prepare_tokenizer(config.model_name)
+    tokenizer = use_tokenizer()
     labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
     references = tokenizer.batch_decode(labels.tolist(), skip_special_tokens=True)
     generated_texts = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
@@ -100,12 +105,11 @@ def prepare_tokenizer(model_name):
     return tokenizer
 
 
-@hydra.main(config_path='../config/model', config_name='pretrained_model', version_base=None)
-def prepare_model(config):
-    tokenizer = prepare_tokenizer(config.model_name)
+def prepare_model(model_name):
+    tokenizer = prepare_tokenizer(model_name)
     bnb_config = prepare_quantization_configuration()
     model = AutoModelForCausalLM.from_pretrained(
-        config.model_name,
+        model_name,
         device_map='auto',
         trust_remote_code=True,
         quantization_config=bnb_config
