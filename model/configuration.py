@@ -11,8 +11,8 @@ warnings.filterwarnings('ignore')
 
 def prepare_lora_configuration():
     lora_config = LoraConfig(
-        r=32,
-        alpha=64,
+        r=16,
+        alpha=32,
         target_modules=[
             'q_proj',
             'k_proj',

@@ -12,7 +12,7 @@ def prepare_prompt(i, df):
 Nội dung văn bản:
 {context}
 
-[INST]Hãy tóm tắt ngắn gọn nội dung văn bản trên[/INST]
+[INST]Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm tắt ngắn gọn nội dung văn bản trên[/INST]
 Kết quả: {output} </s>"""
     return prompt
 
