@@ -27,7 +27,7 @@ def prepare_trainer(config):
     return trainer
 
 
-@hydra.main(config_path='../config/model', config_name='pretrained_model', version_base=None)
+@hydra.main(config_path='../config', config_name='hyperparameters', version_base=None)
 def main(config):
     trainer = prepare_trainer(config)
     trainer.train()
