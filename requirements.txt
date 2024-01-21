@@ -1,0 +1,9 @@
+flash_attn
+vllm
+transformers
+peft
+hydra
+pandas
+numpy
+trl
+nltk
