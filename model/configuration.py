@@ -112,6 +112,7 @@ def prepare_model(model_name):
         model_name,
         device_map='auto',
         trust_remote_code=True,
+        use_flash_attention_2=True,
         quantization_config=bnb_config
     )
     model.config.pad_token_id = tokenizer.pad_token_id

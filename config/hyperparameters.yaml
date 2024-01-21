@@ -6,7 +6,7 @@ processed_data:
 model_name: "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
 args_training:
-  num_train_epochs: 30
+  num_train_epochs: 20
   learning_rate: 1e-5
   save_total_limit: 2
   logging_steps: 1
