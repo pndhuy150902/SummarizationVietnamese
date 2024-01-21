@@ -3,10 +3,7 @@ processed_data:
   valid_data: "../dataset/full_validation_data_summarization.csv"
   test_data: "../dataset/full_test_data_summarization.csv"
 
-metrics:
-  score: rouge
-
-model_name: "mistralai/Mistral-7B-Instruct-v0.2"
+model_name: "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
 args_training:
   num_train_epochs: 30
