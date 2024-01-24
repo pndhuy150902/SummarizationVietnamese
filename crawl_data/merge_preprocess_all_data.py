@@ -1,5 +1,6 @@
 import warnings
 import re
+import pickle
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -55,6 +56,20 @@ def read_data_vietgpt():
     return vietgpt_data
 
 
+def read_data_wikilingual():
+    structure_data = {
+        'context': [],
+        'summarization': []
+    }
+    with open('../dataset/wikilingual_vietnamese_data/vietnamese.pkl', mode='rb') as file:
+        obj = pickle.load(file)
+    for subject in obj.items():
+        for news in subject[1].items():
+            structure_data['context'].append(news[1]['document'])
+            structure_data['summarization'].append(news[1]['summary'])
+    return pd.DataFrame(structure_data)
+
+
 def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r'\... ...', ', ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\>> ', '', x))
@@ -83,7 +98,8 @@ def merge_and_preprocess_and_split_all_data():
     crawled_data = read_and_merge_data_crawled()
     vlsp_data = read_data_vslp()
     vietgpt_data = read_data_vietgpt()
-    full_data = pd.concat([crawled_data, vlsp_data, vietgpt_data], axis=0)
+    wikilingual_data = read_data_wikilingual()
+    full_data = pd.concat([crawled_data, vlsp_data, vietgpt_data, wikilingual_data], axis=0)
     full_data = full_data.sample(frac=1, random_state=42)
     full_data.drop_duplicates(inplace=True)
     full_data.reset_index(inplace=True, drop=True)
