@@ -29,7 +29,6 @@ def generate_and_tokenize_prompt(data_point, model_name):
     return tokenized_full_prompt
 
 
-@hydra.main(config_path="../config", config_name="hyperparameters", version_base=None)
 def prepare_dataset(config):
     train_data, valid_data, test_data = read_dataset(config)
     train_prompts = [prepare_prompt(i, train_data) for i in range(len(train_data))]

@@ -1,5 +1,6 @@
 flash_attn
 vllm
+accelerate
 transformers
 peft
 hydra
@@ -7,3 +8,7 @@ pandas
 numpy
 trl
 nltk
+bitsandbytes
+rouge_score
+evaluate
+deepspeed
