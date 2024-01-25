@@ -1,6 +1,5 @@
 flash_attn
 vllm
-accelerate
 transformers
 peft
 hydra
