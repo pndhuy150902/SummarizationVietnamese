@@ -22,6 +22,7 @@ def prepare_trainer(config):
         peft_config=lora_config,
         train_dataset=dataset['train'],
         eval_dataset=dataset['valid'],
+        dataset_text_field='text',
         data_collator=func_collate,
         compute_metrics=compute_metrics,
         preprocess_logits_for_metrics=preprocess_logits_for_metrics,

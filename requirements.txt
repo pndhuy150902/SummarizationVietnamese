@@ -2,7 +2,7 @@ flash_attn
 vllm
 transformers
 peft
-hydra
+hydra-core
 pandas
 numpy
 trl
