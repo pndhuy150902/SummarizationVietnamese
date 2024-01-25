@@ -20,7 +20,7 @@ def read_dataset(config):
     train_data = pd.read_csv(config.processed_data.train_data)
     valid_data = pd.read_csv(config.processed_data.valid_data)
     test_data = pd.read_csv(config.processed_data.test_data)
-    return train_data, valid_data, test_data
+    return train_data[0:1000], valid_data, test_data
 
 
 def generate_and_tokenize_prompt(data_point, model_name):
