@@ -63,13 +63,9 @@ def preprocess_logits_for_metrics(logits, labels):
     return logits.argmax(dim=-1)
 
 
-def compute_metrics(eval_preds):
+def compute_metrics(eval_preds, model_name):
     preds, labels = eval_preds
-    
-    @hydra.main(config_path='../config/model', config_name='pretrained_model', version_base=None)
-    def use_tokenizer(config):
-        return prepare_tokenizer(config.model_name)
-    tokenizer = use_tokenizer()
+    tokenizer = prepare_tokenizer(model_name)
     labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
     references = tokenizer.batch_decode(labels.tolist(), skip_special_tokens=True)
     generated_texts = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
@@ -102,7 +98,7 @@ def compute_metrics(eval_preds):
 def prepare_tokenizer(model_name):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     tokenizer.pad_token = tokenizer.unk_token
-    tokenizer.padding_side = "right"
+    tokenizer.padding_side = "left"
     return tokenizer
 
 
