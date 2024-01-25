@@ -12,7 +12,7 @@ warnings.filterwarnings('ignore')
 def prepare_lora_configuration():
     lora_config = LoraConfig(
         r=16,
-        alpha=32,
+        lora_alpha=32,
         target_modules=[
             'q_proj',
             'k_proj',
@@ -50,6 +50,7 @@ def prepare_training_arguments(config):
         logging_steps=config.args_training.logging_steps,
         output_dir=config.args_training.dir_checkpoint,
         save_strategy=config.args_training.save_strategy,
+        evaluation_strategy=config.args_training.evaluation_strategy,
         optim=config.args_training.optimizer,
         bf16=True,
     )
