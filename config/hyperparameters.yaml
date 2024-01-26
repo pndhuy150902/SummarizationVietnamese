@@ -22,5 +22,5 @@ deepspeed:
   stage_2: "deepspeed_stage_2"
 
 length:
-  text: 20480
+  text: 10240
   summary: 2048
