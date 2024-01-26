@@ -22,8 +22,7 @@ def read_dataset(config):
     return train_data, valid_data, test_data
 
 
-def generate_and_tokenize_prompt(data_point, model_name, max_length):
-    tokenizer = prepare_tokenizer(model_name)
+def generate_and_tokenize_prompt(data_point, tokenizer, max_length):
     tokenized_full_prompt = tokenizer(data_point['text'], padding=True, truncation=True, max_length=max_length)
     return tokenized_full_prompt
 
@@ -38,5 +37,6 @@ def prepare_dataset(config):
         'valid': Dataset.from_dict({'text': valid_prompts}),
         'test': Dataset.from_dict({'text': test_prompts})
     })
-    dataset = dataset.map(lambda x: generate_and_tokenize_prompt(x, config.model_name, config.length.text), batched=True)
+    tokenizer = prepare_tokenizer(config.model_name)
+    dataset = dataset.map(lambda x: generate_and_tokenize_prompt(x, tokenizer, config.length.text), batched=True)
     return dataset

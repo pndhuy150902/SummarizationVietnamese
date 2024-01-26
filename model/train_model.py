@@ -13,7 +13,7 @@ def prepare_trainer(config):
     training_args = prepare_training_arguments(config)
     tokenizer, model = prepare_model(config.model_name_test)
     func_collate = DataCollatorForLanguageModeling(tokenizer, mlm=False)
-    early_stop_callback = EarlyStoppingCallback(early_stopping_patience=3, early_stopping_threshold=0.3)
+    early_stop_callback = EarlyStoppingCallback(early_stopping_patience=2, early_stopping_threshold=0.2)
     dataset = prepare_dataset(config)
     trainer = SFTTrainer(
         model=model,
