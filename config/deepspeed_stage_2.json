@@ -1,5 +1,23 @@
 {
+  "train_batch_size": 2,
+  "zero_optimization": {
+      "stage": 2,
+      "allgather_partitions": true,
+      "reduce_scatter": true,
+      "allgather_bucket_size": 50000000,
+      "reduce_bucket_size": 50000000,
+      "overlap_comm": true,
+      "contiguous_gradients": true,
+      "cpu_offload": true
+  },
   "bf16": {
     "enabled": true
-  }
+  },
+  "optimizer": {
+    "type": "AdamW",
+    "params": {
+      "lr": 0.00001
+    }
+  },
+  "wall_clock_breakdown" : false
 }
