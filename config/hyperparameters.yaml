@@ -19,8 +19,8 @@ args_training:
   optimizer: "paged_adamw_8bit"
 
 deepspeed:
-  stage_2: "deepspeed_stage_2"
+  stage_2: "../config/deepspeed_stage_2.json"
 
 length:
-  text: 10240
+  text: 12288
   summary: 2048
