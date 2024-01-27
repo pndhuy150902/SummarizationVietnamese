@@ -104,6 +104,7 @@ def merge_and_preprocess_and_split_all_data():
     wikilingual_data = read_data_wikilingual()
     full_data = pd.concat([crawled_data, vlsp_data, vietgpt_data, wikilingual_data], axis=0)
     full_data = full_data.sample(frac=1, random_state=42)
+    full_data = full_data[~(full_data['summarization'].str.len() < 256)]
     full_data.drop_duplicates(inplace=True)
     full_data.reset_index(inplace=True, drop=True)
     full_data = preprocessing_data(full_data)
