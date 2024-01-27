@@ -68,7 +68,7 @@ def driver_wait_by_xpath(driver, xpath, seconds):
 def preprocessing_data(df):
     df.drop_duplicates(inplace=True)
     df.dropna(inplace=True)
-    df = df[~((df['context'].str.len() < 512) | (df['context'].str == '') | (df['summarization'].str.len() < 128) | (df['summarization'].str.contains('kết quả xổ số')))]
+    df = df[~((df['context'].str.len() < 768) | (df['context'].str == '') | (df['summarization'].str.len() < 256) | (df['summarization'].str.contains('kết quả xổ số')))]
     return df
     
     
