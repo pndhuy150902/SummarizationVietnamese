@@ -2,17 +2,17 @@
   "train_batch_size": "auto",
   "train_micro_batch_size_per_gpu": "auto",
   "zero_optimization": {
-      "stage": 2,
-      "allgather_partitions": true,
-      "reduce_scatter": true,
-      "allgather_bucket_size": 5e8,
-      "reduce_bucket_size": 5e8,
-      "overlap_comm": true,
-      "contiguous_gradients": true,
-      "offload_optimizer": {
-        "device": "cpu",
-        "pin_memory": true
-      }
+    "stage": 2,
+    "allgather_partitions": true,
+    "reduce_scatter": true,
+    "allgather_bucket_size": 5e8,
+    "reduce_bucket_size": 5e8,
+    "overlap_comm": true,
+    "contiguous_gradients": true,
+    "offload_optimizer": {
+      "device": "cpu",
+      "pin_memory": true
+    }
   },
   "bf16": {
     "enabled": true
