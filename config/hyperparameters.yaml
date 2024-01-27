@@ -23,5 +23,5 @@ deepspeed:
   stage_3: "../config/deepspeed_stage_3.json"
 
 length:
-  text: 16384
+  text: 12288
   summary: 2048
