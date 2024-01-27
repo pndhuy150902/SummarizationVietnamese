@@ -20,6 +20,7 @@ args_training:
 
 deepspeed:
   stage_2: "../config/deepspeed_stage_2.json"
+  stage_3: "../config/deepspeed_stage_3.json"
 
 length:
   text: 12288
