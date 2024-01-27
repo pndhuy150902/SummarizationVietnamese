@@ -71,6 +71,8 @@ def read_data_wikilingual():
 
 
 def preprocessing_data(df):
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\⋯', 'dấu ba chấm', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'{.*}', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\... ...', ', ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\>> ', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\Ảnh: [\w+\s+\/+]+.', '', x))
@@ -91,6 +93,7 @@ def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\.]+\).', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\s+\-\w+]+\).', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\s+\-\w+]+\).', '', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r' +', ' ', x))
     return df
 
 
@@ -104,8 +107,8 @@ def merge_and_preprocess_and_split_all_data():
     full_data.drop_duplicates(inplace=True)
     full_data.reset_index(inplace=True, drop=True)
     full_data = preprocessing_data(full_data)
-    train_data, tmp_data = train_test_split(full_data, test_size=0.1, random_state=42)
-    valid_data, test_data = train_test_split(tmp_data, test_size=0.8, random_state=42)
+    train_data, tmp_data = train_test_split(full_data, test_size=0.15, random_state=42)
+    valid_data, test_data = train_test_split(tmp_data, test_size=0.9, random_state=42)
     train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
     valid_data.to_csv('../dataset/full_validation_data_summarization.csv', index=False)
     test_data.to_csv('../dataset/full_test_data_summarization.csv', index=False)

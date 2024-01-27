@@ -11,3 +11,4 @@ bitsandbytes
 rouge_score
 evaluate
 deepspeed
+mpi4py
