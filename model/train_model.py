@@ -23,6 +23,7 @@ def prepare_trainer(config):
         train_dataset=dataset['train'],
         eval_dataset=dataset['valid'],
         dataset_text_field='text',
+        max_seq_length=config.length.text,
         data_collator=func_collate,
         compute_metrics=lambda x: compute_metrics(x, config.model_name_test),
         preprocess_logits_for_metrics=preprocess_logits_for_metrics,

@@ -116,4 +116,5 @@ def prepare_model(model_name):
     )
     model.config.pad_token_id = tokenizer.pad_token_id
     model = prepare_model_for_kbit_training(model)
+    model.config.use_cache = False
     return tokenizer, model
