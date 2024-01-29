@@ -11,7 +11,7 @@ def prepare_prompt(i, df):
     summarization = df.iloc[i]['summarization']
     prompt = f"""<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm tắt ngắn gọn nội dung sau bằng tiếng Việt:
 {context} [/INST]
-{summarization} </s>"""
+{summarization}</s>"""
     return prompt
 
 

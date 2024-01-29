@@ -94,6 +94,11 @@ def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\s+\-\w+]+\).', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\s+\-\w+]+\).', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r' +', ' ', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\⋯', 'dấu ba chấm', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'{.*}', '', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\... ...', ', ', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\>> ', '', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r' +', ' ', x))
     return df
 
 
@@ -104,10 +109,10 @@ def merge_and_preprocess_and_split_all_data():
     wikilingual_data = read_data_wikilingual()
     full_data = pd.concat([crawled_data, vlsp_data, vietgpt_data, wikilingual_data], axis=0)
     full_data = full_data.sample(frac=1, random_state=42)
+    full_data = preprocessing_data(full_data)
     full_data = full_data[~(full_data['summarization'].str.len() < 256)]
     full_data.drop_duplicates(inplace=True)
     full_data.reset_index(inplace=True, drop=True)
-    full_data = preprocessing_data(full_data)
     train_data, tmp_data = train_test_split(full_data, test_size=0.15, random_state=42)
     valid_data, test_data = train_test_split(tmp_data, test_size=0.9, random_state=42)
     train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
