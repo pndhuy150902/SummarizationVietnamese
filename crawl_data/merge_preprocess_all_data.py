@@ -93,12 +93,16 @@ def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\.]+\).', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\s+\-\w+]+\).', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\s+\-\w+]+\).', '', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'Ảnh minh họa.', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r' +', ' ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\⋯', 'dấu ba chấm', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'{.*}', '', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\... ...', ', ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\>> ', '', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'Ảnh minh họa.', '', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r' +', ' ', x))
+    df['context'] = df['context'].apply(lambda x: x.strip().strip('\n'))
+    df['summarization'] = df['summarization'].apply(lambda x: x.strip().strip('\n'))
     return df
 
 
