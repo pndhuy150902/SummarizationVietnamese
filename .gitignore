@@ -3,10 +3,6 @@ crawl_data/outputs/
 model/outputs/
 
 
-# Dataset folder (Can not public)
-dataset/
-
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 crawl_data/__pycache__/
