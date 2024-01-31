@@ -34,8 +34,3 @@ def gradio_chat():
                 btn_clear.click(clear_content, inputs=[content_box], outputs=[content_box])
                 btn_clear_all.click(clear_all, inputs=[msg_box, content_box], outputs=[msg_box, content_box])
     return app
-
-
-if __name__ == '__main__':
-    app = gradio_chat()
-    app.launch(share=True)
