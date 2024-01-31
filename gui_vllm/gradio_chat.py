@@ -13,7 +13,7 @@ def clear_content(content_box):
 
 
 def respond_chat(message, history):
-    bot_message = "Implement model to create summarize"
+    bot_message = "Sorry that the model has not been prepared for text summarization."
     history.append((message, bot_message))
     return '', history
 
