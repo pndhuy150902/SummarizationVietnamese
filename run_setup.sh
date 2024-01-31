@@ -16,7 +16,7 @@ while getopts ':pc:h' opt; do
       exit 1
       ;;
     ?)
-      echo -e "Invalid command option.\nUsage: $(basename $0) [-a] [-b] [-c arg]"
+      echo -e "Invalid command option.\nUsage: $(basename $0) [-p] [-c]"
       exit 1
       ;;
   esac
