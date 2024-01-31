@@ -1,6 +1,7 @@
 # Hydra folder
 crawl_data/outputs/
 model/outputs/
+gui_vllm/outputs/
 
 # Only use data preprocessed and hide raw data
 dataset/news_crawled_data/
@@ -12,6 +13,7 @@ dataset/wikilingual_vietnamese_data/
 __pycache__/
 crawl_data/__pycache__/
 model/__pycache__/
+gui_vllm/__pycache__/
 *.py[cod]
 
 # Installer logs
