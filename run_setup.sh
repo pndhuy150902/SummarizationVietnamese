@@ -1,4 +1,5 @@
 #!/bin/sh
+apt-get install mpich
 while getopts ':pc:h' opt; do
   case "$opt" in
     p)

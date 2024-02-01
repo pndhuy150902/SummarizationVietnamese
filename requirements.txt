@@ -13,3 +13,5 @@ evaluate
 deepspeed
 mpi4py
 gradio
+py3nvml
+glances
