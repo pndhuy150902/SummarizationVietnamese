@@ -42,8 +42,8 @@ def prepare_quantization_configuration():
 
 def prepare_training_arguments(config):
     training_args = TrainingArguments(
-        # per_device_train_batch_size=config.args_training.train_batch_size,
-        # per_device_eval_batch_size=config.args_training.eval_batch_size,
+        per_device_train_batch_size=config.args_training.train_batch_size,
+        per_device_eval_batch_size=config.args_training.eval_batch_size,
         auto_find_batch_size=True,
         num_train_epochs=config.args_training.num_train_epochs,
         learning_rate=config.args_training.learning_rate,
