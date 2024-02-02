@@ -1,6 +1,5 @@
 import warnings
 import gradio as gr
-import numpy as np
 warnings.filterwarnings('ignore')
 
 
