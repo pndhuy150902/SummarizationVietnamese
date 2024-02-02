@@ -54,6 +54,7 @@ def prepare_training_arguments(config):
         save_strategy=config.args_training.save_strategy,
         evaluation_strategy=config.args_training.evaluation_strategy,
         optim=config.args_training.optimizer,
+        deepspeed=config.deepspeed.stage_2,
         bf16=True,
     )
     return training_args
