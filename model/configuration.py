@@ -1,6 +1,7 @@
 import warnings
 import torch
 import numpy as np
+from accelerate import Accelerator
 from nltk.translate.bleu_score import sentence_bleu
 from peft import LoraConfig, PeftConfig, PeftModel, prepare_model_for_kbit_training
 from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
@@ -109,7 +110,7 @@ def prepare_model(model_name):
     bnb_config = prepare_quantization_configuration()
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        # device_map='auto',
+        device_map={"": Accelerator().local_process_index},
         trust_remote_code=True,
         attn_implementation="flash_attention_2",
         quantization_config=bnb_config
