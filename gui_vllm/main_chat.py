@@ -7,7 +7,8 @@ warnings.filterwarnings('ignore')
 def main():
     torch.manual_seed(42)
     app = gradio_chat()
-    app.launch(share=True)
+    app.queue()
+    app.launch(share=True, debug=True)
 
 
 if __name__ == '__main__':
