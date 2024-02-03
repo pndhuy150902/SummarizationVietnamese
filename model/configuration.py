@@ -70,6 +70,7 @@ def compute_metrics(eval_preds, model_name):
     preds, labels = eval_preds
     tokenizer = prepare_tokenizer(model_name)
     labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
+    preds = np.where(preds != -100, preds, tokenizer.pad_token_id)
     references = tokenizer.batch_decode(labels.tolist(), skip_special_tokens=True)
     generated_texts = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
     bleu_scores_ngram_1 = []
