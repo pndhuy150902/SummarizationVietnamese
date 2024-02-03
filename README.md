@@ -5,7 +5,7 @@ For this project, I will use model Mixtral 8x7B and others technique like QLORA,
 * Cudnn: 8
 * Python: 3.10.11
 * Pytorch: 2.1.2
-* Deepspeed: Stage 3 Offload
+* Deepspeed: Stage 2 + Accelerate
 # Setup environment to run summarization app
 * Run file `run_setup.sh -p` to setup environment for pip to run model and app to summarize content
 * If you use anaconda or miniconda you should run file `run_setup.sh -c`
