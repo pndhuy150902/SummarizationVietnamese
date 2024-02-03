@@ -1,5 +1,6 @@
 import warnings
 import hydra
+import torch
 from trl import SFTTrainer
 from transformers import EarlyStoppingCallback, DataCollatorForLanguageModeling
 from configuration import prepare_lora_configuration, prepare_training_arguments, prepare_model, compute_metrics, preprocess_logits_for_metrics
@@ -35,6 +36,7 @@ def prepare_trainer(config):
 
 @hydra.main(config_path='../config', config_name='hyperparameters', version_base=None)
 def main(config):
+    torch.manual_seed(42)
     trainer = prepare_trainer(config)
     trainer.train()
     
