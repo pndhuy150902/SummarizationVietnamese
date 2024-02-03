@@ -117,7 +117,7 @@ def merge_and_preprocess_and_split_all_data():
     full_data = full_data[~(full_data['summarization'].str.len() < 256)]
     full_data.drop_duplicates(inplace=True)
     full_data.reset_index(inplace=True, drop=True)
-    train_data, tmp_data = train_test_split(full_data, test_size=0.15, random_state=42)
+    train_data, tmp_data = train_test_split(full_data, test_size=0.5, random_state=42)
     valid_data, test_data = train_test_split(tmp_data, test_size=0.9, random_state=42)
     train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
     valid_data.to_csv('../dataset/full_validation_data_summarization.csv', index=False)
