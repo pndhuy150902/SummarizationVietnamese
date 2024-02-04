@@ -3,6 +3,11 @@ crawl_data/outputs/
 model/outputs/
 gui_vllm/outputs/
 
+# Wandb folder
+model_baseline/wandb/
+model/wandb/
+
+
 # Only use data preprocessed and hide raw data
 dataset/news_crawled_data/
 dataset/news_vietgpt_data/
@@ -14,6 +19,7 @@ __pycache__/
 crawl_data/__pycache__/
 model/__pycache__/
 gui_vllm/__pycache__/
+model_baseline/__pycache__/
 *.py[cod]
 
 # Installer logs
