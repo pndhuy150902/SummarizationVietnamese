@@ -124,14 +124,35 @@ def merge_and_preprocess_and_split_all_data():
     vlsp_data = read_data_vslp()
     vietgpt_data = read_data_vietgpt()
     wikilingual_data = read_data_wikilingual()
-    full_data = pd.concat([crawled_data, vlsp_data, vietgpt_data, wikilingual_data], axis=0)
-    full_data = full_data.sample(frac=1, random_state=42)
-    full_data = preprocessing_data(full_data)
-    full_data = full_data[~(full_data['summarization'].str.len() < 256)]
-    full_data.drop_duplicates(inplace=True)
-    full_data.reset_index(inplace=True, drop=True)
-    train_data, tmp_data = train_test_split(full_data, test_size=0.2, random_state=42)
-    valid_data, test_data = train_test_split(tmp_data, test_size=0.8, random_state=42)
+    crawled_data = preprocessing_data(crawled_data)
+    vlsp_data = preprocessing_data(vlsp_data)
+    vietgpt_data = preprocessing_data(vietgpt_data)
+    wikilingual_data = preprocessing_data(wikilingual_data)
+    crawled_data.drop_duplicates(inplace=True)
+    vlsp_data.drop_duplicates(inplace=True)
+    wikilingual_data.drop_duplicates(inplace=True)
+    vietgpt_data.drop_duplicates(inplace=True)
+    train_data = pd.concat([
+        crawled_data[:int(0.8 * len(crawled_data))],
+        vlsp_data[:int(0.8 * len(vlsp_data))],
+        wikilingual_data[:int(0.6 * len(wikilingual_data))],
+        vietgpt_data[:int(0.15 * len(vietgpt_data))]
+    ], axis=0)
+    valid_data = pd.concat([
+        crawled_data[int(0.8 * len(crawled_data)):int(0.85 * len(crawled_data))],
+        vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))],
+        wikilingual_data[int(0.6 * len(wikilingual_data)):int(0.65 * len(wikilingual_data))],
+        vietgpt_data[int(0.15*len(vietgpt_data)):int(0.16*len(vietgpt_data))]
+    ], axis=0)
+    test_data = pd.concat([
+        crawled_data[int(0.85 * len(crawled_data)):],
+        vlsp_data[int(0.85 * len(vlsp_data)):],
+        wikilingual_data[int(0.65 * len(wikilingual_data)):int(0.75 * len(wikilingual_data))],
+        vietgpt_data[int(0.16*len(vietgpt_data)):int(0.19*len(vietgpt_data))]
+    ], axis=0)
+    train_data.reset_index(inplace=True, drop=True)
+    valid_data.reset_index(inplace=True, drop=True)
+    test_data.reset_index(inplace=True, drop=True)
     train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
     valid_data.to_csv('../dataset/full_validation_data_summarization.csv', index=False)
     test_data.to_csv('../dataset/full_test_data_summarization.csv', index=False)
