@@ -3,8 +3,7 @@ from vllm import LLM, SamplingParams
 warnings.filterwarnings('ignore')
 
 TEMPLATE = """<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm tắt ngắn gọn nội dung sau bằng tiếng Việt:
-{} [/INST]
-"""
+{} [/INST] """
 
 
 def create_prompt(context):
@@ -14,6 +13,7 @@ def create_prompt(context):
 
 def setup_vllm():
     llm = LLM(model='./')
+    generation_kwargs = dict('text', streamer=True, temperature=0.7, max_new_tokens=1024, top_p=0.8, repetition_penalty=1.2)
     sample_params = SamplingParams(max_tokens=12288,
                                    temperature=0.7,
                                    skip_special_tokens=True)
