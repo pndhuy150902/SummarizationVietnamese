@@ -73,7 +73,7 @@ def read_data_wikilingual():
 def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r'\⋯', 'dấu ba chấm', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'{.*}', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\... ...', ', ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\.\.\. \.\.\.', ', ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\>> ', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\s+\/+]+\)', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\s+\/+]+\)', '', x))
@@ -107,7 +107,7 @@ def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r' +', ' ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\⋯', 'dấu ba chấm', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'{.*}', '', x))
-    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\... ...', ', ', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\.\.\. \.\.\.', ', ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\>> ', '', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\(ảnh minh họa\)', '', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'Ảnh minh họa.', '', x))
