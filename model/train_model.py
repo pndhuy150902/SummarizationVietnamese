@@ -12,7 +12,7 @@ warnings.filterwarnings('ignore')
 def prepare_trainer(config):
     lora_config = prepare_lora_configuration()
     training_args = prepare_training_arguments(config)
-    tokenizer, model = prepare_model(config.model_name)
+    tokenizer, model = prepare_model(config.model_mistral)
     func_collate = DataCollatorForLanguageModeling(tokenizer, mlm=False)
     early_stop_callback = EarlyStoppingCallback(early_stopping_patience=2, early_stopping_threshold=0.1)
     dataset = prepare_dataset(config)
@@ -26,7 +26,7 @@ def prepare_trainer(config):
         dataset_text_field='text',
         max_seq_length=config.length.text,
         data_collator=func_collate,
-        compute_metrics=lambda x: compute_metrics(x, config.model_name),
+        compute_metrics=lambda x: compute_metrics(x, config.model_mistral),
         preprocess_logits_for_metrics=preprocess_logits_for_metrics,
         callbacks=[early_stop_callback],
         packing=False
