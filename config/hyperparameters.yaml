@@ -9,7 +9,7 @@ model_mistral: "mistralai/Mistral-7B-Instruct-v0.2"
 args_training:
   train_batch_size: 16
   eval_batch_size: 16
-  num_train_epochs: 5
+  num_train_epochs: 4
   learning_rate: 1e-5
   save_total_limit: 1
   logging_steps: 1
