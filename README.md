@@ -1,5 +1,5 @@
 # Summary of Vietnamese text with Transformers
-For this project, I will use model Mistral 7B and others technique like QLORA, DEEPSPEED and vLLM to increase training speed and decrease the hardware I use. I used 2xL40 with HOPPER architecture to train this model. And I use Gradio for create this app as an example of text summarization
+For this project, I will use model Mistral 7B and others technique like QLORA, DEEPSPEED and vLLM to increase training speed and decrease the hardware I use. I used 2xL40 with HOPPER architecture to train this model. And I use vLLM and Gradio for create this app as an example of text summarization
 # Environment configuration:
 * Cuda: 11.8
 * Cudnn: 8
