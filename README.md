@@ -1,9 +1,9 @@
 # Summary of Vietnamese text with Transformers
-For this project, I will use model Mixtral 8x7B and others technique like QLORA, DEEPSPEED and vLLM to increase training speed and decrease the hardware I use. I used 4xA100 SXM4 to train this model. And I use Gradio for create this app as an example of text summarization
+For this project, I will use model Mistral 7B and others technique like QLORA, DEEPSPEED and vLLM to increase training speed and decrease the hardware I use. I used 2xL40 with HOPPER architecture to train this model. And I use Gradio for create this app as an example of text summarization
 # Environment configuration:
 * Cuda: 11.8
 * Cudnn: 8
-* Python: 3.10.11
+* Python: 3.10.13
 * Pytorch: 2.1.2
 * Deepspeed: Stage 2 + Accelerate
 # Setup environment to run summarization app
