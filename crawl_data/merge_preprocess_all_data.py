@@ -2,9 +2,20 @@ import warnings
 import re
 import pickle
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from transformers import AutoTokenizer
 
 warnings.filterwarnings('ignore')
+
+
+def remove_longer_text(df):
+    tokenizer = AutoTokenizer.from_pretrained('mistralai/Mistral-7B-Instruct-v0.2')
+    prefix = '<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm tắt ngắn gọn nội dung sau bằng tiếng Việt: '
+    infix = ' [/INST] '
+    suffix = '</s>'
+    df['length_prompt'] = (prefix + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
+    df = df[~(df['length_prompt'] > 4096)]
+    df.drop(columns=['length_prompt'], axis=1, inplace=True)
+    return df
 
 
 def read_and_merge_data_crawled():
@@ -15,6 +26,7 @@ def read_and_merge_data_crawled():
     full_news_crawled = full_news_crawled[~(full_news_crawled['context'] == '')]
     full_news_crawled = full_news_crawled[~(full_news_crawled['summarization'] == '')]
     full_news_crawled.dropna(inplace=True)
+    full_news_crawled = remove_longer_text(full_news_crawled)
     full_news_crawled.reset_index(inplace=True, drop=True)
     return full_news_crawled
 
@@ -40,6 +52,7 @@ def read_data_vslp():
     vlsp_data = vlsp_data[~(vlsp_data['context'] == '')]
     vlsp_data = vlsp_data[~(vlsp_data['summarization'] == '')]
     vlsp_data.dropna(inplace=True)
+    vlsp_data = remove_longer_text(vlsp_data)
     vlsp_data.reset_index(inplace=True, drop=True)
     return vlsp_data
 
@@ -50,9 +63,10 @@ def read_data_vietgpt():
     vietgpt_data = pd.concat([train_vietgpt_data, test_vietgpt_data], axis=0)
     vietgpt_data = vietgpt_data[~(vietgpt_data['content'] == '')]
     vietgpt_data = vietgpt_data[~(vietgpt_data['summary'] == '')]
-    vietgpt_data.dropna(inplace=True)
-    vietgpt_data.reset_index(inplace=True, drop=True)
     vietgpt_data.rename(columns={'content': 'context', 'summary': 'summarization'}, inplace=True)
+    vietgpt_data.dropna(inplace=True)
+    vietgpt_data = remove_longer_text(vietgpt_data)
+    vietgpt_data.reset_index(inplace=True, drop=True)
     return vietgpt_data
 
 
@@ -67,7 +81,11 @@ def read_data_wikilingual():
         for news in subject[1].items():
             structure_data['context'].append(news[1]['document'])
             structure_data['summarization'].append(news[1]['summary'])
-    return pd.DataFrame(structure_data)
+    wikilingual_data = pd.DataFrame(structure_data)
+    wikilingual_data.dropna(inplace=True)
+    wikilingual_data = remove_longer_text(wikilingual_data)
+    wikilingual_data.reset_index(inplace=True, drop=True)
+    return wikilingual_data
 
 
 def preprocessing_data(df):
@@ -137,19 +155,19 @@ def merge_and_preprocess_and_split_all_data():
         crawled_data[:int(0.85 * len(crawled_data))],
         vlsp_data[:int(0.8 * len(vlsp_data))],
         wikilingual_data[:int(0.8 * len(wikilingual_data))],
-        vietgpt_data[:int(0.13 * len(vietgpt_data))]
+        vietgpt_data[:int(0.21 * len(vietgpt_data))]
     ], axis=0)
     valid_data = pd.concat([
         crawled_data[int(0.85 * len(crawled_data)):int(0.9 * len(crawled_data))],
         vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))],
         wikilingual_data[int(0.8 * len(wikilingual_data)):int(0.85 * len(wikilingual_data))],
-        vietgpt_data[int(0.13*len(vietgpt_data)):int(0.14*len(vietgpt_data))]
+        vietgpt_data[int(0.21*len(vietgpt_data)):int(0.22*len(vietgpt_data))]
     ], axis=0)
     test_data = pd.concat([
         crawled_data[int(0.9 * len(crawled_data)):],
         vlsp_data[int(0.85 * len(vlsp_data)):],
         wikilingual_data[int(0.85 * len(wikilingual_data)):],
-        vietgpt_data[int(0.14*len(vietgpt_data)):int(0.16*len(vietgpt_data))]
+        vietgpt_data[int(0.22*len(vietgpt_data)):int(0.25*len(vietgpt_data))]
     ], axis=0)
     train_data.reset_index(inplace=True, drop=True)
     valid_data.reset_index(inplace=True, drop=True)
@@ -157,7 +175,7 @@ def merge_and_preprocess_and_split_all_data():
     train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
     valid_data.to_csv('../dataset/full_validation_data_summarization.csv', index=False)
     test_data.to_csv('../dataset/full_test_data_summarization.csv', index=False)
-    
+
     
 if __name__ == '__main__':
     merge_and_preprocess_and_split_all_data()
