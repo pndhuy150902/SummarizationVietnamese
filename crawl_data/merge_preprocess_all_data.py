@@ -132,6 +132,7 @@ def merge_and_preprocess_and_split_all_data():
     vlsp_data.drop_duplicates(inplace=True)
     wikilingual_data.drop_duplicates(inplace=True)
     vietgpt_data.drop_duplicates(inplace=True)
+    crawled_data = crawled_data.loc[::-1].reset_index(drop=True)
     train_data = pd.concat([
         crawled_data[:int(0.8 * len(crawled_data))],
         vlsp_data[:int(0.8 * len(vlsp_data))],
