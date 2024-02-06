@@ -14,7 +14,16 @@
   "optimizer": {
     "type": "AdamW",
     "params": {
-      "lr": 1e-5
+      "lr": 2e-5,
+      "weight_decay": 0.1
+    }
+  },
+  "scheduler": {
+    "type": "WarmupCosineLR",
+    "params": {
+      "warmup_min_lr": "auto",
+      "warmup_max_lr": "auto",
+      "warmup_num_steps": "auto"
     }
   },
   "train_batch_size": "auto",
