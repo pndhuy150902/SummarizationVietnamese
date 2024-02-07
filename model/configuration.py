@@ -56,6 +56,8 @@ def prepare_training_arguments(config):
         optim=config.args_training.optimizer,
         deepspeed=config.deepspeed.stage_2,
         bf16=True,
+        report_to=config.args_training.report_to,
+        run_name=config.args_training.run_name
     )
     return training_args
 
