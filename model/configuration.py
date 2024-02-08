@@ -44,19 +44,19 @@ def prepare_training_arguments(config):
     training_args = TrainingArguments(
         per_device_train_batch_size=config.args_training.train_batch_size,
         per_device_eval_batch_size=config.args_training.eval_batch_size,
-        auto_find_batch_size=True,
+        auto_find_batch_size=config.args_training.auto_find_batch_size,
         num_train_epochs=config.args_training.num_train_epochs,
         learning_rate=config.args_training.learning_rate,
         weight_decay=config.args_training.weight_decay,
         save_total_limit=config.args_training.save_total_limit,
-        load_best_model_at_end=True,
+        load_best_model_at_end=config.args_training.load_best_model_at_end,
         logging_steps=config.args_training.logging_steps,
         output_dir=config.args_training.dir_checkpoint,
         save_strategy=config.args_training.save_strategy,
         evaluation_strategy=config.args_training.evaluation_strategy,
         optim=config.args_training.optimizer,
         deepspeed=config.deepspeed.stage_2,
-        bf16=True,
+        bf16=config.args_training.bf16,
         report_to=config.args_training.report_to,
         run_name=config.args_training.run_name
     )
