@@ -25,8 +25,8 @@ def read_and_merge_data_crawled():
     full_news_crawled = pd.concat([news_thanhnien, news_tuoitre, news_dantri], axis=0)
     full_news_crawled = full_news_crawled[~(full_news_crawled['context'] == '')]
     full_news_crawled = full_news_crawled[~(full_news_crawled['summarization'] == '')]
-    full_news_crawled.dropna(inplace=True)
     full_news_crawled = remove_longer_text(full_news_crawled)
+    full_news_crawled.dropna(inplace=True)
     full_news_crawled.reset_index(inplace=True, drop=True)
     return full_news_crawled
 
@@ -51,8 +51,8 @@ def read_data_vslp():
     vlsp_data = pd.DataFrame(structure_data)
     vlsp_data = vlsp_data[~(vlsp_data['context'] == '')]
     vlsp_data = vlsp_data[~(vlsp_data['summarization'] == '')]
-    vlsp_data.dropna(inplace=True)
     vlsp_data = remove_longer_text(vlsp_data)
+    vlsp_data.dropna(inplace=True)
     vlsp_data.reset_index(inplace=True, drop=True)
     return vlsp_data
 
@@ -64,8 +64,8 @@ def read_data_vietgpt():
     vietgpt_data = vietgpt_data[~(vietgpt_data['content'] == '')]
     vietgpt_data = vietgpt_data[~(vietgpt_data['summary'] == '')]
     vietgpt_data.rename(columns={'content': 'context', 'summary': 'summarization'}, inplace=True)
-    vietgpt_data.dropna(inplace=True)
     vietgpt_data = remove_longer_text(vietgpt_data)
+    vietgpt_data.dropna(inplace=True)
     vietgpt_data.reset_index(inplace=True, drop=True)
     return vietgpt_data
 
@@ -82,8 +82,8 @@ def read_data_wikilingual():
             structure_data['context'].append(news[1]['document'])
             structure_data['summarization'].append(news[1]['summary'])
     wikilingual_data = pd.DataFrame(structure_data)
-    wikilingual_data.dropna(inplace=True)
     wikilingual_data = remove_longer_text(wikilingual_data)
+    wikilingual_data.dropna(inplace=True)
     wikilingual_data.reset_index(inplace=True, drop=True)
     return wikilingual_data
 
