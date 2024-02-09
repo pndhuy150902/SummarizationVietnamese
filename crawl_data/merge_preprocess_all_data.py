@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 
 def remove_longer_text(df):
     tokenizer = AutoTokenizer.from_pretrained('mistralai/Mistral-7B-Instruct-v0.2')
-    prefix = '<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm tắt ngắn gọn nội dung sau bằng tiếng Việt: '
+    prefix = '<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt: '
     infix = ' [/INST] '
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
