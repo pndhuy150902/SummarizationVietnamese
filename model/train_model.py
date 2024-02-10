@@ -31,14 +31,15 @@ def prepare_trainer(config):
         callbacks=[early_stop_callback],
         packing=False
     )
-    return trainer
+    return trainer, tokenizer
 
 
 @hydra.main(config_path='../config', config_name='hyperparameters', version_base=None)
 def main(config):
     torch.manual_seed(42)
-    trainer = prepare_trainer(config)
+    trainer, tokenizer = prepare_trainer(config)
     trainer.train()
+    tokenizer.save_pretrained(config.peft_dir.peft_model)
     
     
 if __name__ == '__main__':

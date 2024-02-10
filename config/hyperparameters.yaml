@@ -24,6 +24,9 @@ args_training:
   report_to: "wandb"
   run_name: "mistral-7B-qlora"
 
+peft_dir:
+  peft_model: './peft_model'
+
 deepspeed:
   stage_2: "../config/deepspeed_stage_2.json"
   stage_2_offload: "../config/deepspeed_stage_2_offload.json"
