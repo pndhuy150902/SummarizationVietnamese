@@ -19,7 +19,7 @@ args_training:
   bf16: true
   dir_checkpoint: "./model_checkpoint"
   save_strategy: "epoch"
-  evaluation_strategy: "steps"
+  evaluation_strategy: "epoch"
   optimizer: "paged_adamw_8bit"
   report_to: "wandb"
   run_name: "mistral-7B-qlora"
