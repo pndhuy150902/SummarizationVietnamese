@@ -13,13 +13,13 @@ args_training:
   learning_rate: 2e-5
   weight_decay: 0.1
   save_total_limit: 1
-  logging_steps: 50
+  logging_steps: 1
   auto_find_batch_size: true
   load_best_model_at_end: true
   bf16: true
   dir_checkpoint: "./model_checkpoint"
   save_strategy: "epoch"
-  evaluation_strategy: "epoch"
+  evaluation_strategy: "steps"
   optimizer: "paged_adamw_8bit"
   report_to: "wandb"
   run_name: "mistral-7B-qlora"

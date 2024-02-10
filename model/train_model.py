@@ -28,7 +28,7 @@ def prepare_trainer(config):
         data_collator=func_collate,
         compute_metrics=lambda x: compute_metrics(x, config.model_mistral),
         preprocess_logits_for_metrics=preprocess_logits_for_metrics,
-        callbacks=[early_stop_callback],
+        # callbacks=[early_stop_callback],
         packing=False
     )
     return trainer, tokenizer
