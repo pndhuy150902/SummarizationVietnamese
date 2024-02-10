@@ -82,11 +82,11 @@ def compute_metrics(eval_preds, model_name):
     bleu_scores_ngram_4 = []
     bleu_scores_ngram_avg = []
     for reference_text, generated_text in zip(references, generated_texts):
-        bleu_score_ngram_1 = sentence_bleu([reference_text], generated_text, weights=(1, 0, 0, 0))
-        bleu_score_ngram_2 = sentence_bleu([reference_text], generated_text, weights=(0, 1, 0, 0))
-        bleu_score_ngram_3 = sentence_bleu([reference_text], generated_text, weights=(0, 0, 1, 0))
-        bleu_score_ngram_4 = sentence_bleu([reference_text], generated_text, weights=(0, 0, 0, 1))
-        bleu_score_ngram_avg = sentence_bleu([reference_text], generated_text, weights=(0.25, 0.25, 0.25, 0.25))
+        bleu_score_ngram_1 = sentence_bleu([reference_text], hypothesis=generated_text, weights=(1, 0, 0, 0))
+        bleu_score_ngram_2 = sentence_bleu([reference_text], hypothesis=generated_text, weights=(0, 1, 0, 0))
+        bleu_score_ngram_3 = sentence_bleu([reference_text], hypothesis=generated_text, weights=(0, 0, 1, 0))
+        bleu_score_ngram_4 = sentence_bleu([reference_text], hypothesis=generated_text, weights=(0, 0, 0, 1))
+        bleu_score_ngram_avg = sentence_bleu([reference_text], hypothesis=generated_text, weights=(0.25, 0.25, 0.25, 0.25))
         bleu_scores_ngram_1.append(bleu_score_ngram_1)
         bleu_scores_ngram_2.append(bleu_score_ngram_2)
         bleu_scores_ngram_3.append(bleu_score_ngram_3)
