@@ -31,8 +31,6 @@
   "scheduler": {
     "type": "WarmupCosineLR",
     "params": {
-      "warmup_min_ratio": "auto",
-      "cos_min_ratio": "auto",
       "warmup_num_steps": "auto",
       "total_num_steps": "auto"
     }
