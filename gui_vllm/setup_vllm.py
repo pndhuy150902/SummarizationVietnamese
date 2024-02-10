@@ -13,8 +13,8 @@ def create_prompt(context):
 
 def setup_vllm():
     llm = LLM(model='./')
-    generation_kwargs = dict('text', streamer=True, temperature=0.7, max_new_tokens=1024, top_p=0.9, repetition_penalty=1.2)
-    sample_params = SamplingParams(max_tokens=12288,
+    generation_kwargs = dict('text', streamer=True, temperature=0.7, max_tokens=1024, top_p=0.9, repetition_penalty=1.2)
+    sample_params = SamplingParams(max_tokens=1024,
                                    temperature=0.7,
                                    skip_special_tokens=True)
     return llm, sample_params
