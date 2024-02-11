@@ -3,7 +3,7 @@ import torch
 import numpy as np
 from accelerate import Accelerator
 from nltk.translate.bleu_score import sentence_bleu
-from peft import LoraConfig, PeftConfig, PeftModel, prepare_model_for_kbit_training
+from peft import LoraConfig, prepare_model_for_kbit_training, TaskType
 from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
 
 warnings.filterwarnings('ignore')
@@ -25,7 +25,7 @@ def prepare_lora_configuration():
         ],
         lora_dropout=0.05,
         bias="none",
-        task_type="CAUSAL_LM"
+        task_type=TaskType.CAUSAL_LM
     )
     return lora_config
 
