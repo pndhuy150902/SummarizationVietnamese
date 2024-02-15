@@ -3,7 +3,6 @@ import torch
 import evaluate
 import numpy as np
 from accelerate import Accelerator
-from nltk.translate.bleu_score import sentence_bleu
 from peft import LoraConfig, prepare_model_for_kbit_training, TaskType
 from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
 
