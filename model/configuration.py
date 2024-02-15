@@ -1,5 +1,6 @@
 import warnings
 import torch
+import evaluate
 import numpy as np
 from accelerate import Accelerator
 from nltk.translate.bleu_score import sentence_bleu
@@ -74,31 +75,30 @@ def compute_metrics(eval_preds, model_name):
     tokenizer = prepare_tokenizer(model_name)
     labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
     preds = np.where(preds != -100, preds, tokenizer.pad_token_id)
-    references = tokenizer.batch_decode(labels.tolist(), skip_special_tokens=True)
-    generated_texts = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
-    bleu_scores_ngram_1 = []
-    bleu_scores_ngram_2 = []
-    bleu_scores_ngram_3 = []
-    bleu_scores_ngram_4 = []
-    bleu_scores_ngram_avg = []
-    for reference_text, generated_text in zip(references, generated_texts):
-        bleu_score_ngram_1 = sentence_bleu([reference_text], hypothesis=generated_text, weights=(1, 0, 0, 0))
-        bleu_score_ngram_2 = sentence_bleu([reference_text], hypothesis=generated_text, weights=(0, 1, 0, 0))
-        bleu_score_ngram_3 = sentence_bleu([reference_text], hypothesis=generated_text, weights=(0, 0, 1, 0))
-        bleu_score_ngram_4 = sentence_bleu([reference_text], hypothesis=generated_text, weights=(0, 0, 0, 1))
-        bleu_score_ngram_avg = sentence_bleu([reference_text], hypothesis=generated_text, weights=(0.25, 0.25, 0.25, 0.25))
-        bleu_scores_ngram_1.append(bleu_score_ngram_1)
-        bleu_scores_ngram_2.append(bleu_score_ngram_2)
-        bleu_scores_ngram_3.append(bleu_score_ngram_3)
-        bleu_scores_ngram_4.append(bleu_score_ngram_4)
-        bleu_scores_ngram_avg.append(bleu_score_ngram_avg)
-
+    decoded_labels = tokenizer.batch_decode(labels.tolist(), skip_special_tokens=True)
+    decoded_preds = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
+    bleu_metric = evaluate.load("bleu")
+    references = [[reference_text] for reference_text in decoded_labels]
+    bleu_scores = bleu_metric.compute(references=references, predictions=decoded_preds)
+    bleu_score_1 = None
+    bleu_score_2 = None
+    bleu_score_3 = None
+    bleu_score_4 = None
+    bleu_score_avg = None
+    for k, v in bleu_scores.items():
+        if k == "precisions":
+            bleu_score_1 = v[0]
+            bleu_score_2 = v[1]        
+            bleu_score_3 = v[2]        
+            bleu_score_4 = v[3]
+            bleu_score_avg = (bleu_score_1 + bleu_score_2 + bleu_score_3 + bleu_score_4)/4
+            break
     return {
-        'bleu@1': sum(bleu_scores_ngram_1) / len(bleu_scores_ngram_1),
-        'bleu@2': sum(bleu_scores_ngram_2) / len(bleu_scores_ngram_2),
-        'bleu@3': sum(bleu_scores_ngram_3) / len(bleu_scores_ngram_3),
-        'bleu@4': sum(bleu_scores_ngram_4) / len(bleu_scores_ngram_4),
-        'bleu@avg': sum(bleu_scores_ngram_avg) / len(bleu_scores_ngram_avg)
+        'bleu@1': bleu_score_1,
+        'bleu@2': bleu_score_2,
+        'bleu@3': bleu_score_3,
+        'bleu@4': bleu_score_4,
+        'bleu@avg': bleu_score_avg
     }
 
 
