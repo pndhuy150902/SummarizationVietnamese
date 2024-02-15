@@ -16,3 +16,4 @@ gradio
 py3nvml
 glances
 wandb
+pandarallel
