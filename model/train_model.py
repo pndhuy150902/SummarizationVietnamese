@@ -1,6 +1,7 @@
 import warnings
 import hydra
 import torch
+import evaluate
 from trl import SFTTrainer
 from transformers import EarlyStoppingCallback, DataCollatorForLanguageModeling
 from configuration import prepare_lora_configuration, prepare_training_arguments, prepare_model, compute_metrics, preprocess_logits_for_metrics
@@ -16,6 +17,7 @@ def prepare_trainer(config):
     func_collate = DataCollatorForLanguageModeling(tokenizer, mlm=False)
     early_stop_callback = EarlyStoppingCallback(early_stopping_patience=2)
     dataset = prepare_dataset(config)
+    bleu_metric = evaluate.load("bleu")
     trainer = SFTTrainer(
         model=model,
         tokenizer=tokenizer,
@@ -26,7 +28,7 @@ def prepare_trainer(config):
         dataset_text_field='text',
         max_seq_length=config.length.text,
         data_collator=func_collate,
-        compute_metrics=lambda x: compute_metrics(x, config.model_mistral),
+        compute_metrics=lambda x: compute_metrics(x, bleu_metric, config.model_mistral),
         preprocess_logits_for_metrics=preprocess_logits_for_metrics,
         callbacks=[early_stop_callback],
         packing=False

@@ -1,6 +1,5 @@
 import warnings
 import torch
-import evaluate
 import numpy as np
 from accelerate import Accelerator
 from peft import LoraConfig, prepare_model_for_kbit_training, TaskType
@@ -69,14 +68,13 @@ def preprocess_logits_for_metrics(logits, labels):
     return logits.argmax(dim=-1)
 
 
-def compute_metrics(eval_preds, model_name):
+def compute_metrics(eval_preds, bleu_metric, model_name):
     preds, labels = eval_preds
     tokenizer = prepare_tokenizer(model_name)
     labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
     preds = np.where(preds != -100, preds, tokenizer.pad_token_id)
     decoded_labels = tokenizer.batch_decode(labels.tolist(), skip_special_tokens=True)
     decoded_preds = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
-    bleu_metric = evaluate.load("bleu")
     references = [[reference_text] for reference_text in decoded_labels]
     bleu_scores = bleu_metric.compute(references=references, predictions=decoded_preds)
     bleu_score_1 = None
