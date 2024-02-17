@@ -162,42 +162,30 @@ def merge_and_preprocess_and_split_all_data():
     vlsp_data.drop_duplicates(inplace=True)
     wikilingual_data.drop_duplicates(inplace=True)
     vietgpt_data.drop_duplicates(inplace=True)
-    print(crawled_data[:int(0.85 * len(crawled_data))].shape)
-    print(crawled_data[int(0.85 * len(crawled_data)):int(0.9 * len(crawled_data))].shape)
-    print(crawled_data[int(0.9 * len(crawled_data)):].shape)
-    print(vlsp_data[:int(0.8 * len(vlsp_data))].shape)
-    print(vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))].shape)
-    print(vlsp_data[int(0.85 * len(vlsp_data)):].shape)
-    print(wikilingual_data[:int(0.8 * len(wikilingual_data))].shape)
-    print(wikilingual_data[int(0.8 * len(wikilingual_data)):int(0.85 * len(wikilingual_data))].shape)
-    print(wikilingual_data[int(0.85 * len(wikilingual_data)):].shape)
-    print(vietgpt_data[:int(0.28 * len(vietgpt_data))].shape)
-    print(vietgpt_data[int(0.28*len(vietgpt_data)):int(0.29*len(vietgpt_data))].shape)
-    print(vietgpt_data[int(0.29*len(vietgpt_data)):int(0.32*len(vietgpt_data))].shape)
-    # train_data = pd.concat([
-    #     crawled_data[:int(0.85 * len(crawled_data))],
-    #     vlsp_data[:int(0.8 * len(vlsp_data))],
-    #     wikilingual_data[:int(0.8 * len(wikilingual_data))],
-    #     vietgpt_data[:int(0.28 * len(vietgpt_data))]
-    # ], axis=0)
-    # valid_data = pd.concat([
-    #     crawled_data[int(0.85 * len(crawled_data)):int(0.9 * len(crawled_data))],
-    #     vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))],
-    #     wikilingual_data[int(0.8 * len(wikilingual_data)):int(0.85 * len(wikilingual_data))],
-    #     vietgpt_data[int(0.28*len(vietgpt_data)):int(0.29*len(vietgpt_data))]
-    # ], axis=0)
-    # test_data = pd.concat([
-    #     crawled_data[int(0.9 * len(crawled_data)):],
-    #     vlsp_data[int(0.85 * len(vlsp_data)):],
-    #     wikilingual_data[int(0.85 * len(wikilingual_data)):],
-    #     vietgpt_data[int(0.29*len(vietgpt_data)):int(0.32*len(vietgpt_data))]
-    # ], axis=0)
-    # train_data.reset_index(inplace=True, drop=True)
-    # valid_data.reset_index(inplace=True, drop=True)
-    # test_data.reset_index(inplace=True, drop=True)
-    # train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
-    # valid_data.to_csv('../dataset/full_validation_data_summarization.csv', index=False)
-    # test_data.to_csv('../dataset/full_test_data_summarization.csv', index=False)
+    train_data = pd.concat([
+        crawled_data[:int(0.85 * len(crawled_data))],
+        vlsp_data[:int(0.8 * len(vlsp_data))],
+        wikilingual_data[:int(0.8 * len(wikilingual_data))],
+        vietgpt_data[:int(0.28 * len(vietgpt_data))]
+    ], axis=0)
+    valid_data = pd.concat([
+        crawled_data[int(0.85 * len(crawled_data)):int(0.9 * len(crawled_data))],
+        vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))],
+        wikilingual_data[int(0.8 * len(wikilingual_data)):int(0.85 * len(wikilingual_data))],
+        vietgpt_data[int(0.28*len(vietgpt_data)):int(0.29*len(vietgpt_data))]
+    ], axis=0)
+    test_data = pd.concat([
+        crawled_data[int(0.9 * len(crawled_data)):],
+        vlsp_data[int(0.85 * len(vlsp_data)):],
+        wikilingual_data[int(0.85 * len(wikilingual_data)):],
+        vietgpt_data[int(0.29*len(vietgpt_data)):int(0.32*len(vietgpt_data))]
+    ], axis=0)
+    train_data.reset_index(inplace=True, drop=True)
+    valid_data.reset_index(inplace=True, drop=True)
+    test_data.reset_index(inplace=True, drop=True)
+    train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
+    valid_data.to_csv('../dataset/full_validation_data_summarization.csv', index=False)
+    test_data.to_csv('../dataset/full_test_data_summarization.csv', index=False)
 
     
 if __name__ == '__main__':
