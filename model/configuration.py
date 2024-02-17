@@ -68,35 +68,15 @@ def preprocess_logits_for_metrics(logits, labels):
     return logits.argmax(dim=-1)
 
 
-def compute_metrics(eval_preds, bleu_metric, model_name):
+def compute_metrics(eval_preds, rouge_metric, model_name):
     preds, labels = eval_preds
     tokenizer = prepare_tokenizer(model_name)
     labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
     preds = np.where(preds != -100, preds, tokenizer.pad_token_id)
     decoded_labels = tokenizer.batch_decode(labels.tolist(), skip_special_tokens=True)
     decoded_preds = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
-    references = [[reference_text] for reference_text in decoded_labels]
-    bleu_scores = bleu_metric.compute(references=references, predictions=decoded_preds)
-    bleu_score_1 = None
-    bleu_score_2 = None
-    bleu_score_3 = None
-    bleu_score_4 = None
-    bleu_score_avg = None
-    for k, v in bleu_scores.items():
-        if k == "precisions":
-            bleu_score_1 = v[0]
-            bleu_score_2 = v[1]        
-            bleu_score_3 = v[2]        
-            bleu_score_4 = v[3]
-            bleu_score_avg = (bleu_score_1 + bleu_score_2 + bleu_score_3 + bleu_score_4)/4
-            break
-    return {
-        'bleu@1': bleu_score_1,
-        'bleu@2': bleu_score_2,
-        'bleu@3': bleu_score_3,
-        'bleu@4': bleu_score_4,
-        'bleu@avg': bleu_score_avg
-    }
+    result = rouge_metric.compute(predictions=decoded_preds, references=decoded_labels, use_stemmer=True)
+    return {k: round(v, 4) for k, v in result.items()}
 
 
 def prepare_tokenizer(model_name):

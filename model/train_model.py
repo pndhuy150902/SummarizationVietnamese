@@ -17,7 +17,7 @@ def prepare_trainer(config):
     func_collate = DataCollatorForLanguageModeling(tokenizer, mlm=False)
     early_stop_callback = EarlyStoppingCallback(early_stopping_patience=2)
     dataset = prepare_dataset(config)
-    bleu_metric = evaluate.load("bleu")
+    rouge_metric = evaluate.load("rouge")
     trainer = SFTTrainer(
         model=model,
         tokenizer=tokenizer,
@@ -28,7 +28,7 @@ def prepare_trainer(config):
         dataset_text_field='text',
         max_seq_length=config.length.text,
         data_collator=func_collate,
-        compute_metrics=lambda x: compute_metrics(x, bleu_metric, config.model_mistral),
+        compute_metrics=lambda x: compute_metrics(x, rouge_metric, config.model_mistral),
         preprocess_logits_for_metrics=preprocess_logits_for_metrics,
         callbacks=[early_stop_callback],
         packing=False
