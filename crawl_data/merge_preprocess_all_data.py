@@ -13,7 +13,7 @@ def remove_longer_text(df):
     infix = ' [/INST] '
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~(df['length_prompt'] > 4096)]
+    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 256))]
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
 
@@ -163,19 +163,19 @@ def merge_and_preprocess_and_split_all_data():
         crawled_data[:int(0.85 * len(crawled_data))],
         vlsp_data[:int(0.8 * len(vlsp_data))],
         wikilingual_data[:int(0.8 * len(wikilingual_data))],
-        vietgpt_data[:int(0.24 * len(vietgpt_data))]
+        vietgpt_data[:int(0.26 * len(vietgpt_data))]
     ], axis=0)
     valid_data = pd.concat([
         crawled_data[int(0.85 * len(crawled_data)):int(0.9 * len(crawled_data))],
         vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))],
         wikilingual_data[int(0.8 * len(wikilingual_data)):int(0.85 * len(wikilingual_data))],
-        vietgpt_data[int(0.24*len(vietgpt_data)):int(0.25*len(vietgpt_data))]
+        vietgpt_data[int(0.26*len(vietgpt_data)):int(0.27*len(vietgpt_data))]
     ], axis=0)
     test_data = pd.concat([
         crawled_data[int(0.9 * len(crawled_data)):],
         vlsp_data[int(0.85 * len(vlsp_data)):],
         wikilingual_data[int(0.85 * len(wikilingual_data)):],
-        vietgpt_data[int(0.25*len(vietgpt_data)):int(0.28*len(vietgpt_data))]
+        vietgpt_data[int(0.27*len(vietgpt_data)):int(0.30*len(vietgpt_data))]
     ], axis=0)
     train_data.reset_index(inplace=True, drop=True)
     valid_data.reset_index(inplace=True, drop=True)
