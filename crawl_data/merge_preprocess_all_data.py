@@ -82,6 +82,7 @@ def read_data_wikilingual():
             structure_data['context'].append(news[1]['document'])
             structure_data['summarization'].append(news[1]['summary'])
     wikilingual_data = pd.DataFrame(structure_data)
+    wikilingual_data = wikilingual_data[wikilingual_data['context'].str.len() > 100]
     wikilingual_data = remove_longer_text(wikilingual_data)
     wikilingual_data.dropna(inplace=True)
     wikilingual_data.reset_index(inplace=True, drop=True)
@@ -93,44 +94,46 @@ def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r'{.*}', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\.\.\. \.\.\.', ', ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\>> ', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\s+\/+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\s+\/+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\.]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\.]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\s+\-\w+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\s+\-\w+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\s+\/+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\s+\/+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\.]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\.]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\s+\-\w+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\s+\-\w+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh [\w+\s+\/+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh: [\w+\s+\/+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh [\w+\.]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh: [\w+\.]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh [\w+\s+\-\w+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh: [\w+\s+\-\w+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn [\w+\s+\/+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn: [\w+\s+\/+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn [\w+\.]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn: [\w+\.]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn [\w+\s+\-\w+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn: [\w+\s+\-\w+]+\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(ảnh minh họa\)', '', x))
-    df['context'] = df['context'].apply(lambda x: re.sub(r'Ảnh minh họa.', '', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\s+\/+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\s+\/+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\.]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\.]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\s+\-\w+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\s+\-\w+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\s+\/+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\s+\/+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\.]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\.]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\s+\-\w+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\s+\-\w+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh [\w+\s+\/+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh: [\w+\s+\/+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh [\w+\.]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh: [\w+\.]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh [\w+\s+\-\w+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh: [\w+\s+\-\w+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn [\w+\s+\/+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn: [\w+\s+\/+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn [\w+\.]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn: [\w+\.]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn [\w+\s+\-\w+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn: [\w+\s+\-\w+]+\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(ảnh minh họa\)', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'Ảnh minh họa.', ' ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\.+\n\.+', ' ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+,\s+', ', ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\.\s+', '. ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\.\.\.\s+', '... ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r' +', ' ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\⋯', 'dấu ba chấm', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'{.*}', '', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\.\.\. \.\.\.', ', ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\>> ', '', x))
-    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\(ảnh minh họa\)', '', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\(ảnh minh họa\)', ' ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'Ảnh minh họa.', '', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+,\s+', ', ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\.\s+', '. ', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\.\.\.\s+', '... ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r' +', ' ', x))
     df['context'] = df['context'].apply(lambda x: x.strip().strip('\n'))
     df['summarization'] = df['summarization'].apply(lambda x: x.strip().strip('\n'))
@@ -159,30 +162,42 @@ def merge_and_preprocess_and_split_all_data():
     vlsp_data.drop_duplicates(inplace=True)
     wikilingual_data.drop_duplicates(inplace=True)
     vietgpt_data.drop_duplicates(inplace=True)
-    train_data = pd.concat([
-        crawled_data[:int(0.85 * len(crawled_data))],
-        vlsp_data[:int(0.8 * len(vlsp_data))],
-        wikilingual_data[:int(0.8 * len(wikilingual_data))],
-        vietgpt_data[:int(0.28 * len(vietgpt_data))]
-    ], axis=0)
-    valid_data = pd.concat([
-        crawled_data[int(0.85 * len(crawled_data)):int(0.9 * len(crawled_data))],
-        vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))],
-        wikilingual_data[int(0.8 * len(wikilingual_data)):int(0.85 * len(wikilingual_data))],
-        vietgpt_data[int(0.28*len(vietgpt_data)):int(0.29*len(vietgpt_data))]
-    ], axis=0)
-    test_data = pd.concat([
-        crawled_data[int(0.9 * len(crawled_data)):],
-        vlsp_data[int(0.85 * len(vlsp_data)):],
-        wikilingual_data[int(0.85 * len(wikilingual_data)):],
-        vietgpt_data[int(0.29*len(vietgpt_data)):int(0.32*len(vietgpt_data))]
-    ], axis=0)
-    train_data.reset_index(inplace=True, drop=True)
-    valid_data.reset_index(inplace=True, drop=True)
-    test_data.reset_index(inplace=True, drop=True)
-    train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
-    valid_data.to_csv('../dataset/full_validation_data_summarization.csv', index=False)
-    test_data.to_csv('../dataset/full_test_data_summarization.csv', index=False)
+    print(crawled_data[:int(0.85 * len(crawled_data))].shape)
+    print(crawled_data[int(0.85 * len(crawled_data)):int(0.9 * len(crawled_data))].shape)
+    print(crawled_data[int(0.9 * len(crawled_data)):].shape)
+    print(vlsp_data[:int(0.8 * len(vlsp_data))].shape)
+    print(vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))].shape)
+    print(vlsp_data[int(0.85 * len(vlsp_data)):].shape)
+    print(wikilingual_data[:int(0.8 * len(wikilingual_data))].shape)
+    print(wikilingual_data[int(0.8 * len(wikilingual_data)):int(0.85 * len(wikilingual_data))].shape)
+    print(wikilingual_data[int(0.85 * len(wikilingual_data)):].shape)
+    print(vietgpt_data[:int(0.28 * len(vietgpt_data))].shape)
+    print(vietgpt_data[int(0.28*len(vietgpt_data)):int(0.29*len(vietgpt_data))].shape)
+    print(vietgpt_data[int(0.29*len(vietgpt_data)):int(0.32*len(vietgpt_data))].shape)
+    # train_data = pd.concat([
+    #     crawled_data[:int(0.85 * len(crawled_data))],
+    #     vlsp_data[:int(0.8 * len(vlsp_data))],
+    #     wikilingual_data[:int(0.8 * len(wikilingual_data))],
+    #     vietgpt_data[:int(0.28 * len(vietgpt_data))]
+    # ], axis=0)
+    # valid_data = pd.concat([
+    #     crawled_data[int(0.85 * len(crawled_data)):int(0.9 * len(crawled_data))],
+    #     vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))],
+    #     wikilingual_data[int(0.8 * len(wikilingual_data)):int(0.85 * len(wikilingual_data))],
+    #     vietgpt_data[int(0.28*len(vietgpt_data)):int(0.29*len(vietgpt_data))]
+    # ], axis=0)
+    # test_data = pd.concat([
+    #     crawled_data[int(0.9 * len(crawled_data)):],
+    #     vlsp_data[int(0.85 * len(vlsp_data)):],
+    #     wikilingual_data[int(0.85 * len(wikilingual_data)):],
+    #     vietgpt_data[int(0.29*len(vietgpt_data)):int(0.32*len(vietgpt_data))]
+    # ], axis=0)
+    # train_data.reset_index(inplace=True, drop=True)
+    # valid_data.reset_index(inplace=True, drop=True)
+    # test_data.reset_index(inplace=True, drop=True)
+    # train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
+    # valid_data.to_csv('../dataset/full_validation_data_summarization.csv', index=False)
+    # test_data.to_csv('../dataset/full_test_data_summarization.csv', index=False)
 
     
 if __name__ == '__main__':
