@@ -13,7 +13,7 @@ def remove_longer_text(df):
     infix = ' [/INST] '
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 256))]
+    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 512))]
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
 
