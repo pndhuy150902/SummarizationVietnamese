@@ -17,6 +17,7 @@ args_training:
   auto_find_batch_size: true
   load_best_model_at_end: true
   bf16: true
+  group_by_length: true
   dir_checkpoint: "./model_checkpoint"
   save_strategy: "epoch"
   evaluation_strategy: "epoch"
