@@ -75,8 +75,8 @@ def compute_metrics(eval_preds, rouge_metric, model_name):
     preds = np.where(preds != -100, preds, tokenizer.pad_token_id)
     decoded_labels = tokenizer.batch_decode(labels.tolist(), skip_special_tokens=True)
     decoded_preds = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
-    result = rouge_metric.compute(predictions=decoded_preds, references=decoded_labels, use_stemmer=True, rouge_types=['rouge1', 'rouge2', 'rougeL'])
-    return {k: round(v, 4) for k, v in result.items()}
+    rouge_scores = rouge_metric.compute(predictions=decoded_preds, references=decoded_labels, use_stemmer=True, rouge_types=['rouge1', 'rouge2', 'rougeL'])
+    return {k: round(v, 4) for k, v in rouge_scores.items()}
 
 
 def prepare_tokenizer(model_name):
