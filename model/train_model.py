@@ -15,7 +15,7 @@ def prepare_trainer(config):
     training_args = prepare_training_arguments(config)
     tokenizer, model = prepare_model(config.model_mistral)
     func_collate = DataCollatorForLanguageModeling(tokenizer, mlm=False, return_tensors="pt")
-    early_stop_callback = EarlyStoppingCallback(early_stopping_patience=2)
+    # early_stop_callback = EarlyStoppingCallback(early_stopping_patience=2)
     dataset = prepare_dataset(config)
     rouge_metric = evaluate.load("rouge")
     trainer = SFTTrainer(
@@ -30,7 +30,7 @@ def prepare_trainer(config):
         data_collator=func_collate,
         compute_metrics=lambda x: compute_metrics(x, rouge_metric, config.model_mistral),
         preprocess_logits_for_metrics=preprocess_logits_for_metrics,
-        callbacks=[early_stop_callback],
+        # callbacks=[early_stop_callback],
         packing=False
     )
     return trainer, tokenizer
