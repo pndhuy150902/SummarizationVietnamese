@@ -98,6 +98,6 @@ def prepare_model(model_name):
         quantization_config=bnb_config
     )
     model.config.pad_token_id = tokenizer.pad_token_id
-    model = prepare_model_for_kbit_training(model)
+    model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
     model.config.use_cache = False
     return tokenizer, model
