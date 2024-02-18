@@ -30,6 +30,7 @@ def prepare_trainer(config):
         data_collator=func_collate,
         compute_metrics=lambda x: compute_metrics(x, rouge_metric, config.model_mistral),
         preprocess_logits_for_metrics=preprocess_logits_for_metrics,
+        dataset_num_proc=config.args_training.dataset_num_proc,
         # callbacks=[early_stop_callback],
         packing=False
     )
