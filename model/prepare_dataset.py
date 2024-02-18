@@ -36,6 +36,6 @@ def prepare_dataset(config):
         'valid': Dataset.from_dict({'text': valid_prompts}),
         'test': Dataset.from_dict({'text': test_prompts})
     })
-    tokenizer = prepare_tokenizer(config.model_mistral)
-    dataset = dataset.map(lambda x: generate_and_tokenize_prompt(x, tokenizer, config.length.text), batched=True)
+    # tokenizer = prepare_tokenizer(config.model_mistral)
+    # dataset = dataset.map(lambda x: generate_and_tokenize_prompt(x, tokenizer, config.length.text), batched=True)
     return dataset
