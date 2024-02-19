@@ -22,6 +22,10 @@ gui_vllm/__pycache__/
 model_baseline/__pycache__/
 *.py[cod]
 
+# Ipynb checkpoint
+model_baseline/.ipynb_checkpoints/
+model/.ipynb_checkpoints/
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
