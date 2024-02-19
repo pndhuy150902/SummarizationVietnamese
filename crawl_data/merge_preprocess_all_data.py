@@ -166,19 +166,19 @@ def merge_and_preprocess_and_split_all_data():
         crawled_data[:int(0.85 * len(crawled_data))],
         vlsp_data[:int(0.8 * len(vlsp_data))],
         wikilingual_data[:int(0.8 * len(wikilingual_data))],
-        vietgpt_data[:int(0.28 * len(vietgpt_data))]
+        vietgpt_data[:int(0.39 * len(vietgpt_data))]
     ], axis=0)
     valid_data = pd.concat([
         crawled_data[int(0.85 * len(crawled_data)):int(0.9 * len(crawled_data))],
         vlsp_data[int(0.8 * len(vlsp_data)):int(0.85 * len(vlsp_data))],
         wikilingual_data[int(0.8 * len(wikilingual_data)):int(0.85 * len(wikilingual_data))],
-        vietgpt_data[int(0.28*len(vietgpt_data)):int(0.29*len(vietgpt_data))]
+        vietgpt_data[int(0.39*len(vietgpt_data)):int(0.40*len(vietgpt_data))]
     ], axis=0)
     test_data = pd.concat([
         crawled_data[int(0.9 * len(crawled_data)):],
         vlsp_data[int(0.85 * len(vlsp_data)):],
         wikilingual_data[int(0.85 * len(wikilingual_data)):],
-        vietgpt_data[int(0.29*len(vietgpt_data)):int(0.32*len(vietgpt_data))]
+        vietgpt_data[int(0.40*len(vietgpt_data)):int(0.43*len(vietgpt_data))]
     ], axis=0)
     train_data.reset_index(inplace=True, drop=True)
     valid_data.reset_index(inplace=True, drop=True)
