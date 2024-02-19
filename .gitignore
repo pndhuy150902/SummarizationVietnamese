@@ -26,6 +26,9 @@ model_baseline/__pycache__/
 model_baseline/.ipynb_checkpoints/
 model/.ipynb_checkpoints/
 
+# Checkpoint model
+model_baseline/VietAI_vit5_base_model_summarization/
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
