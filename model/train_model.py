@@ -14,7 +14,7 @@ def prepare_trainer(config):
     lora_config = prepare_lora_configuration()
     training_args = prepare_training_arguments(config)
     tokenizer, model = prepare_model(config.model_mistral)
-    func_collate = DataCollatorForLanguageModeling(tokenizer, mlm=False, return_tensors="pt")
+    func_collate = DataCollatorForLanguageModeling(tokenizer, mlm=False)
     # early_stop_callback = EarlyStoppingCallback(early_stopping_patience=2)
     dataset = prepare_dataset(config)
     rouge_metric = evaluate.load("rouge")
