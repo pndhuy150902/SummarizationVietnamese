@@ -1,5 +1,4 @@
 flash_attn
-vllm
 transformers
 peft
 hydra-core
@@ -17,3 +16,4 @@ py3nvml
 glances
 wandb
 pandarallel
+tqdm
