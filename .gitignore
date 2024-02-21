@@ -28,6 +28,8 @@ model/.ipynb_checkpoints/
 
 # Checkpoint model
 model_baseline/VietAI_vit5_base_model_summarization/
+model/model_checkpoint/
+model/peft_model/
 
 # Installer logs
 pip-log.txt
