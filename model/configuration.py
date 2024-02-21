@@ -47,6 +47,7 @@ def prepare_training_arguments(config):
         num_train_epochs=config.args_training.num_train_epochs,
         learning_rate=config.args_training.learning_rate,
         weight_decay=config.args_training.weight_decay,
+        lr_scheduler_type=config.args_training.lr_scheduler_type,
         save_total_limit=config.args_training.save_total_limit,
         # load_best_model_at_end=config.args_training.load_best_model_at_end,
         logging_steps=config.args_training.logging_steps,

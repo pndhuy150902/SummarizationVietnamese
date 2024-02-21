@@ -12,6 +12,7 @@ args_training:
   num_train_epochs: 2
   learning_rate: 2e-5
   weight_decay: 0.1
+  lr_scheduler_type: "cosine"
   save_total_limit: 2
   logging_steps: 10
   auto_find_batch_size: true
