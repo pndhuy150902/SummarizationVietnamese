@@ -79,6 +79,7 @@ def read_data_wikilingual():
         obj = pickle.load(file)
     for subject in obj.items():
         for news in subject[1].items():
+            print(news[0])
             structure_data['context'].append(news[1]['document'])
             structure_data['summarization'].append(news[1]['summary'])
     wikilingual_data = pd.DataFrame(structure_data)

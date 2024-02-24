@@ -14,6 +14,15 @@ def prepare_prompt(i, df):
     return prompt
 
 
+def prepare_prompt_for_title(i, df):
+    title = df.iloc[i]['title']
+    context = df.iloc[i]['context']
+    summarization = df.iloc[i]['summarization']
+    prompt = f"""<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt biết rằng tiêu đề của nội dung là "{title}":
+{context} [/INST] {summarization}</s>"""
+    return prompt
+
+
 def read_dataset(config):
     train_data = pd.read_csv(config.processed_data.train_data)
     valid_data = pd.read_csv(config.processed_data.valid_data)
