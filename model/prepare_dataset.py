@@ -25,19 +25,19 @@ def prepare_prompt_for_title(i, df):
 
 def read_dataset(config):
     train_data = pd.read_csv(config.processed_data.train_data)
-    valid_data = pd.read_csv(config.processed_data.valid_data)
+    # valid_data = pd.read_csv(config.processed_data.valid_data)
     test_data = pd.read_csv(config.processed_data.test_data)
-    return train_data, valid_data, test_data
+    train_data_with_title = pd.read_csv(config.processed_data.train_data_with_title)
+    test_data_with_title = pd.read_csv(config.processed_data.test_data_with_title)
+    return train_data, test_data
 
 
 def prepare_dataset(config):
-    train_data, valid_data, test_data = read_dataset(config)
+    train_data, test_data = read_dataset(config)
     train_prompts = [prepare_prompt(i, train_data) for i in range(len(train_data))]
-    valid_prompts = [prepare_prompt(i, valid_data) for i in range(len(valid_data))]
     test_prompts = [prepare_prompt(i, test_data) for i in range(len(test_data))]
     dataset = DatasetDict({
         'train': Dataset.from_dict({'text': train_prompts}),
-        'valid': Dataset.from_dict({'text': valid_prompts}),
         'test': Dataset.from_dict({'text': test_prompts})
     })
     return dataset

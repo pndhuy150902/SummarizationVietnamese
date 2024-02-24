@@ -24,13 +24,13 @@ def prepare_trainer(config):
         args=training_args,
         peft_config=lora_config,
         train_dataset=dataset['train'],
-        eval_dataset=dataset['valid'],
+        eval_dataset=dataset['test'],
         dataset_text_field='text',
         max_seq_length=config.length.text,
         data_collator=func_collate,
+        dataset_num_proc=config.args_training.dataset_num_proc,
         compute_metrics=lambda x: compute_metrics(x, rouge_metric, config.model_mistral),
         preprocess_logits_for_metrics=preprocess_logits_for_metrics,
-        dataset_num_proc=config.args_training.dataset_num_proc,
         # callbacks=[early_stop_callback],
         packing=False
     )

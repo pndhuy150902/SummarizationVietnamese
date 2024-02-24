@@ -1,6 +1,5 @@
 processed_data:
   train_data: "../dataset/full_train_data_summarization.csv"
-  valid_data: "../dataset/full_validation_data_summarization.csv"
   test_data: "../dataset/full_test_data_summarization.csv"
 
 model_mixtral: "mistralai/Mixtral-8x7B-Instruct-v0.1"
