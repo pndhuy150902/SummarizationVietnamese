@@ -119,9 +119,9 @@ def read_data_vims():
             with open('../dataset/ViMs/original/' + folder + '/original/' + file, 'r', encoding='utf-8') as f:
                 content = f.readlines()
                 try:
-                    title = content[0].strip('\n').split('Title: ')[1]
-                    summarization = content[6].strip('\n').split('Summary: ')[1]
-                    context = ''.join(content[8:])
+                    title = content[0].strip('\n').split('Title: ')[1].strip().strip('.').strip('/')
+                    summarization = content[6].strip('\n').split('Summary: ')[1].strip().strip('.').strip('/')
+                    context = ''.join(content[8:]).strip().strip('.').strip('/')
                     vims_structure['title'].append(title)
                     vims_structure['summarization'].append(summarization)
                     vims_structure['context'].append(context)
@@ -131,7 +131,33 @@ def read_data_vims():
     return vims_data
 
 
+def read_data_xlsum():
+    structure_data = {
+        'title': [],
+        'context': [],
+        'summarization': []
+    }
+    xlsum_path = {
+        'xlsum_train': '../dataset/xlsum_data/vietnamese_train.jsonl',
+        'xlsum_test': '../dataset/xlsum_data/vietnamese_test.jsonl'
+    }
+    for key in xlsum_path.keys():
+        xlsum_data = pd.read_json(xlsum_path[key], lines=True)
+        structure_data['title'].extend([title.strip() for title in xlsum_data['title'].tolist()])
+        structure_data['context'].extend([context.strip() for context in xlsum_data['text'].tolist()])
+        structure_data['summarization'].extend([summarization.strip() for summarization in xlsum_data['summary'].tolist()])
+    xlsum_data = pd.DataFrame(structure_data)
+    xlsum_data = xlsum_data.sample(frac=1, random_state=42)
+    xlsum_data.dropna(inplace=True)
+    xlsum_data.reset_index(inplace=True, drop=True)
+    return xlsum_data
+
+
 def preprocessing_data(df):
+    df['context'] = df['context'].apply(lambda x: re.sub('\n+\s+', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub('\n+\.+', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub('\n+\-+', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub('\n+\,+', ' ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\⋯', 'dấu ba chấm', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'{.*}', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\.\.\. \.\.\.', ', ', x))
@@ -188,10 +214,13 @@ def merge_and_preprocess_and_split_all_data():
     vietgpt_data = read_data_vietgpt()
     wikilingual_data = read_data_wikilingual()
     vims_data = read_data_vims()
+    xlsum_data = read_data_xlsum()
     crawled_data = preprocessing_data(crawled_data)
     vlsp_data = preprocessing_data(vlsp_data)
     vietgpt_data = preprocessing_data(vietgpt_data)
     wikilingual_data = preprocessing_data(wikilingual_data)
+    vims_data = preprocessing_data(vims_data)
+    xlsum_data = preprocessing_data(xlsum_data)
     crawled_data = crawled_data.loc[::-1].reset_index(drop=True)
     crawled_data = crawled_data[~(crawled_data['context'] == '')]
     crawled_data = crawled_data[~(crawled_data['summarization'] == '')]
@@ -206,11 +235,15 @@ def merge_and_preprocess_and_split_all_data():
     vims_data = vims_data[~(vims_data['title'] == '')]
     vims_data = vims_data[~(vims_data['context'] == '')]
     vims_data = vims_data[~(vims_data['summarization'] == '')]
+    xlsum_data = xlsum_data[~(xlsum_data['title'] == '')]
+    xlsum_data = xlsum_data[~(xlsum_data['context'] == '')]
+    xlsum_data = xlsum_data[~(xlsum_data['summarization'] == '')]
     crawled_data.drop_duplicates(inplace=True)
     vlsp_data.drop_duplicates(inplace=True)
     wikilingual_data.drop_duplicates(inplace=True)
     vietgpt_data.drop_duplicates(inplace=True)
     vims_data.drop_duplicates(inplace=True)
+    xlsum_data.drop_duplicates(inplace=True)
     wikilingual_data_with_title = wikilingual_data[:5000]
     wikilingual_data_no_title = wikilingual_data[5000:][['context', 'summarization']]
     wikilingual_data_with_title = remove_longer_text_with_title(wikilingual_data_with_title)
@@ -219,23 +252,35 @@ def merge_and_preprocess_and_split_all_data():
     vlsp_data_no_title = vlsp_data[625:][['context', 'summarization']]
     vlsp_data_with_title = remove_longer_text_with_title(vlsp_data_with_title)
     vlsp_data_no_title = remove_longer_text(vlsp_data_no_title)
+    xlsum_data_with_title_train = xlsum_data[:6000]
+    xlsum_data_no_title_train = xlsum_data[6000:13000][['context', 'summarization']]
+    xlsum_data_no_title_test = xlsum_data[13000:14000][['context', 'summarization']]
+    xlsum_data_with_title_train = remove_longer_text_with_title(xlsum_data_with_title_train)
+    xlsum_data_no_title_train = remove_longer_text(xlsum_data_no_title_train)
     train_data = pd.concat([
-        vietgpt_data[:int(0.40 * len(vietgpt_data))],
-        crawled_data[:int(0.85 * len(crawled_data))],
-        vlsp_data_no_title[:int(0.8 * len(vlsp_data))],
-        wikilingual_data_no_title[:int(0.7 * len(wikilingual_data))],
-    ], axis=0)
-    test_data = pd.concat([
-        vietgpt_data[int(0.40*len(vietgpt_data)):int(0.45*len(vietgpt_data))],
-        crawled_data[int(0.85 * len(crawled_data)):],
-        vlsp_data_no_title[int(0.8 * len(vlsp_data)):],
-        wikilingual_data_no_title[int(0.7 * len(wikilingual_data)):],
+        vietgpt_data[:int(0.35 * len(vietgpt_data))],
+        crawled_data[:int(0.9 * len(crawled_data))],
+        xlsum_data_no_title_train,
+        vlsp_data_no_title[:int(0.8 * len(vlsp_data_no_title))],
+        wikilingual_data_no_title[:int(0.8 * len(wikilingual_data_no_title))],
     ], axis=0)
     train_data_title = pd.concat([
+        xlsum_data_with_title_train,
+        vims_data[:1600],
         vlsp_data_with_title,
-        wikilingual_data_with_title,
-        vims_data
+        wikilingual_data_with_title
     ])
+    test_data = pd.concat([
+        vietgpt_data[int(0.35*len(vietgpt_data)):int(0.39*len(vietgpt_data))],
+        crawled_data[int(0.9 * len(crawled_data)):],
+        xlsum_data_no_title_test,
+        vims_data[1600:][['context', 'summarization']],
+        vlsp_data_no_title[int(0.8 * len(vlsp_data_no_title)):],
+        wikilingual_data_no_title[int(0.8 * len(wikilingual_data_no_title)):],
+    ], axis=0)
+    train_data.drop_duplicates(inplace=True)
+    test_data.drop_duplicates(inplace=True)
+    train_data_title.drop_duplicates(inplace=True)
     train_data.reset_index(inplace=True, drop=True)
     test_data.reset_index(inplace=True, drop=True)
     train_data_title.reset_index(inplace=True, drop=True)
