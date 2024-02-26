@@ -35,8 +35,9 @@ def prepare_dataset(config):
     train_data_no_title, train_data_with_title, test_data = read_dataset(config)
     train_prompts_no_title = [prepare_prompt(i, train_data_no_title) for i in range(len(train_data_no_title))]
     train_prompts_with_title = [prepare_prompt_for_title(i, train_data_with_title) for i in range(len(train_data_with_title))]
-    train_prompts = train_prompts_no_title.extend(train_prompts_with_title)
+    train_prompts = train_prompts_with_title.extend(train_prompts_no_title)
     test_prompts = [prepare_prompt(i, test_data) for i in range(len(test_data))]
+    train_prompts = sorted(train_prompts, key=len, reverse=False)
     dataset = DatasetDict({
         'train': Dataset.from_dict({'text': train_prompts}),
         'test': Dataset.from_dict({'text': test_prompts})

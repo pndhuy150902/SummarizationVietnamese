@@ -15,6 +15,7 @@ dataset/vlsp_data/
 dataset/wikilingual_vietnamese_data/
 dataset/ViMs/
 dataset/xlsum_data/
+dataset/vietnews/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
