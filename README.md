@@ -1,5 +1,5 @@
 # Summary of Vietnamese text with Transformers
-For this project, I will use model Mistral 7B and others technique like QLORA, DEEPSPEED and vLLM to increase training speed and decrease the hardware I use. To make it quick, I used 4xA100 80GB with AMPERE architecture and NVLINK to train this model. You can use only 1 GPU with 24 VRAM to train this model, and you must decrease batch size. And I use vLLM and Gradio for create this app as an example of text summarization
+For this project, I will use model Mistral 7B and others technique like QLORA, DEEPSPEED and Accelerate to increase training speed and decrease the hardware I use. To make it quick, I used 4xA100 80GB with AMPERE architecture and NVLINK to train this model. You can use only 1 GPU with 24 VRAM to train this model, and you must decrease batch size. And I use Peft model and Gradio for create this app as an example of text summarization
 # Environment configuration:
 * Cuda: 11.8
 * Cudnn: 8.9.7
