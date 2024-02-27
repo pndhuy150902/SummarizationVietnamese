@@ -285,8 +285,8 @@ def merge_and_preprocess_and_split_all_data():
     vlsp_data_no_title = vlsp_data[625:][['context', 'summarization']]
     vlsp_data_with_title = remove_longer_text_with_title(vlsp_data_with_title)
     vlsp_data_no_title = remove_longer_text(vlsp_data_no_title)
-    vietnews_data_with_title = vietnews_data[:10000]
-    vietnews_data_no_title = vietnews_data[10000:24000][['context', 'summarization']]
+    vietnews_data_with_title = vietnews_data[:9550]
+    vietnews_data_no_title = vietnews_data[9550:23550][['context', 'summarization']]
     vietnews_data_with_title = remove_longer_text_with_title(vietnews_data_with_title)
     vietnews_data_no_title = remove_longer_text(vietnews_data_no_title)
     train_data = pd.concat([
