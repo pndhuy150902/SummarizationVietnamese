@@ -4,7 +4,7 @@ For this project, I will use model Mistral 7B and others technique like QLORA, D
 * Cuda: 11.8
 * Cudnn: 8.9.7
 * Python: 3.10.13
-* Pytorch: 2.1.2
+* Pytorch: 2.1.2+cu118
 * Deepspeed: Stage 2 + Accelerate
 # Setup environment to run summarization app
 * To pull all this repository besides you use command `git pull` this, you should use command `git lfs pull` to get all file `LFS` in this repository 
