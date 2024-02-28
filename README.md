@@ -7,7 +7,7 @@ For this project, I will use model Mistral 7B and others technique like QLoRA, D
 * Pytorch: 2.2.1+cu121
 * Deepspeed: Stage 2 + Accelerate
 # Dataset
-I use dataset about Vietnamese News (VNDS), Crawled Vietnamese News (Crawled with Selenium), Vietnamese WikiHow, ViMs, VLSP 2022, Viet News Summarization (Huggingface). And I get 73,149 samples to train and 8,424 to test my model, which my training data includes 56,910 samples don't have title and 16,239 samples have title. I use title to train for adding information to context which I want to summary. And especially I only train with tile in ViMs dataset and I test it with no tile but ROUGE score still not low.
+I use dataset about Vietnamese News (VNDS), Crawled Vietnamese News (Crawled with Selenium), Vietnamese WikiHow, ViMs, VLSP 2022, Viet News Summarization (Huggingface). And I get 73,517 samples to train and 8,424 to test my model, which my training data includes 57,229 samples don't have title and 16,288 samples have title. I use title to train for adding information to context which I want to summary. And especially I only train with tile in ViMs dataset and I test it with no tile but ROUGE score still not low.
 |                          |Train     |Test      |Total     |
 |:------------------------:|:--------:|:--------:|:--------:|
 |Vietnamese News Corpus    |22,933    |2,548     |25,481    |
