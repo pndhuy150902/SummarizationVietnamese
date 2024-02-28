@@ -16,10 +16,9 @@ I use dataset about Vietnamese News (VNDS), Crawled Vietnamese News (Crawled wit
 |Crawled Vietnamese News   |10,610    |1,179     |11,789    |
 |ViMs                      |1,564     |297       |1,861     |
 |VLSP 2022                 |1,434     |219       |1,653     |
-|                          |73,149    |8,424     |81,573    |
+|TOTAL                     |73,149    |8,424     |81,573    |
 # Evaluation
 |                          |ROUGE SCORE                     |
-|:------------------------:|:------------------------------:|
 |                          |ROUGE-1   |ROUGE-2   |ROUGE-L   |
 |:------------------------:|:--------:|:--------:|:--------:|
 |Vietnamese News Corpus    |22,614    |2,548     |25,162    |
@@ -28,6 +27,7 @@ I use dataset about Vietnamese News (VNDS), Crawled Vietnamese News (Crawled wit
 |Crawled Vietnamese News   |10,610    |1,179     |11,789    |
 |ViMs                      |1,564     |297       |1,861     |
 |VLSP 2022                 |1,434     |219       |1,653     |
+|AVG SCORE                 |73,149    |8,424     |81,573    |
 # Setup environment to run summarization app
 * To pull all this repository besides you use command `git pull` this, you should use command `git lfs pull` to get all file `LFS` in this repository. 
 * Run file `run_setup.sh -p` to setup environment for pip to run model and app to summarize content.
