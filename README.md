@@ -18,7 +18,7 @@ I use dataset about Vietnamese News (VNDS), Crawled Vietnamese News (Crawled wit
 |VLSP 2022                 |1,434     |219       |1,653     |
 |TOTAL                     |73,149    |8,424     |81,573    |
 # Evaluation
-|                          |ROUGE SCORE                     |
+I evaluate model with ROUGE score. But ROUGE score has the disadvantage that it cannot calculate scores between sentences with similar meanings.
 |                          |ROUGE-1   |ROUGE-2   |ROUGE-L   |
 |:------------------------:|:--------:|:--------:|:--------:|
 |Vietnamese News Corpus    |22,614    |2,548     |25,162    |
