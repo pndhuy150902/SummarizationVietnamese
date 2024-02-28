@@ -323,12 +323,12 @@ def merge_and_preprocess_and_split_all_data():
     vlsp_data_no_title = vlsp_data[625:][['context', 'summarization']]
     vlsp_data_with_title = remove_longer_text_with_title(vlsp_data_with_title)
     vlsp_data_no_title = remove_longer_text(vlsp_data_no_title)
-    vietnews_data_with_title = vietnews_data[:9550]
-    vietnews_data_no_title = vietnews_data[9550:23550][['context', 'summarization']]
+    vietnews_data_with_title = vietnews_data[:9600]
+    vietnews_data_no_title = vietnews_data[9600:23600][['context', 'summarization']]
     vietnews_data_with_title = remove_longer_text_with_title(vietnews_data_with_title)
     vietnews_data_no_title = remove_longer_text(vietnews_data_no_title)
     train_data = pd.concat([
-        vietgpt_data[:int(0.355 * len(vietgpt_data))],
+        vietgpt_data[:int(0.36 * len(vietgpt_data))],
         crawled_data[:int(0.9 * len(crawled_data))],
         vietnews_data_no_title[:int(0.85 * len(vietnews_data_no_title))],
         vlsp_data_no_title[:int(0.8 * len(vlsp_data_no_title))],
@@ -341,7 +341,7 @@ def merge_and_preprocess_and_split_all_data():
         wikilingual_data_with_title
     ])
     test_data = pd.concat([
-        vietgpt_data[int(0.355*len(vietgpt_data)):int(0.395*len(vietgpt_data))],
+        vietgpt_data[int(0.36*len(vietgpt_data)):int(0.40*len(vietgpt_data))],
         crawled_data[int(0.9 * len(crawled_data)):],
         vims_data[1600:][['context', 'summarization']],
         vietnews_data_no_title[int(0.85 * len(vietnews_data_no_title)):],
