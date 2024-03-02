@@ -25,7 +25,7 @@ def click_websites_and_get_data(config):
         DRIVER.get(config.news[key])
         DRIVER.maximize_window()
         ACTIONS_MAP[key](DRIVER)
-        path_file = os.path.join('../dataset/news_crawled_data/', f'crawled_data_{key}.csv')
+        path_file = os.path.join('../dataset/news_crawled_data/', f'crawled_data_{key}_1.csv')
         save_data(DATA_SUMMARIZATION, path_data=path_file)
         DATA_SUMMARIZATION['context'] = []
         DATA_SUMMARIZATION['summarization'] = []
