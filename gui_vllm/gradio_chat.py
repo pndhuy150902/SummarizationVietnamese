@@ -1,5 +1,4 @@
 import warnings
-from threading import Thread
 import gradio as gr
 warnings.filterwarnings('ignore')
 
@@ -18,7 +17,7 @@ def respond_chat(message, history):
     return '', history
 
 
-def gradio_chat():
+def launch_gradio_chat(tokenizer, streamer, model):
     with gr.Blocks() as app:
         with gr.Row():
             msg_box = gr.Chatbot(height=768)
@@ -33,4 +32,5 @@ def gradio_chat():
                 btn_clear_all = gr.ClearButton(value='CLEAR ALL', size='sm')
                 btn_clear.click(clear_content, inputs=[content_box], outputs=[content_box])
                 btn_clear_all.click(clear_all, inputs=[msg_box, content_box], outputs=[msg_box, content_box])
-    return app
+    app.queue()
+    app.launch(share=True, debug=True)
