@@ -31,13 +31,13 @@ def get_model(checkpoint):
   return model
 
 
-def generate_text(prompt, tokenizer, streamer, model):
+def generate_text(prompt, tokenizer, streamer, model, history):
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
   inputs = tokenizer(prompt, add_special_tokens=True, return_tensors="pt").to(device)
   dict_kwargs = dict(inputs, early_stopping=False, max_new_tokens=1024, temperature=0.7, top_p=0.95, top_k=50, repetition_penalty=1.2, pad_token_id=tokenizer.eos_token_id, streamer=streamer)
   t = Thread(target=model.generate, kwargs=dict_kwargs)
   t.start()
-  generate_text = ''
+  history[-1][1] = ''
   for new_text in streamer:
-    generate_text += new_text
-    yield generate_text
+    history[-1][1] += new_text
+    yield history
