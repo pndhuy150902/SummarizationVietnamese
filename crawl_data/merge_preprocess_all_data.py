@@ -14,7 +14,7 @@ def remove_longer_text(df):
     infix = ' [/INST]'
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 512))]
+    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 768))]
     df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
@@ -26,7 +26,7 @@ def remove_longer_text_with_title(df):
     infix = ' [/INST]'
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['title'] + '": ' + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 512))]
+    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 768))]
     df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
