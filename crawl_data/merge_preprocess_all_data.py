@@ -14,7 +14,7 @@ def remove_longer_text(df):
     infix = ' [/INST]'
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 512))]
+    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 768))]
     df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
@@ -26,7 +26,7 @@ def remove_longer_text_with_title(df):
     infix = ' [/INST]'
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['title'] + '": ' + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 512))]
+    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 768))]
     df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
@@ -34,12 +34,16 @@ def remove_longer_text_with_title(df):
 
 def read_and_merge_data_crawled():
     news_thanhnien = pd.read_csv('../dataset/news_crawled_data/crawled_data_thanhnien.csv')
+    news_thanhnien_1 = pd.read_csv('../dataset/news_crawled_data/crawled_data_thanhnien_1.csv')
     news_tuoitre = pd.read_csv('../dataset/news_crawled_data/crawled_data_tuoitre.csv')
+    news_tuoitre_1 = pd.read_csv('../dataset/news_crawled_data/crawled_data_tuoitre_1.csv')
     news_dantri = pd.read_csv('../dataset/news_crawled_data/crawled_data_dantri.csv')
-    full_news_crawled = pd.concat([news_thanhnien, news_tuoitre, news_dantri], axis=0)
+    news_dantri_1 = pd.read_csv('../dataset/news_crawled_data/crawled_data_dantri_1.csv')
+    full_news_crawled = pd.concat([news_thanhnien_1, news_tuoitre_1, news_dantri_1, news_thanhnien, news_tuoitre, news_dantri], axis=0)
     full_news_crawled = full_news_crawled[~(full_news_crawled['context'] == '')]
     full_news_crawled = full_news_crawled[~(full_news_crawled['summarization'] == '')]
     full_news_crawled = remove_longer_text(full_news_crawled)
+    full_news_crawled.drop_duplicates(inplace=True)
     full_news_crawled.dropna(inplace=True)
     full_news_crawled.reset_index(inplace=True, drop=True)
     return full_news_crawled
@@ -68,6 +72,7 @@ def read_data_vslp():
     vlsp_data = vlsp_data[~(vlsp_data['title'] == '')]
     vlsp_data = vlsp_data[~(vlsp_data['context'] == '')]
     vlsp_data = vlsp_data[~(vlsp_data['summarization'] == '')]
+    vlsp_data.drop_duplicates(inplace=True)
     vlsp_data.dropna(inplace=True)
     vlsp_data.reset_index(inplace=True, drop=True)
     return vlsp_data
@@ -81,6 +86,7 @@ def read_data_vietgpt():
     vietgpt_data = vietgpt_data[~(vietgpt_data['summary'] == '')]
     vietgpt_data.rename(columns={'content': 'context', 'summary': 'summarization'}, inplace=True)
     vietgpt_data = remove_longer_text(vietgpt_data)
+    vietgpt_data.drop_duplicates(inplace=True)
     vietgpt_data.dropna(inplace=True)
     vietgpt_data.reset_index(inplace=True, drop=True)
     return vietgpt_data
@@ -101,6 +107,7 @@ def read_data_wikilingual():
             structure_data['summarization'].append(news[1]['summary'].strip())
     wikilingual_data = pd.DataFrame(structure_data)
     wikilingual_data = wikilingual_data[wikilingual_data['context'].str.len() > 100]
+    wikilingual_data.drop_duplicates(inplace=True)
     wikilingual_data.dropna(inplace=True)
     wikilingual_data.reset_index(inplace=True, drop=True)
     return wikilingual_data
@@ -130,6 +137,7 @@ def read_data_vims():
                 except:
                     continue
     vims_data = pd.DataFrame(vims_structure)
+    vims_data.drop_duplicates(inplace=True)
     vims_data.dropna(inplace=True)
     vims_data.reset_index(inplace=True, drop=True)
     return vims_data
@@ -155,6 +163,7 @@ def read_data_vietnews():
     vietnews_structure['summarization'].extend(test_vietnews_data['abstract'].tolist())
     vietnews_data = pd.DataFrame(vietnews_structure)
     vietnews_data = vietnews_data.sample(frac=1, random_state=42)
+    vietnews_data.drop_duplicates(inplace=True)
     vietnews_data.dropna(inplace=True)
     vietnews_data.reset_index(inplace=True, drop=True)
     return vietnews_data
@@ -218,6 +227,7 @@ def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\.\.\.\s+', '... ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\.\s+', '. ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r"\s+\'\s+", "'", x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\.', '.', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r' +', ' ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s*"\s*(.*?)\s*"\s*', r' "\1" ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r"\s*'\s*(.*?)\s*'\s*", r" '\1' ", x))
@@ -247,6 +257,7 @@ def preprocessing_data(df):
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\.\.\.\s+', '... ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\.\s+', '. ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r"\s+\'\s+", "'", x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\.', '.', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r' +', ' ', x))
     df['context'] = df['context'].apply(lambda x: x.strip().strip('\n'))
     df['summarization'] = df['summarization'].apply(lambda x: x.strip().strip('\n'))
@@ -274,6 +285,7 @@ def preprocessing_data(df):
         df['title'] = df['title'].apply(lambda x: re.sub(r'\s+\.\.\.\s+', '... ', x))
         df['title'] = df['title'].apply(lambda x: re.sub(r'\s+\.\s+', '. ', x))
         df['title'] = df['title'].apply(lambda x: re.sub(r"\s+\'\s+", "'", x))
+        df['title'] = df['title'].apply(lambda x: re.sub(r'\s+\.', '.', x))
         df['title'] = df['title'].apply(lambda x: re.sub(r' +', ' ', x))
         df['title'] = df['title'].apply(lambda x: x.strip().strip('\n'))
     return df
