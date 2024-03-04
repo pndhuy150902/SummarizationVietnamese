@@ -1,5 +1,6 @@
 import warnings
 import gradio as gr
+from threading import Thread
 warnings.filterwarnings('ignore')
 
 
@@ -11,23 +12,28 @@ def clear_content(content_box):
     return None
 
 
-def respond_chat(message, history):
-    bot_message = "Xin lỗi vì mô hình chưa thể sẵn sàng để sử dụng. Mong bạn quay lại sau."
-    history.append((message, bot_message))
-    return '', history
-
-
-def launch_gradio_chat(tokenizer, streamer, model):
+def launch_gradio_chat(tokenizer, streamer, model, device):
     with gr.Blocks() as app:
         with gr.Row():
             msg_box = gr.Chatbot(height=768)
+            def user(user_message, history):
+                return "", history + [[user_message, None]]
+            def bot(history):
+                inputs = tokenizer(str(history[-1][0]), add_special_tokens=True, return_tensors="pt").to(device)
+                dict_kwargs = dict(inputs, early_stopping=False, max_new_tokens=1024, temperature=0.7, top_p=0.95, top_k=50, repetition_penalty=1.2, pad_token_id=tokenizer.eos_token_id, streamer=streamer)
+                t = Thread(target=model.generate, kwargs=dict_kwargs)
+                t.start()
+                history[-1][1] = ""
+                for character in streamer:
+                    history[-1][1] += character
+                    yield history
         with gr.Row():
             with gr.Column(scale=5):
                 content_box = gr.Textbox(label='Nhập nội dung mà bạn muốn tóm tắt')
-                content_box.submit(respond_chat, inputs=[content_box, msg_box], outputs=[content_box, msg_box])
+                content_box.submit(user, inputs=[content_box, msg_box], outputs=[content_box, msg_box], queue=False).then(bot, msg_box, msg_box)
             with gr.Column(scale=1):
                 btn_submit = gr.Button(value='SUBMIT', size='sm')
-                btn_submit.click(respond_chat, inputs=[content_box, msg_box], outputs=[content_box, msg_box])
+                btn_submit.click(user, inputs=[content_box, msg_box], outputs=[content_box, msg_box], queue=False).then(bot, msg_box, msg_box)
                 btn_clear = gr.ClearButton(value='CLEAR', size='sm')
                 btn_clear_all = gr.ClearButton(value='CLEAR ALL', size='sm')
                 btn_clear.click(clear_content, inputs=[content_box], outputs=[content_box])
