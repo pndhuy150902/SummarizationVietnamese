@@ -1,6 +1,5 @@
 import warnings
 import pandas as pd
-from configuration import prepare_tokenizer
 from datasets import Dataset, DatasetDict
 
 warnings.filterwarnings('ignore')

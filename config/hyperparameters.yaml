@@ -14,7 +14,7 @@ args_training:
   weight_decay: 0.1
   lr_scheduler_type: "cosine"
   save_total_limit: 2
-  logging_steps: 25
+  logging_steps: 20
   auto_find_batch_size: true
   load_best_model_at_end: true
   bf16: true
@@ -24,7 +24,7 @@ args_training:
   evaluation_strategy: "no"
   optimizer: "paged_adamw_8bit"
   report_to: "wandb"
-  run_name: "mistral-7B-qlora"
+  run_name: "Mistral-7B-Instruct-v0.2-QLoRA"
   dataset_num_proc: 8
 
 peft_dir:
