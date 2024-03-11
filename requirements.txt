@@ -1,13 +1,13 @@
-flash_attn
+flash-attn
+xformers
 transformers
 peft
 hydra-core
 pandas
 numpy
 trl
-nltk
 bitsandbytes
-rouge_score
+rouge-score
 evaluate
 deepspeed
 mpi4py
@@ -15,5 +15,4 @@ gradio
 py3nvml
 glances
 wandb
-pandarallel
 tqdm
