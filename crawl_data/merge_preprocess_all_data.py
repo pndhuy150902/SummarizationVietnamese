@@ -20,6 +20,18 @@ def remove_longer_text(df):
     return df
 
 
+def remove_longer_text_other(df):
+    tokenizer = AutoTokenizer.from_pretrained('mistralai/Mistral-7B-Instruct-v0.2')
+    prefix = '<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt: '
+    infix = ' [/INST]'
+    suffix = '</s>'
+    df['length_prompt'] = (prefix + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
+    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 512))]
+    df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
+    df.drop(columns=['length_prompt'], axis=1, inplace=True)
+    return df
+
+
 def remove_longer_text_with_title(df):
     tokenizer = AutoTokenizer.from_pretrained('mistralai/Mistral-7B-Instruct-v0.2')
     prefix = '<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt biết rằng tiêu đề của nội dung là "'
@@ -27,6 +39,18 @@ def remove_longer_text_with_title(df):
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['title'] + '": ' + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
     df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 768))]
+    df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
+    df.drop(columns=['length_prompt'], axis=1, inplace=True)
+    return df
+
+
+def remove_longer_text_with_title_other(df):
+    tokenizer = AutoTokenizer.from_pretrained('mistralai/Mistral-7B-Instruct-v0.2')
+    prefix = '<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt biết rằng tiêu đề của nội dung là "'
+    infix = ' [/INST]'
+    suffix = '</s>'
+    df['length_prompt'] = (prefix + df['title'] + '": ' + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
+    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 512))]
     df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
@@ -333,10 +357,10 @@ def merge_and_preprocess_and_split_all_data():
     wikilingual_data_no_title = remove_longer_text(wikilingual_data_no_title)
     vlsp_data_with_title = vlsp_data[:625]
     vlsp_data_no_title = vlsp_data[625:][['context', 'summarization']]
-    vlsp_data_with_title = remove_longer_text_with_title(vlsp_data_with_title)
-    vlsp_data_no_title = remove_longer_text(vlsp_data_no_title)
-    vietnews_data_with_title = vietnews_data[:22000]
-    vietnews_data_no_title = vietnews_data[22000:45000][['context', 'summarization']]
+    vlsp_data_with_title = remove_longer_text_with_title_other(vlsp_data_with_title)
+    vlsp_data_no_title = remove_longer_text_other(vlsp_data_no_title)
+    vietnews_data_with_title = vietnews_data[:23000]
+    vietnews_data_no_title = vietnews_data[23000:46000][['context', 'summarization']]
     vietnews_data_with_title = remove_longer_text_with_title(vietnews_data_with_title)
     vietnews_data_no_title = remove_longer_text(vietnews_data_no_title)
     train_data = pd.concat([
@@ -346,7 +370,7 @@ def merge_and_preprocess_and_split_all_data():
         vlsp_data_no_title[:int(0.8 * len(vlsp_data_no_title))],
     ], axis=0)
     train_data_title = pd.concat([
-        remove_longer_text_with_title(vims_data[:1600]),
+        remove_longer_text_with_title_other(vims_data[:1600]),
         vietnews_data_with_title,
         vlsp_data_with_title,
     ])
@@ -368,7 +392,7 @@ def merge_and_preprocess_and_split_all_data():
     # print(vietnews_data_no_title[:int(0.8 * len(vietnews_data_no_title))].info())
     # print(vlsp_data_no_title[:int(0.8 * len(vlsp_data_no_title))].info())
     # print("------------------------------------------------------------------------------------")
-    # print(remove_longer_text_with_title(vims_data[:1600]).info())
+    # print(remove_longer_text_with_title_other(vims_data[:1600]).info())
     # print(vietnews_data_with_title.info())
     # print(vlsp_data_with_title.info())
     # print("------------------------------------------------------------------------------------")
