@@ -25,7 +25,7 @@ args_training:
   optimizer: "paged_adamw_8bit"
   report_to: "wandb"
   run_name: "Mistral-7B-Instruct-v0.2-QLoRA"
-  dataset_num_proc: 8
+  dataset_num_proc: 16
 
 peft_dir:
   peft_model: './peft_model'
