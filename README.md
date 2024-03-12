@@ -10,24 +10,22 @@ For this project, I will use model Mistral 7B and others technique like QLoRA, D
 I use dataset about Vietnamese News (VNDS), Crawled Vietnamese News (Crawled with Selenium), Vietnamese WikiHow, ViMs, VLSP 2022, Viet News Summarization (Huggingface). And I get 73,517 samples to train and 8,424 to test my model, which my training data includes 57,229 samples don't have title and 16,288 samples have title. I use title to train for adding information to context which I want to summary. And especially I only train with tile in ViMs dataset and I test it with no tile but ROUGE score still not low.
 |                          |Train     |Test      |Total     |
 |:------------------------:|:--------:|:--------:|:--------:|
-|Vietnamese News Corpus    |22,933    |2,548     |25,481    |
-|VNDS                      |21,346    |2,083     |23,429    |
-|Wikilingua                |15,630    |2,098     |17,728    |
-|Crawled Vietnamese News   |10,610    |1,179     |11,789    |
+|Crawled Vietnamese News   |18,075    |2,009     |20,084    |
+|VNDS                      |38,549    |4,218     |42,767    |
+|Vietnamese News Corpus    |32,435    |2,948     |35,383    |
 |ViMs                      |1,564     |297       |1,861     |
-|VLSP 2022                 |1,434     |219       |1,653     |
-|TOTAL                     |73,517    |8,424     |81,941    |
+|VLSP AbMusu 2022          |1,434     |219       |1,653     |
+|TOTAL                     |92,057    |9,691     |101,748   |
 # Evaluation
 I evaluate model with ROUGE score. But ROUGE score has the disadvantage that it cannot calculate scores between sentences with similar meanings.
 |                          |ROUGE-1   |ROUGE-2   |ROUGE-L   |
 |:------------------------:|:--------:|:--------:|:--------:|
-|Vietnamese News Corpus    |22,933    |2,548     |25,481    |
-|VNDS                      |21,346    |2,083     |23,429    |
-|Wikilingua                |15,630    |2,098     |17,728    |
-|Crawled Vietnamese News   |10,610    |1,179     |11,789    |
+|Crawled Vietnamese News   |18,075    |2,009     |20,084    |
+|VNDS                      |38,549    |4,218     |42,767    |
+|Vietnamese News Corpus    |32,435    |2,948     |35,383    |
 |ViMs                      |1,564     |297       |1,861     |
-|VLSP 2022                 |1,434     |219       |1,653     |
-|AVG SCORE                 |73,517    |8,424     |81,941    |
+|VLSP AbMusu 2022          |1,434     |219       |1,653     |
+|AVG SCORE                 |92,057    |9,691     |101,748   |
 # Setup environment to run summarization app
 * To pull all this repository besides you use command `git pull` this, you should use command `git lfs pull` to get all file `LFS` in this repository. 
 * Run file `run_setup.sh -p` to setup environment for pip to run model and app to summarize content.
