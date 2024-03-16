@@ -1,5 +1,5 @@
 # Summary of Vietnamese text with Transformers
-For this project, I will use model Mistral 7B and others technique like QLoRA, Deepspeed and Accelerate to increase training speed and decrease the hardware I use. To make it quick, I used 4xA100 80GB with AMPERE architecture and NVLINK to train this model. You can use only 1 GPU with 24 VRAM to train this model, and you must decrease batch size. And I use PEFT model and Gradio for create this app as an example of text summarization.
+For this project, I will use model Mistral 7B and others technique like QLoRA, Deepspeed and Accelerate to increase training speed and decrease the hardware I use. To make it quick, I used 4xA100 SXM 80GB with AMPERE architecture and NVLINK to train this model. You can use only 1 GPU with 24 VRAM to train this model, and you must decrease batch size. And I use PEFT model and Gradio for create this app as an example of text summarization.
 # Environment configuration
 * Cuda: 12.1
 * Cudnn: 8.9.7
@@ -7,7 +7,7 @@ For this project, I will use model Mistral 7B and others technique like QLoRA, D
 * Pytorch: 2.2.1+cu121
 * Deepspeed: Stage 2 + Accelerate
 # Dataset
-I use dataset about Vietnamese News (VNDS), Crawled Vietnamese News (Crawled with Selenium), Vietnamese WikiHow, ViMs, VLSP 2022, Viet News Summarization (Huggingface). And I get 73,517 samples to train and 8,424 to test my model, which my training data includes 57,229 samples don't have title and 16,288 samples have title. I use title to train for adding information to context which I want to summary. And especially I only train with tile in ViMs dataset and I test it with no tile but ROUGE score still not low.
+I use dataset about Crawled Vietnamese News (Crawled with Selenium), Vietnamese News (VNDS), Vietnamese News Corpus (Binhvq News), ViMs, VLSP 2022. And I get 100,043 samples to train and 10,243 to test my model, which my training data includes 73,408 samples don't have title and 26,635 samples have title. I use title to train for adding information to context which I want to summary. And especially I only train with tile in ViMs dataset and I test it with no tile but ROUGE score still high.
 |                          |Train     |Test      |Total     |
 |:------------------------:|:--------:|:--------:|:--------:|
 |Crawled Vietnamese News   |18,075    |2,009     |20,084    |
@@ -33,4 +33,4 @@ I evaluate model with ROUGE score. But ROUGE score has the disadvantage that it 
 * When you run error with library `mpi4py` you should remove folder `ld` in `compiler_compat` of `anaconda` or `miniconda`. For example my `anaconda` path in Linux (Ubuntu) is `/opt/conda`, you will run this command `rm /opt/conda/compiler_compat/ld` to fix error. And you run again `run_setup.sh -p`.
 # Run summarization app
 * Run file `run_app.sh` to run interface app for summarization.
-* When run app, this app will be create link public valid in 72 hours for everyone can access app.
+* When run app, this app will be create link public valid in 72 hours (3 days) for everyone can access app.
