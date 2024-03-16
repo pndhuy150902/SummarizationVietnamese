@@ -11,21 +11,21 @@ I use dataset about Vietnamese News (VNDS), Crawled Vietnamese News (Crawled wit
 |                          |Train     |Test      |Total     |
 |:------------------------:|:--------:|:--------:|:--------:|
 |Crawled Vietnamese News   |18,075    |2,009     |20,084    |
-|VNDS                      |38,549    |4,218     |42,767    |
-|Vietnamese News Corpus    |32,435    |2,948     |35,383    |
+|VNDS                      |43,587    |4,769     |48,356    |
+|Vietnamese News Corpus    |35,383    |2,949     |38,332    |
 |ViMs                      |1,564     |297       |1,861     |
 |VLSP AbMusu 2022          |1,434     |219       |1,653     |
-|TOTAL                     |92,057    |9,691     |101,748   |
+|TOTAL                     |100,043   |10,243    |110,286   |
 # Evaluation
 I evaluate model with ROUGE score. But ROUGE score has the disadvantage that it cannot calculate scores between sentences with similar meanings.
 |                          |ROUGE-1   |ROUGE-2   |ROUGE-L   |
 |:------------------------:|:--------:|:--------:|:--------:|
 |Crawled Vietnamese News   |18,075    |2,009     |20,084    |
-|VNDS                      |38,549    |4,218     |42,767    |
-|Vietnamese News Corpus    |32,435    |2,948     |35,383    |
+|VNDS                      |43,587    |4,769     |48,356    |
+|Vietnamese News Corpus    |35,383    |2,949     |38,332    |
 |ViMs                      |1,564     |297       |1,861     |
 |VLSP AbMusu 2022          |1,434     |219       |1,653     |
-|AVG SCORE                 |92,057    |9,691     |101,748   |
+|AVG SCORE                 |100,043   |10,243    |110,286   |
 # Setup environment to run summarization app
 * To pull all this repository besides you use command `git pull` this, you should use command `git lfs pull` to get all file `LFS` in this repository. 
 * Run file `run_setup.sh -p` to setup environment for pip to run model and app to summarize content.
