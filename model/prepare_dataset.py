@@ -29,6 +29,7 @@ def read_dataset(config):
     train_data_with_title = pd.read_csv(config.processed_data.train_data_with_title)
     return train_data_no_title, train_data_with_title, test_data
 
+
 def prepare_dataset(config):
     train_data_no_title, train_data_with_title, test_data = read_dataset(config)
     train_prompts_no_title = [prepare_prompt(i, train_data_no_title) for i in range(len(train_data_no_title))]
