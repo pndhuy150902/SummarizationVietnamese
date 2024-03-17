@@ -9,7 +9,7 @@ trl
 bitsandbytes
 rouge-score
 evaluate
-deepspeed
+deepspeed==0.13.2
 mpi4py
 gradio
 py3nvml
