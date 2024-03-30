@@ -11,13 +11,6 @@
   "bf16": {
     "enabled": true
   },
-  "optimizer": {
-    "type": "AdamW",
-    "params": {
-      "lr": 2e-5,
-      "weight_decay": 0.1
-    }
-  },
   "scheduler": {
     "type": "WarmupCosineLR",
     "params": {
@@ -27,7 +20,7 @@
   },
   "train_batch_size": "auto",
   "train_micro_batch_size_per_gpu": "auto",
-  "gradient_accumulation_steps": "auto",
+  "gradient_accumulation_steps": 64,
   "gradient_clipping": "auto",
   "steps_per_print": 2000,
   "wall_clock_breakdown" : false

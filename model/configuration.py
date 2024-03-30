@@ -10,8 +10,8 @@ warnings.filterwarnings('ignore')
 
 def prepare_lora_configuration():
     lora_config = LoraConfig(
-        r=32,
-        lora_alpha=64,
+        r=64,
+        lora_alpha=128,
         target_modules=[
             'q_proj',
             'k_proj',
@@ -43,13 +43,15 @@ def prepare_training_arguments(config):
     training_args = TrainingArguments(
         per_device_train_batch_size=config.args_training.train_batch_size,
         per_device_eval_batch_size=config.args_training.eval_batch_size,
-        # auto_find_batch_size=config.args_training.auto_find_batch_size,
+        auto_find_batch_size=config.args_training.auto_find_batch_size,
         num_train_epochs=config.args_training.num_train_epochs,
         learning_rate=config.args_training.learning_rate,
         weight_decay=config.args_training.weight_decay,
         lr_scheduler_type=config.args_training.lr_scheduler_type,
         save_total_limit=config.args_training.save_total_limit,
-        # load_best_model_at_end=config.args_training.load_best_model_at_end,
+        load_best_model_at_end=config.args_training.load_best_model_at_end,
+        gradient_accumulation_steps=config.args_training.gradient_accumulation_steps,
+        gradient_checkpointing=config.args_training.gradient_checkpointing,
         logging_steps=config.args_training.logging_steps,
         output_dir=config.args_training.dir_checkpoint,
         save_strategy=config.args_training.save_strategy,
@@ -100,4 +102,5 @@ def prepare_model(model_name):
     model.config.pad_token_id = tokenizer.pad_token_id
     model = prepare_model_for_kbit_training(model)
     model.config.use_cache = False
+    model.gradient_checkpointing_enable()
     return tokenizer, model

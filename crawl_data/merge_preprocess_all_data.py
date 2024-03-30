@@ -14,7 +14,7 @@ def remove_longer_text(df):
     infix = ' [/INST]'
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 768))]
+    df = df[~((df['length_prompt'] > 5120) | (df['length_prompt'] < 768))]
     df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
@@ -26,7 +26,7 @@ def remove_longer_text_other(df):
     infix = ' [/INST]'
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 512))]
+    df = df[~((df['length_prompt'] > 5120) | (df['length_prompt'] < 512))]
     df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
@@ -38,7 +38,7 @@ def remove_longer_text_with_title(df):
     infix = ' [/INST]'
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['title'] + '": ' + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 768))]
+    df = df[~((df['length_prompt'] > 5120) | (df['length_prompt'] < 768))]
     df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
@@ -50,7 +50,7 @@ def remove_longer_text_with_title_other(df):
     infix = ' [/INST]'
     suffix = '</s>'
     df['length_prompt'] = (prefix + df['title'] + '": ' + df['context'] + infix + df['summarization'] + suffix).apply(lambda x: len(tokenizer.tokenize(str(x))))
-    df = df[~((df['length_prompt'] > 4096) | (df['length_prompt'] < 512))]
+    df = df[~((df['length_prompt'] > 5120) | (df['length_prompt'] < 512))]
     df.sort_values(by=['length_prompt'], ascending=False, inplace=True)
     df.drop(columns=['length_prompt'], axis=1, inplace=True)
     return df
@@ -213,6 +213,30 @@ def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r'{.*}', '', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\.\.\. \.\.\.', ', ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\>> ', '', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\s+\/+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\s+\/+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\.]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\.]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\s+\-\w+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\s+\-\w+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\s+\/+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\s+\/+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\.]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\.]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn [\w+\s+\-\w+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(Nguồn: [\w+\s+\-\w+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh [\w+\s+\/+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh: [\w+\s+\/+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh [\w+\.]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh: [\w+\.]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh [\w+\s+\-\w+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\ảnh: [\w+\s+\-\w+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn [\w+\s+\/+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn: [\w+\s+\/+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn [\w+\.]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn: [\w+\.]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn [\w+\s+\-\w+]+\).', ' ', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(nguồn: [\w+\s+\-\w+]+\).', ' ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\s+\/+]+\)', ' ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh: [\w+\s+\/+]+\)', ' ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\(\Ảnh [\w+\.]+\)', ' ', x))
@@ -252,6 +276,7 @@ def preprocessing_data(df):
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\.\s+', '. ', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r"\s+\'\s+", "'", x))
     df['context'] = df['context'].apply(lambda x: re.sub(r'\s+\.', '.', x))
+    df['context'] = df['context'].apply(lambda x: re.sub(r'\"+', '"', x))
     df['context'] = df['context'].apply(lambda x: re.sub(r' +', ' ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s*"\s*(.*?)\s*"\s*', r' "\1" ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r"\s*'\s*(.*?)\s*'\s*", r" '\1' ", x))
@@ -282,6 +307,7 @@ def preprocessing_data(df):
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\.\s+', '. ', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r"\s+\'\s+", "'", x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\s+\.', '.', x))
+    df['summarization'] = df['summarization'].apply(lambda x: re.sub(r'\"+', '"', x))
     df['summarization'] = df['summarization'].apply(lambda x: re.sub(r' +', ' ', x))
     df['context'] = df['context'].apply(lambda x: x.strip().strip('\n'))
     df['summarization'] = df['summarization'].apply(lambda x: x.strip().strip('\n'))
@@ -310,6 +336,7 @@ def preprocessing_data(df):
         df['title'] = df['title'].apply(lambda x: re.sub(r'\s+\.\s+', '. ', x))
         df['title'] = df['title'].apply(lambda x: re.sub(r"\s+\'\s+", "'", x))
         df['title'] = df['title'].apply(lambda x: re.sub(r'\s+\.', '.', x))
+        df['title'] = df['title'].apply(lambda x: re.sub(r'\"+', '"', x))
         df['title'] = df['title'].apply(lambda x: re.sub(r' +', ' ', x))
         df['title'] = df['title'].apply(lambda x: x.strip().strip('\n'))
     return df
@@ -351,35 +378,41 @@ def merge_and_preprocess_and_split_all_data():
     vietgpt_data.drop_duplicates(inplace=True)
     vims_data.drop_duplicates(inplace=True)
     vietnews_data.drop_duplicates(inplace=True)
-    wikilingual_data_with_title = wikilingual_data[:5000]
-    wikilingual_data_no_title = wikilingual_data[5000:][['context', 'summarization']]
-    wikilingual_data_with_title = remove_longer_text_with_title(wikilingual_data_with_title)
-    wikilingual_data_no_title = remove_longer_text(wikilingual_data_no_title)
+    # wikilingual_data_with_title = wikilingual_data[:5000]
+    # wikilingual_data_no_title = wikilingual_data[5000:][['context', 'summarization']]
+    # wikilingual_data_with_title = remove_longer_text_with_title(wikilingual_data_with_title)
+    # wikilingual_data_no_title = remove_longer_text(wikilingual_data_no_title)
+    vims_data_with_title = vims_data[:700]
+    vims_data_no_title = vims_data[700:1700][['context', 'summarization']]
+    vims_data_with_title = remove_longer_text_with_title_other(vims_data_with_title)
+    vims_data_no_title = remove_longer_text_other(vims_data_no_title)
     vlsp_data_with_title = vlsp_data[:625]
     vlsp_data_no_title = vlsp_data[625:][['context', 'summarization']]
     vlsp_data_with_title = remove_longer_text_with_title_other(vlsp_data_with_title)
     vlsp_data_no_title = remove_longer_text_other(vlsp_data_no_title)
-    vietnews_data_with_title = vietnews_data[:26000]
-    vietnews_data_no_title = vietnews_data[26000:52000][['context', 'summarization']]
+    vietnews_data_with_title = vietnews_data[:41600]
+    vietnews_data_no_title = vietnews_data[41600:][['context', 'summarization']]
     vietnews_data_with_title = remove_longer_text_with_title(vietnews_data_with_title)
     vietnews_data_no_title = remove_longer_text(vietnews_data_no_title)
     train_data = pd.concat([
-        vietgpt_data[:int(0.60 * len(vietgpt_data))],
+        vietgpt_data[:int(0.8 * len(vietgpt_data))],
         crawled_data[:int(0.9 * len(crawled_data))],
-        vietnews_data_no_title[:int(0.8 * len(vietnews_data_no_title))],
-        vlsp_data_no_title[:int(0.8 * len(vlsp_data_no_title))],
+        vietnews_data_no_title[:int(0.76 * len(vietnews_data_no_title))],
+        vims_data_no_title,
+        vlsp_data_no_title[:int(0.9 * len(vlsp_data_no_title))],
     ], axis=0)
     train_data_title = pd.concat([
-        remove_longer_text_with_title_other(vims_data[:1600]),
         vietnews_data_with_title,
+        vims_data_with_title,
         vlsp_data_with_title,
     ])
     test_data = pd.concat([
-        vietgpt_data[int(0.60*len(vietgpt_data)):int(0.65*len(vietgpt_data))],
+        # vietgpt_data[int(0.8*len(vietgpt_data)):int(0.70*len(vietgpt_data))],
+        vietgpt_data[int(0.8*len(vietgpt_data)):],
         crawled_data[int(0.9 * len(crawled_data)):],
-        vims_data[1600:][['context', 'summarization']],
-        vietnews_data_no_title[int(0.8 * len(vietnews_data_no_title)):],
-        vlsp_data_no_title[int(0.8 * len(vlsp_data_no_title)):],
+        vims_data[1700:][['context', 'summarization']],
+        vietnews_data_no_title[int(0.76 * len(vietnews_data_no_title)):],
+        vlsp_data_no_title[int(0.9 * len(vlsp_data_no_title)):],
     ], axis=0)
     train_data.drop_duplicates(inplace=True)
     test_data.drop_duplicates(inplace=True)
@@ -387,27 +420,29 @@ def merge_and_preprocess_and_split_all_data():
     train_data.reset_index(inplace=True, drop=True)
     test_data.reset_index(inplace=True, drop=True)
     train_data_title.reset_index(inplace=True, drop=True)
-    # print(vietgpt_data[:int(0.60 * len(vietgpt_data))].info())
-    # print(crawled_data[:int(0.9 * len(crawled_data))].info())
-    # print(vietnews_data_no_title[:int(0.8 * len(vietnews_data_no_title))].info())
-    # print(vlsp_data_no_title[:int(0.8 * len(vlsp_data_no_title))].info())
-    # print("------------------------------------------------------------------------------------")
-    # print(remove_longer_text_with_title_other(vims_data[:1600]).info())
-    # print(vietnews_data_with_title.info())
-    # print(vlsp_data_with_title.info())
-    # print("------------------------------------------------------------------------------------")
+    print(vietgpt_data[:int(0.8 * len(vietgpt_data))].info())
+    print(crawled_data[:int(0.9 * len(crawled_data))].info())
+    print(vietnews_data_no_title[:int(0.76 * len(vietnews_data_no_title))].info())
+    print(vims_data_no_title.info())
+    print(vlsp_data_no_title[:int(0.9 * len(vlsp_data_no_title))].info())
+    print("------------------------------------------------------------------------------------")
+    print(vietnews_data_with_title.info())
+    print(vims_data_with_title.info())
+    print(vlsp_data_with_title.info())
+    print("------------------------------------------------------------------------------------")
     # print(vietgpt_data[int(0.60*len(vietgpt_data)):int(0.65*len(vietgpt_data))].info())
-    # print(crawled_data[int(0.9 * len(crawled_data)):].info())
-    # print(vims_data[1600:][['context', 'summarization']].info())
-    # print(vietnews_data_no_title[int(0.8 * len(vietnews_data_no_title)):].info())
-    # print(vlsp_data_no_title[int(0.8 * len(vlsp_data_no_title)):].info())
-    # print("------------------------------------------------------------------------------------")
-    # print(train_data.info())
-    # print(train_data_title.info())
-    # print(test_data.info())
-    train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
-    test_data.to_csv('../dataset/full_test_data_summarization.csv', index=False)
-    train_data_title.to_csv('../dataset/full_train_data_title_summarization.csv', index=False)
+    print(vietgpt_data[int(0.8*len(vietgpt_data)):].info())
+    print(crawled_data[int(0.9 * len(crawled_data)):].info())
+    print(vims_data[1700:][['context', 'summarization']].info())
+    print(vietnews_data_no_title[int(0.76 * len(vietnews_data_no_title)):].info())
+    print(vlsp_data_no_title[int(0.9 * len(vlsp_data_no_title)):].info())
+    print("------------------------------------------------------------------------------------")
+    print(train_data.info())
+    print(train_data_title.info())
+    print(test_data.info())
+    # train_data.to_csv('../dataset/full_train_data_summarization.csv', index=False)
+    # test_data.to_csv('../dataset/full_test_data_summarization.csv', index=False)
+    # train_data_title.to_csv('../dataset/full_train_data_title_summarization.csv', index=False)
 
     
 if __name__ == '__main__':
