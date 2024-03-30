@@ -13,7 +13,7 @@ args_training:
   learning_rate: 2e-5
   weight_decay: 0.1
   lr_scheduler_type: "cosine"
-  gradient_accumulation_steps: 4
+  gradient_accumulation_steps: 8
   gradient_checkpointing: true
   save_total_limit: 2
   logging_steps: 20
