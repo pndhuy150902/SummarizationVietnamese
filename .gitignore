@@ -16,6 +16,10 @@ dataset/wikilingual_vietnamese_data/
 dataset/ViMs/
 dataset/xlsum_data/
 dataset/vietnews/
+dataset/
+
+# Qdrant folder
+question_answer_rag/qdrant/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
