@@ -16,7 +16,9 @@ dataset/wikilingual_vietnamese_data/
 dataset/ViMs/
 dataset/xlsum_data/
 dataset/vietnews/
-dataset/
+dataset/full_train_data_summarization.csv
+dataset/full_train_data_title_summarization.csv
+dataset/full_test_data_summarization.csv
 
 # Qdrant folder
 question_answer_rag/qdrant/

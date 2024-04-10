@@ -3,7 +3,7 @@ import torch
 import numpy as np
 from accelerate import Accelerator
 from peft import LoraConfig, prepare_model_for_kbit_training, TaskType
-from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
+from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM, AwqConfig
 
 warnings.filterwarnings('ignore')
 
@@ -30,6 +30,11 @@ def prepare_lora_configuration():
 
 
 def prepare_quantization_configuration():
+    # awq_config = AwqConfig(
+    #     bits=4,
+    #     group_size=128,
+    #     zero_point=True
+    # )
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         load_4bit_use_double_quant=True,
@@ -97,7 +102,8 @@ def prepare_model(model_name):
         device_map={"": Accelerator().local_process_index},
         trust_remote_code=True,
         attn_implementation="flash_attention_2",
-        quantization_config=bnb_config
+        quantization_config=bnb_config,
+        # torch_dtype=torch.bfloat16
     )
     model.config.pad_token_id = tokenizer.pad_token_id
     model = prepare_model_for_kbit_training(model)

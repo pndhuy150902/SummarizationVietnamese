@@ -1,6 +1,7 @@
 flash-attn
 xformers
 transformers
+sentencepiece
 peft
 hydra-core
 pandas
@@ -9,7 +10,7 @@ trl
 bitsandbytes
 rouge-score
 evaluate
-deepspeed==0.13.2
+deepspeed
 mpi4py
 gradio
 py3nvml
