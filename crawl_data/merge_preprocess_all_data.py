@@ -395,7 +395,7 @@ def merge_and_preprocess_and_split_all_data():
     vietnews_data_with_title = remove_longer_text_with_title(vietnews_data_with_title)
     vietnews_data_no_title = remove_longer_text(vietnews_data_no_title)
     train_data = pd.concat([
-        vietgpt_data[:int(0.8 * len(vietgpt_data))],
+        vietgpt_data[:int(0.85 * len(vietgpt_data))],
         crawled_data[:int(0.9 * len(crawled_data))],
         vietnews_data_no_title[:int(0.76 * len(vietnews_data_no_title))],
         vims_data_no_title,
@@ -408,7 +408,7 @@ def merge_and_preprocess_and_split_all_data():
     ])
     test_data = pd.concat([
         # vietgpt_data[int(0.8*len(vietgpt_data)):int(0.70*len(vietgpt_data))],
-        vietgpt_data[int(0.8*len(vietgpt_data)):],
+        vietgpt_data[int(0.85*len(vietgpt_data)):],
         crawled_data[int(0.9 * len(crawled_data)):],
         vims_data[1700:][['context', 'summarization']],
         vietnews_data_no_title[int(0.76 * len(vietnews_data_no_title)):],
@@ -420,7 +420,7 @@ def merge_and_preprocess_and_split_all_data():
     train_data.reset_index(inplace=True, drop=True)
     test_data.reset_index(inplace=True, drop=True)
     train_data_title.reset_index(inplace=True, drop=True)
-    # print(vietgpt_data[:int(0.8 * len(vietgpt_data))].info())
+    # print(vietgpt_data[:int(0.85 * len(vietgpt_data))].info())
     # print(crawled_data[:int(0.9 * len(crawled_data))].info())
     # print(vietnews_data_no_title[:int(0.76 * len(vietnews_data_no_title))].info())
     # print(vims_data_no_title.info())
@@ -431,7 +431,7 @@ def merge_and_preprocess_and_split_all_data():
     # print(vlsp_data_with_title.info())
     # print("------------------------------------------------------------------------------------")
     # # print(vietgpt_data[int(0.60*len(vietgpt_data)):int(0.65*len(vietgpt_data))].info())
-    # print(vietgpt_data[int(0.8*len(vietgpt_data)):].info())
+    # print(vietgpt_data[int(0.85*len(vietgpt_data)):].info())
     # print(crawled_data[int(0.9 * len(crawled_data)):].info())
     # print(vims_data[1700:][['context', 'summarization']].info())
     # print(vietnews_data_no_title[int(0.76 * len(vietnews_data_no_title)):].info())

@@ -17,3 +17,4 @@ py3nvml
 glances
 wandb
 tqdm
+huggingface_hub
