@@ -18,3 +18,4 @@ glances
 wandb
 tqdm
 huggingface_hub
+langchain
