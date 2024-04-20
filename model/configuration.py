@@ -95,7 +95,7 @@ def prepare_tokenizer(model_name):
 
 
 def prepare_model(model_name):
-    tokenizer = prepare_tokenizer(model_name)
+    tokenizer = prepare_tokenizer(model_name, token="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")
     bnb_config = prepare_quantization_configuration()
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
@@ -103,7 +103,8 @@ def prepare_model(model_name):
         trust_remote_code=True,
         attn_implementation="flash_attention_2",
         quantization_config=bnb_config,
-        torch_dtype=torch.bfloat16
+        torch_dtype=torch.bfloat16,
+        token="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"
     )
     model.config.pad_token_id = tokenizer.pad_token_id
     model = prepare_model_for_kbit_training(model)
