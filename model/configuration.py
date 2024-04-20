@@ -88,14 +88,14 @@ def compute_metrics(eval_preds, rouge_metric, model_name):
 
 
 def prepare_tokenizer(model_name):
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, token="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")
     tokenizer.pad_token = tokenizer.unk_token
     tokenizer.padding_side = "left"
     return tokenizer
 
 
 def prepare_model(model_name):
-    tokenizer = prepare_tokenizer(model_name, token="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")
+    tokenizer = prepare_tokenizer(model_name)
     bnb_config = prepare_quantization_configuration()
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
