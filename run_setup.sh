@@ -1,5 +1,5 @@
 #!/bin/sh
-apt-get install mpich vim git-lfs
+apt-get install libaio-dev mpich vim git-lfs
 while getopts ':pc:h' opt; do
   case "$opt" in
     p)
