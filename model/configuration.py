@@ -37,7 +37,7 @@ def prepare_quantization_configuration():
     # )
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
-        load_4bit_use_double_quant=True,
+        bnb_4bit_use_double_quant=True,
         bnb_4bit_quant_type='nf4',
         bnb_4bit_compute_dtype=torch.bfloat16
     )
@@ -103,7 +103,7 @@ def prepare_model(model_name):
         trust_remote_code=True,
         attn_implementation="flash_attention_2",
         quantization_config=bnb_config,
-        # torch_dtype=torch.bfloat16
+        torch_dtype=torch.bfloat16
     )
     model.config.pad_token_id = tokenizer.pad_token_id
     model = prepare_model_for_kbit_training(model)

@@ -2,6 +2,7 @@ flash-attn
 xformers
 transformers
 sentencepiece
+sentence-transformers
 peft
 hydra-core
 pandas
