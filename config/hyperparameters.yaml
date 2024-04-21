@@ -7,13 +7,13 @@ model_mixtral: "mistralai/Mixtral-8x7B-Instruct-v0.1"
 model_mistral: "mistralai/Mistral-7B-Instruct-v0.2"
 
 args_training:
-  train_batch_size: 8
+  train_batch_size: 16
   eval_batch_size: 16
   num_train_epochs: 2
   learning_rate: 2e-5
   weight_decay: 0.1
   lr_scheduler_type: "cosine"
-  gradient_accumulation_steps: 32
+  gradient_accumulation_steps: 16
   gradient_checkpointing: true
   save_total_limit: 2
   logging_steps: 20
@@ -27,7 +27,7 @@ args_training:
   optimizer: "paged_lion_8bit"
   report_to: "none"
   run_name: "Mistral-7B-Instruct-v0.2-QLoRA"
-  dataset_num_proc: 4
+  dataset_num_proc: 8
 
 peft_dir:
   peft_model: './peft_model'
