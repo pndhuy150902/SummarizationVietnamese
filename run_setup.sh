@@ -1,5 +1,6 @@
 #!/bin/sh
 apt-get install libaio-dev mpich vim git-lfs
+CMAKE_ARGS="-DLLAMA_CUDA=on" FORCE_CMAKE=1 pip install llama-cpp-python
 while getopts ':pc:h' opt; do
   case "$opt" in
     p)
