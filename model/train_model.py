@@ -2,6 +2,7 @@ import warnings
 import hydra
 import torch
 import evaluate
+import wandb
 from trl import SFTTrainer
 from transformers import EarlyStoppingCallback, DataCollatorForLanguageModeling
 from configuration import prepare_lora_configuration, prepare_training_arguments, prepare_model, compute_metrics, preprocess_logits_for_metrics
@@ -42,8 +43,8 @@ def main(config):
     torch.manual_seed(42)
     trainer, tokenizer = prepare_trainer(config)
     trainer.train()
-    tokenizer.save_pretrained(config.peft_dir.peft_model)
-    
-    
+    wandb.finish()
+
+
 if __name__ == '__main__':
     main()
