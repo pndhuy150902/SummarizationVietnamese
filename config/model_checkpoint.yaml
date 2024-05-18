@@ -1,2 +1,2 @@
 model:
-  best_checkpoint: "../model/model_checkpoint/checkpoint-1576/"
+  best_checkpoint: "./model/model_checkpoint/checkpoint-1576/"
