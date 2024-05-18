@@ -8,7 +8,7 @@ warnings.filterwarnings('ignore')
 
 def get_tokenizer_streamer(checkpoint):
   tokenizer = AutoTokenizer.from_pretrained(checkpoint, token="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")
-  streamer = TextIteratorStreamer(tokenizer, skip_prompt=True, timeout=30)
+  streamer = TextIteratorStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True, timeout=30)
   return tokenizer, streamer
 
 
