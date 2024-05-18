@@ -1,7 +1,7 @@
 import warnings
 import torch
 import hydra
-from load_model import get_model, get_tokenizer
+from load_model import get_model, get_tokenizer_streamer
 from gradio_chat import launch_gradio_chat
 warnings.filterwarnings('ignore')
 
@@ -10,7 +10,7 @@ warnings.filterwarnings('ignore')
 def main(config):
     torch.manual_seed(42)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    tokenizer, streamer = get_tokenizer(config.model.best_checkpoint)
+    tokenizer, streamer = get_tokenizer_streamer(config.model.best_checkpoint)
     model = get_model(config.model.best_checkpoint)
     launch_gradio_chat(tokenizer, streamer, model, device)
 

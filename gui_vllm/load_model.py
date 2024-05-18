@@ -6,7 +6,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 warnings.filterwarnings('ignore')
 
 
-def get_streamer(checkpoint):
+def get_tokenizer_streamer(checkpoint):
   tokenizer = AutoTokenizer.from_pretrained(checkpoint)
   streamer = TextIteratorStreamer(tokenizer, skip_prompt=True, timeout=30)
   return tokenizer, streamer
