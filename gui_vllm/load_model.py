@@ -7,7 +7,7 @@ warnings.filterwarnings('ignore')
 
 
 def get_tokenizer_streamer(checkpoint):
-  tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+  tokenizer = AutoTokenizer.from_pretrained(checkpoint, token="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")
   streamer = TextIteratorStreamer(tokenizer, skip_prompt=True, timeout=30)
   return tokenizer, streamer
 
@@ -24,7 +24,8 @@ def get_model(checkpoint):
       bnb_4bit_use_double_quant=True,
       bnb_4bit_quant_type='nf4',
       bnb_4bit_compute_dtype=torch.bfloat16
-    )
+    ),
+    token="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"
   )
   model = PeftModel.from_pretrained(base_model, checkpoint, device_map={"":0})
   model.eval()
