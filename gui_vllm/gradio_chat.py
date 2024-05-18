@@ -20,7 +20,7 @@ def launch_gradio_chat(tokenizer, streamer, model, device):
                 return "", history + [[user_message, None]]
             def bot(history):
                 inputs = tokenizer(str(history[-1][0]), add_special_tokens=True, return_tensors="pt").to(device)
-                dict_kwargs = dict(inputs, early_stopping=False, max_new_tokens=1024, temperature=0.7, top_p=0.95, top_k=50, repetition_penalty=1.2, pad_token_id=tokenizer.eos_token_id, streamer=streamer)
+                dict_kwargs = dict(inputs, early_stopping=False, max_new_tokens=1024, temperature=0.2, top_p=0.3, top_k=50, repetition_penalty=1.1, pad_token_id=tokenizer.eos_token_id, streamer=streamer)
                 t = Thread(target=model.generate, kwargs=dict_kwargs)
                 t.start()
                 history[-1][1] = ""
