@@ -24,7 +24,8 @@ def prepare_lora_configuration():
         ],
         lora_dropout=0.05,
         bias="none",
-        task_type=TaskType.CAUSAL_LM
+        task_type=TaskType.CAUSAL_LM,
+        use_dora=True
     )
     return lora_config
 
