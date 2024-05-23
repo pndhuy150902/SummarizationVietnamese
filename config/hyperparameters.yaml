@@ -4,7 +4,8 @@ processed_data:
   test_data: "../dataset/full_test_data_summarization.csv"
 
 model_mixtral: "mistralai/Mixtral-8x7B-Instruct-v0.1"
-model_mistral: "mistralai/Mistral-7B-Instruct-v0.2"
+model_mistral_old: "mistralai/Mistral-7B-Instruct-v0.2"
+model_mistral: "mistralai/Mistral-7B-Instruct-v0.3"
 
 args_training:
   train_batch_size: 8
@@ -16,7 +17,7 @@ args_training:
   gradient_accumulation_steps: 32
   gradient_checkpointing: true
   save_total_limit: 2
-  logging_steps: 10
+  logging_steps: 1
   auto_find_batch_size: true
   load_best_model_at_end: true
   bf16: true
@@ -25,11 +26,11 @@ args_training:
   evaluation_strategy: "no"
   optimizer: "paged_lion_8bit"
   report_to: "none"
-  run_name: "Mistral-7B-Instruct-v0.2-QLoRA"
+  run_name: "Mistral-7B-Instruct-v0.3-QLoRA"
   dataset_num_proc: 8
 
 peft_dir:
-  peft_model: './peft_model'
+  peft_model: "./peft_model"
 
 deepspeed:
   stage_2: "../config/deepspeed_stage_2.json"
