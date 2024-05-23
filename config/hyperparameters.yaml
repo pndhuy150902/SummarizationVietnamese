@@ -26,7 +26,7 @@ args_training:
   evaluation_strategy: "no"
   optimizer: "paged_lion_8bit"
   report_to: "none"
-  run_name: "Mistral-7B-Instruct-v0.3-QLoRA"
+  run_name: "Mistral-7B-Instruct-v0.3-QDoRA"
   dataset_num_proc: 8
 
 peft_dir:
