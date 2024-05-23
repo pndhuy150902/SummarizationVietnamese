@@ -19,8 +19,7 @@ def prepare_lora_configuration():
             'o_proj',
             'gate_proj',
             'up_proj',
-            'down_proj',
-            'lm_head',
+            'down_proj'
         ],
         lora_dropout=0.05,
         bias="none",
