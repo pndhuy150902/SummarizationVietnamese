@@ -66,7 +66,7 @@ def prepare_dataset(config):
     train_prompts_with_title = [prepare_prompt_for_title(i, train_data_with_title) for i in range(len(train_data_with_title))]
     test_prompts = [prepare_prompt(i, test_data) for i in range(len(test_data))]
     train_prompts = train_prompts_with_title[:40] + train_prompts_no_title[:40]
-    train_prompts = random.shuffle(train_prompts)
+    random.shuffle(train_prompts)
     dataset = DatasetDict({
         'train': Dataset.from_dict({'text': train_prompts}),
         'test': Dataset.from_dict({'text': test_prompts})
