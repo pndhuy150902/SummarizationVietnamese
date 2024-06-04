@@ -2,13 +2,14 @@ import warnings
 import torch
 import numpy as np
 from accelerate import Accelerator
-from peft import LoraConfig, prepare_model_for_kbit_training, TaskType
-from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM, AwqConfig
+from peft import LoraConfig, LoftQConfig, prepare_model_for_kbit_training, TaskType
+from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
 
 warnings.filterwarnings('ignore')
 
 
 def prepare_lora_configuration():
+    loftq_config = LoftQConfig(loftq_bits=4, loftq_iter=5)
     lora_config = LoraConfig(
         r=32,
         lora_alpha=128,
@@ -25,17 +26,14 @@ def prepare_lora_configuration():
         lora_dropout=0.05,
         bias="none",
         task_type=TaskType.CAUSAL_LM,
-        use_dora=True
+        init_lora_weights="loftq",
+        loftq_config=loftq_config
+        # use_dora=True
     )
     return lora_config
 
 
 def prepare_quantization_configuration():
-    # awq_config = AwqConfig(
-    #     bits=4,
-    #     group_size=128,
-    #     zero_point=True
-    # )
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,
