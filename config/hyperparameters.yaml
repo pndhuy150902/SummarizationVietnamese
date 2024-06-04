@@ -25,7 +25,7 @@ args_training:
   save_strategy: "epoch"
   evaluation_strategy: "no"
   optimizer: "paged_adamw_8bit"
-  report_to: "none"
+  report_to: "wandb"
   run_name: "Mistral-7B-Instruct-v0.2-QLoRA"
   dataset_num_proc: 8
 
