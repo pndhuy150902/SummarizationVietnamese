@@ -1,4 +1,5 @@
 import warnings
+import random
 import pandas as pd
 from datasets import Dataset, DatasetDict
 
@@ -59,12 +60,13 @@ def read_dataset(config):
 
 
 def prepare_dataset(config):
+    random.seed(42)
     train_data_no_title, train_data_with_title, test_data = read_dataset(config)
-    train_prompts_no_title = [prepare_prompt_questions(i, train_data_no_title) for i in range(len(train_data_no_title))]
-    train_prompts_with_title = [prepare_prompt_for_title_questions(i, train_data_with_title) for i in range(len(train_data_with_title))]
-    test_prompts = [prepare_prompt_questions(i, test_data) for i in range(len(test_data))]
-    train_prompts = train_prompts_with_title + train_prompts_no_title
-    train_prompts = sorted(train_prompts, key=len, reverse=False)
+    train_prompts_no_title = [prepare_prompt(i, train_data_no_title) for i in range(len(train_data_no_title))]
+    train_prompts_with_title = [prepare_prompt_for_title(i, train_data_with_title) for i in range(len(train_data_with_title))]
+    test_prompts = [prepare_prompt(i, test_data) for i in range(len(test_data))]
+    train_prompts = train_prompts_with_title[:40] + train_prompts_no_title[:40]
+    train_prompts = random.shuffle(train_prompts)
     dataset = DatasetDict({
         'train': Dataset.from_dict({'text': train_prompts}),
         'test': Dataset.from_dict({'text': test_prompts})
