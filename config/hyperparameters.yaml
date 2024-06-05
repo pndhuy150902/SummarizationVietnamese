@@ -17,7 +17,7 @@ args_training:
   gradient_accumulation_steps: 4
   gradient_checkpointing: true
   save_total_limit: 2
-  logging_steps: 1
+  logging_steps: 2
   auto_find_batch_size: true
   load_best_model_at_end: true
   bf16: true
