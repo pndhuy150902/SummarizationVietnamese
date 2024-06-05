@@ -5,7 +5,7 @@ processed_data:
 
 model_mixtral: "mistralai/Mixtral-8x7B-Instruct-v0.1"
 model_mistral_old: "mistralai/Mistral-7B-Instruct-v0.2"
-model_mistral: "mistralai/Mistral-7B-Instruct-v0.3"
+model_mistral: "mistralai/Mistral-7B-Instruct-v0.2"
 
 args_training:
   train_batch_size: 8
