@@ -2,7 +2,7 @@ import warnings
 from vllm import LLM, SamplingParams
 warnings.filterwarnings('ignore')
 
-TEMPLATE = """<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm tắt ngắn gọn nội dung sau bằng tiếng Việt:
+TEMPLATE = """<s>[INST] Bạn là một trợ lí AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm tắt ngắn gọn nội dung sau bằng tiếng Việt:
 {} [/INST]"""
 
 
