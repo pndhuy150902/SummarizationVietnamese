@@ -8,13 +8,13 @@ model_mistral_old: "mistralai/Mistral-7B-Instruct-v0.2"
 model_mistral: "mistralai/Mistral-7B-Instruct-v0.3"
 
 args_training:
-  train_batch_size: 8
+  train_batch_size: 16
   eval_batch_size: 16
   num_train_epochs: 2
   learning_rate: 2e-5
   weight_decay: 0.1
   lr_scheduler_type: "cosine"
-  gradient_accumulation_steps: 8
+  gradient_accumulation_steps: 4
   gradient_checkpointing: true
   save_total_limit: 2
   logging_steps: 2
