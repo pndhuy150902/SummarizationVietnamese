@@ -22,7 +22,7 @@ def launch_gradio_chat(tokenizer, streamer, model, device):
                 news_prompt = f"""<s>[INST] Bạn là một trợ lí AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt:
 {str(history[-1][0])} [/INST] """
                 inputs = tokenizer(news_prompt, add_special_tokens=True, return_tensors="pt").to(device)
-                dict_kwargs = dict(inputs, early_stopping=False, max_new_tokens=1024, temperature=0.2, top_p=0.3, top_k=50, repetition_penalty=1.1, pad_token_id=tokenizer.eos_token_id, streamer=streamer)
+                dict_kwargs = dict(inputs, early_stopping=False, max_new_tokens=1024, temperature=0.2, top_p=0.3, top_k=50, repetition_penalty=1.1, pad_token_id=tokenizer.unk_token_id, streamer=streamer)
                 t = Thread(target=model.generate, kwargs=dict_kwargs)
                 t.start()
                 history[-1][1] = ""
