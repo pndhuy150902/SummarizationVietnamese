@@ -3,6 +3,7 @@ import hydra
 import torch
 import evaluate
 import wandb
+from peft import get_peft_model, set_peft_model_state_dict, load_peft_weights
 from trl import SFTTrainer
 from transformers import EarlyStoppingCallback, DataCollatorForLanguageModeling
 from configuration import prepare_lora_configuration, prepare_training_arguments, prepare_model, compute_metrics, preprocess_logits_for_metrics
@@ -17,13 +18,15 @@ def prepare_trainer(config):
     tokenizer, model = prepare_model(config.model_mistral)
     func_collate = DataCollatorForLanguageModeling(tokenizer, mlm=False)
     # early_stop_callback = EarlyStoppingCallback(early_stopping_patience=2)
+    model = get_peft_model(model, lora_config)
+    set_peft_model_state_dict(model, load_peft_weights("./model_checkpoint/checkpoint-954/"))
     dataset = prepare_dataset(config)
     rouge_metric = evaluate.load("rouge")
     trainer = SFTTrainer(
         model=model,
         tokenizer=tokenizer,
         args=training_args,
-        peft_config=lora_config,
+        # peft_config=lora_config,
         train_dataset=dataset['train'],
         eval_dataset=dataset['test'],
         dataset_text_field='text',
@@ -42,7 +45,7 @@ def prepare_trainer(config):
 def main(config):
     torch.manual_seed(42)
     trainer, tokenizer = prepare_trainer(config)
-    trainer.train(resume_from_checkpoint="./model_checkpoint/checkpoint-954/")
+    trainer.train()
     wandb.finish()
 
 
