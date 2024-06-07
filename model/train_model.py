@@ -24,7 +24,7 @@ def prepare_trainer(config):
         model=model,
         tokenizer=tokenizer,
         args=training_args,
-        peft_config=lora_config,
+        # peft_config=lora_config,
         train_dataset=dataset['train'],
         eval_dataset=dataset['test'],
         dataset_text_field='text',
