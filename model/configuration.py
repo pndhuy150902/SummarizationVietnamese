@@ -107,4 +107,5 @@ def prepare_model(model_name):
     # model = prepare_model_for_kbit_training(model)
     model.config.use_cache = False
     model.gradient_checkpointing_enable()
+    model.train()
     return tokenizer, model
