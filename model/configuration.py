@@ -57,7 +57,7 @@ def prepare_training_arguments(config):
         output_dir=config.args_training.dir_checkpoint,
         save_strategy=config.args_training.save_strategy,
         evaluation_strategy=config.args_training.evaluation_strategy,
-        optim=config.args_training.optimizer,
+        optim='adamw_torch_fused',
         deepspeed=config.deepspeed.stage_2,
         bf16=config.args_training.bf16,
         report_to=config.args_training.report_to,
