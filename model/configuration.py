@@ -2,7 +2,7 @@ import warnings
 import torch
 import numpy as np
 from accelerate import Accelerator
-from peft import LoraConfig, prepare_model_for_kbit_training, TaskType, PeftModel
+from peft import LoraConfig, prepare_model_for_kbit_training, TaskType
 from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
 
 warnings.filterwarnings('ignore')
@@ -58,7 +58,7 @@ def prepare_training_arguments(config):
         save_strategy=config.args_training.save_strategy,
         evaluation_strategy=config.args_training.evaluation_strategy,
         optim=config.args_training.optimizer,
-        # deepspeed=config.deepspeed.stage_2,
+        deepspeed=config.deepspeed.stage_2,
         bf16=config.args_training.bf16,
         report_to=config.args_training.report_to,
         run_name=config.args_training.run_name
@@ -95,7 +95,7 @@ def prepare_model(model_name):
     bnb_config = prepare_quantization_configuration()
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        # device_map={"": Accelerator().local_process_index},
+        device_map={"": Accelerator().local_process_index},
         trust_remote_code=True,
         attn_implementation="flash_attention_2",
         quantization_config=bnb_config,
@@ -103,9 +103,7 @@ def prepare_model(model_name):
         token="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"
     )
     model.config.pad_token_id = tokenizer.pad_token_id
-    model = PeftModel.from_pretrained(model, "./model_checkpoint/checkpoint-954/")
-    # model = prepare_model_for_kbit_training(model)
+    model = prepare_model_for_kbit_training(model)
     model.config.use_cache = False
     model.gradient_checkpointing_enable()
-    model.train()
     return tokenizer, model

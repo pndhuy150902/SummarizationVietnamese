@@ -3,7 +3,6 @@ import hydra
 import torch
 import evaluate
 import wandb
-from peft import get_peft_model, set_peft_model_state_dict, load_peft_weights
 from trl import SFTTrainer
 from transformers import EarlyStoppingCallback, DataCollatorForLanguageModeling
 from configuration import prepare_lora_configuration, prepare_training_arguments, prepare_model, compute_metrics, preprocess_logits_for_metrics
@@ -24,7 +23,7 @@ def prepare_trainer(config):
         model=model,
         tokenizer=tokenizer,
         args=training_args,
-        # peft_config=lora_config,
+        peft_config=lora_config,
         train_dataset=dataset['train'],
         eval_dataset=dataset['test'],
         dataset_text_field='text',
