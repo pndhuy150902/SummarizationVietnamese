@@ -18,8 +18,6 @@ def prepare_trainer(config):
     tokenizer, model = prepare_model(config.model_mistral)
     func_collate = DataCollatorForLanguageModeling(tokenizer, mlm=False)
     # early_stop_callback = EarlyStoppingCallback(early_stopping_patience=2)
-    # model = get_peft_model(model, lora_config)
-    # set_peft_model_state_dict(model, load_peft_weights("./model_checkpoint/checkpoint-954/"))
     dataset = prepare_dataset(config)
     rouge_metric = evaluate.load("rouge")
     trainer = SFTTrainer(

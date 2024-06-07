@@ -2,7 +2,7 @@ import warnings
 import torch
 import numpy as np
 from accelerate import Accelerator
-from peft import LoraConfig, prepare_model_for_kbit_training, TaskType
+from peft import LoraConfig, prepare_model_for_kbit_training, TaskType, PeftModel
 from transformers import BitsAndBytesConfig, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
 
 warnings.filterwarnings('ignore')
@@ -103,7 +103,8 @@ def prepare_model(model_name):
         token="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"
     )
     model.config.pad_token_id = tokenizer.pad_token_id
-    model = prepare_model_for_kbit_training(model)
+    model = PeftModel.from_pretrained(model, "./model_checkpoint/checkpoint-954/")
+    # model = prepare_model_for_kbit_training(model)
     model.config.use_cache = False
     model.gradient_checkpointing_enable()
     return tokenizer, model
