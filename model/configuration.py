@@ -95,7 +95,7 @@ def prepare_model(model_name):
     bnb_config = prepare_quantization_configuration()
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        device_map={"": Accelerator().local_process_index},
+        # device_map={"": Accelerator().local_process_index},
         trust_remote_code=True,
         attn_implementation="flash_attention_2",
         quantization_config=bnb_config,
