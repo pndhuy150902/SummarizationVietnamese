@@ -58,7 +58,7 @@ def prepare_training_arguments(config):
         save_strategy=config.args_training.save_strategy,
         evaluation_strategy=config.args_training.evaluation_strategy,
         optim=config.args_training.optimizer,
-        deepspeed=config.deepspeed.stage_2,
+        # deepspeed=config.deepspeed.stage_2,
         bf16=config.args_training.bf16,
         report_to=config.args_training.report_to,
         run_name=config.args_training.run_name
