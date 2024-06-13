@@ -19,7 +19,7 @@ def launch_gradio_chat(tokenizer, streamer, model, device):
             def user(user_message, history):
                 return "", history + [[user_message, None]]
             def bot(history):
-                news_prompt = f"""<s>[INST] Bạn là một trợ lý AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt:
+                news_prompt = f"""<s>[INST] Bạn là một trợ lí AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt:
 {str(history[-1][0])} [/INST] """
                 inputs = tokenizer(news_prompt, add_special_tokens=True, return_tensors="pt").to(device)
                 dict_kwargs = dict(inputs, early_stopping=False, max_new_tokens=1024, temperature=0.7, top_p=0.9, top_k=50, repetition_penalty=1.1, pad_token_id=tokenizer.eos_token_id, streamer=streamer)
