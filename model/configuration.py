@@ -25,7 +25,7 @@ def prepare_lora_configuration():
         lora_dropout=0.05,
         bias="none",
         task_type=TaskType.CAUSAL_LM,
-        # use_dora=True
+        use_dora=True
     )
     return lora_config
 
@@ -51,7 +51,7 @@ def prepare_training_arguments(config):
         lr_scheduler_type=config.args_training.lr_scheduler_type,
         save_total_limit=config.args_training.save_total_limit,
         # load_best_model_at_end=config.args_training.load_best_model_at_end,
-        gradient_accumulation_steps=config.args_training.gradient_accumulation_steps,
+        # gradient_accumulation_steps=config.args_training.gradient_accumulation_steps,
         gradient_checkpointing=config.args_training.gradient_checkpointing,
         logging_steps=config.args_training.logging_steps,
         output_dir=config.args_training.dir_checkpoint,
@@ -105,5 +105,5 @@ def prepare_model(model_name):
     model.config.pad_token_id = tokenizer.pad_token_id
     model = prepare_model_for_kbit_training(model)
     model.config.use_cache = False
-    model.gradient_checkpointing_enable()
+    model.gradient_checkpointing_enable({"use_reentrant": True})
     return tokenizer, model

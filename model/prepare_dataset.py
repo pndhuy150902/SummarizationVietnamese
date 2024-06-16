@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 def prepare_prompt(i, df):
     context = df.iloc[i]['context']
     summarization = df.iloc[i]['summarization']
-    prompt = f"""<s>[INST] Bạn là một trợ lí AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt:
+    prompt = f"""<s>[INST] Bạn là một trợ lí AI hữu ích. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau:
 {context} [/INST] {summarization}</s>"""
     return prompt
 
@@ -18,7 +18,7 @@ def prepare_prompt_for_title(i, df):
     title = df.iloc[i]['title']
     context = df.iloc[i]['context']
     summarization = df.iloc[i]['summarization']
-    prompt = f"""<s>[INST] Bạn là một trợ lí AI. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau bằng tiếng Việt biết rằng tiêu đề của nội dung là "{title}":
+    prompt = f"""<s>[INST] Bạn là một trợ lí AI hữu ích. Bạn sẽ được giao một nhiệm vụ. Hãy tóm lược ngắn gọn nội dung sau, biết rằng tiêu đề của nội dung là "{title}":
 {context} [/INST] {summarization}</s>"""
     return prompt
 
@@ -66,7 +66,7 @@ def prepare_dataset(config):
     train_prompts_with_title = [prepare_prompt_for_title(i, train_data_with_title) for i in range(len(train_data_with_title))]
     test_prompts = [prepare_prompt(i, test_data) for i in range(len(test_data))]
     # train_prompts = train_prompts_with_title + train_prompts_no_title
-    train_prompts = train_prompts_no_title[40000:54000]
+    train_prompts = train_prompts_no_title
     random.shuffle(train_prompts)
     dataset = DatasetDict({
         'train': Dataset.from_dict({'text': train_prompts}),

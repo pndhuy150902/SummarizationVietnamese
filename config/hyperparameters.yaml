@@ -5,7 +5,8 @@ processed_data:
 
 model_mixtral: "mistralai/Mixtral-8x7B-Instruct-v0.1"
 model_mistral_old: "mistralai/Mistral-7B-Instruct-v0.2"
-model_mistral: "mistralai/Mistral-7B-Instruct-v0.3"
+model_mistral_new: "mistralai/Mistral-7B-Instruct-v0.3"
+model_mistral: "Viet-Mistral/Vistral-7B-Chat"
 
 args_training:
   train_batch_size: 8
@@ -14,7 +15,7 @@ args_training:
   learning_rate: 2e-5
   weight_decay: 0.1
   lr_scheduler_type: "cosine"
-  gradient_accumulation_steps: 8
+  gradient_accumulation_steps: 2
   gradient_checkpointing: true
   save_total_limit: 2
   logging_steps: 2
@@ -26,7 +27,7 @@ args_training:
   evaluation_strategy: "no"
   optimizer: "paged_adamw_8bit"
   report_to: "wandb"
-  run_name: "Mistral-7B-Instruct-v0.2-QLoRA"
+  run_name: "Mistral-7B-Instruct-v0.1-QDoRA"
   dataset_num_proc: 8
 
 peft_dir:
