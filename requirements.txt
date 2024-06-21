@@ -7,11 +7,11 @@ peft
 hydra-core
 pandas
 numpy
-trl==0.8.6
+trl==0.9.4
 bitsandbytes
 rouge-score
 evaluate
-deepspeed
+deepspeed==0.14.4
 mpi4py
 gradio
 py3nvml
