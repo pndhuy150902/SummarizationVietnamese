@@ -10,7 +10,7 @@ model_mistral_new: "mistralai/Mistral-7B-Instruct-v0.3"
 model_mistral: "Viet-Mistral/Vistral-7B-Chat"
 
 args_training:
-  train_batch_size: 8
+  train_batch_size: 16
   eval_batch_size: 16
   num_train_epochs: 2
   learning_rate: 2e-5
@@ -19,7 +19,7 @@ args_training:
   gradient_accumulation_steps: 2
   gradient_checkpointing: true
   save_total_limit: 2
-  logging_steps: 2
+  logging_steps: 10
   auto_find_batch_size: true
   load_best_model_at_end: true
   bf16: true
@@ -29,7 +29,7 @@ args_training:
   optimizer: "paged_adamw_8bit"
   report_to: "wandb"
   run_name: "Mistral-7B-Instruct-v0.1-QDoRA"
-  dataset_num_proc: 8
+  dataset_num_proc: 10
 
 peft_dir:
   peft_model: "./peft_model"
