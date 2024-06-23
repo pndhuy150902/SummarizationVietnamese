@@ -54,5 +54,5 @@ if __name__ == "__main__":
     model = dequantize_model(model, to='./dqz_model_qdora/',dtype=torch.bfloat16)
     model = PeftModel.from_pretrained(model, adapter)
     model = model.merge_and_unload()
-    model.save_pretrained("./model_vistral_merged_qdora/")
-    tokenizer.save_pretrained("./model_vistral_merged_qdora/")
+    model.save_pretrained("./model_vistral_merged_qdora_v2/")
+    tokenizer.save_pretrained("./model_vistral_merged_qdora_v2/")
