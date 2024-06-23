@@ -1,3 +1,4 @@
+import torch
 import bitsandbytes as bnb
 from bitsandbytes.functional import dequantize_4bit
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
