@@ -45,7 +45,7 @@ def dequantize_model(model, to='./dequantized_model', dtype=torch.bfloat16, devi
         return model
 
 if __name__ == "__main__":
-    adapter = "./model_checkpoint/checkpoint-3098"
+    adapter = "./model_checkpoint/checkpoint-1549"
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
