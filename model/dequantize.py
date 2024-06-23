@@ -1,7 +1,10 @@
+import os
+import copy
 import torch
 import bitsandbytes as bnb
 from bitsandbytes.functional import dequantize_4bit
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from peft.utils import _get_submodules
 from peft import PeftModel
 
 def dequantize_model(model, to='./dequantized_model', dtype=torch.bfloat16, device="cuda"):
