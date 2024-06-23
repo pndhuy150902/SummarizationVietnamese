@@ -1,0 +1,61 @@
+import warnings
+import gc
+import torch
+import evaluate
+import pandas as pd
+from tqdm import tqdm
+from peft import PeftModel, PeftConfig
+from transformers import BitsAndBytesConfig, AutoTokenizer, AutoModelForCausalLM, DataCollatorForLanguageModeling
+warnings.filterwarnings('ignore')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+tqdm.pandas()
+gc.collect()
+torch.manual_seed(42)
+
+
+def create_prompt(sample):
+    template = """<s>[INST] Bạn là một trợ lí AI tiếng Việt hữu ích. Bạn hãy tóm lược ngắn gọn nội dung chính của văn bản sau:
+{} [/INST]"""
+    prompt = template.format(sample)
+    return prompt
+
+
+def generate_text():
+  for batch_1, batch_2 in tqdm(zip(torch.utils.data.DataLoader(full_data_test['article'], batch_size=1, shuffle=False), torch.utils.data.DataLoader(full_data_test['abstract'], batch_size=1, shuffle=False), strict=True), total=int(round(len(full_data_test)/1, 0))):
+    prompts = [create_prompt(context) for context in batch_1]
+    inputs = tokenizer(prompts, add_special_tokens=True, padding=True, return_tensors="pt").to(device)
+    outputs = model.generate(
+      **inputs,
+      early_stopping=False,
+      max_new_tokens=768,
+      temperature=0.1,
+      top_p=0.95,
+      top_k=40,
+      repetition_penalty=1.05,
+      pad_token_id=tokenizer.unk_token_id
+    )
+    references.extend(batch_2)
+    predictions.extend([tokenizer.decode(output, skip_special_tokens=True, clean_up_tokenization_spaces=False).split('[/INST]')[1].strip() for output in outputs])
+    torch.cuda.empty_cache()
+
+
+if __name__ == "__main__":
+    references = []
+    predictions = []
+    full_data_test = pd.read_csv('../dataset/vnds_test_dataset.csv')
+    qdora_merged = "./model_vistral_merged_qdora_v2/"
+    model = AutoModelForCausalLM.from_pretrained(
+        qdora_merged,
+        device_map={"":0},
+        torch_dtype=torch.bfloat16,
+        attn_implementation="flash_attention_2",
+    )
+    tokenizer = AutoTokenizer.from_pretrained(qdora_merged)
+    tokenizer.padding_side = "left"
+    model.eval()
+    generate_text()
+    full_data_test['abstract_predictions'] = predictions
+    rouge_metric = evaluate.load("rouge")
+    rouge_scores = rouge_metric.compute(references=references, predictions=predictions, use_stemmer=True, rouge_types=['rouge1', 'rouge2', 'rougeL'])
+    print(rouge_scores)
+    full_data_test.to_csv('test_vistral_qdora_v2.csv', index=False)
