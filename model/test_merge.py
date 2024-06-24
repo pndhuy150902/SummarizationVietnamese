@@ -32,6 +32,7 @@ def generate_text():
       top_p=0.95,
       top_k=40,
       repetition_penalty=1.05,
+      do_sample=True,
       pad_token_id=tokenizer.unk_token_id
     )
     references.extend(batch_2)
