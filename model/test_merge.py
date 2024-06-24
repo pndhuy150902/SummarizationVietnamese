@@ -28,10 +28,10 @@ def generate_text():
       **inputs,
       early_stopping=False,
       max_new_tokens=768,
-      temperature=0.1,
-      top_p=0.95,
+      temperature=0.2,
+      top_p=0.8,
       top_k=40,
-      repetition_penalty=1.05,
+      repetition_penalty=1.0,
       do_sample=True,
       pad_token_id=tokenizer.unk_token_id
     )
