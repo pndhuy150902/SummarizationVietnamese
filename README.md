@@ -20,7 +20,7 @@ I evaluate model with ROUGE score. But ROUGE score has the disadvantage that it 
 |ViT5 Base (256-length)    |61.85     |31.70     |41.70     |
 |ViT5 Base (1024-length)   |62.77     |33.16     |42.75     |
 |Vit5 Large (1024-length)  |63.37     |34.24     |43.55     |
-|Mistral 7B + QDoRA        |70.12     |40.38     |52.18     |
+|Vistral 7B + QDoRA        |None      |None      |None      |
 # Setup environment to run summarization app
 * To pull all this repository besides you use command `git pull` this, you should use command `git lfs pull` to get all file `LFS` in this repository. 
 * Run file `run_setup.sh -p` to setup environment for pip to run model and app to summarize content.
