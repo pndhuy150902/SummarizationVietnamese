@@ -42,8 +42,8 @@ def prepare_trainer(config):
 def main(config):
     torch.manual_seed(42)
     trainer, tokenizer = prepare_trainer(config)
-    # trainer.train()
-    trainer.train(resume_from_checkpoint="./model_checkpoint/checkpoint-3098/")
+    trainer.train()
+    # trainer.train(resume_from_checkpoint="./model_checkpoint/checkpoint-3098/")
     wandb.finish()
 
 
