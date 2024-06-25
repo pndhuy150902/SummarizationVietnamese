@@ -1,7 +1,7 @@
 processed_data:
-  train_data: "../dataset/vnds_train_dataset.csv"
+  train_data: "../dataset/train_tmp_loc_news.csv"
   validation_data: "../dataset/vnds_validation_dataset.csv"
-  test_data: "../dataset/vnds_test_dataset.csv"
+  test_data: "../dataset/val_tmp_loc_news.csv"
   train_data_with_title: "../dataset/full_train_data_title_summarization.csv"
 
 model_mixtral: "mistralai/Mixtral-8x7B-Instruct-v0.1"
