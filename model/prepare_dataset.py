@@ -7,8 +7,8 @@ warnings.filterwarnings('ignore')
 
 
 def prepare_prompt(i, df):
-    context = df.iloc[i]['article']
-    summarization = df.iloc[i]['abstract']
+    context = df.iloc[i]['context']
+    summarization = df.iloc[i]['summarization']
     prompt = f"""<s>[INST] Bạn là một trợ lí AI tiếng Việt hữu ích. Bạn hãy tóm lược ngắn gọn nội dung chính của văn bản sau:
 {context} [/INST] {summarization}</s>"""
     return prompt
@@ -16,8 +16,8 @@ def prepare_prompt(i, df):
 
 def prepare_prompt_for_title(i, df):
     title = df.iloc[i]['title']
-    context = df.iloc[i]['article']
-    summarization = df.iloc[i]['abstract']
+    context = df.iloc[i]['context']
+    summarization = df.iloc[i]['summarization']
     prompt = f"""<s>[INST] Bạn là một trợ lí AI tiếng Việt hữu ích. Bạn hãy tóm lược ngắn gọn nội dung chính của văn bản sau, biết rằng tiêu đề của văn bản này là "{title}":
 {context} [/INST] {summarization}</s>"""
     return prompt
