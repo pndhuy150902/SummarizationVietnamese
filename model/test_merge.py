@@ -43,7 +43,7 @@ def generate_text():
 if __name__ == "__main__":
     references = []
     predictions = []
-    full_data_test = pd.read_csv('../dataset/vnds_test_dataset.csv')
+    full_data_test = pd.read_csv('../dataset/val_tmp_loc_news.csv')
     qdora_merged = "./model_vistral_merged_qdora_v2/"
     model = AutoModelForCausalLM.from_pretrained(
         qdora_merged,
@@ -59,4 +59,4 @@ if __name__ == "__main__":
     rouge_metric = evaluate.load("rouge")
     rouge_scores = rouge_metric.compute(references=references, predictions=predictions, use_stemmer=True, rouge_types=['rouge1', 'rouge2', 'rougeL'])
     print(rouge_scores)
-    full_data_test.to_csv('test_vistral_qdora_v2.csv', index=False)
+    # full_data_test.to_csv('test_vistral_qdora_v2.csv', index=False)
