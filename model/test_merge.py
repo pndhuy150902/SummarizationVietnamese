@@ -14,7 +14,7 @@ torch.manual_seed(42)
 
 
 def create_prompt(sample):
-    template = f"""<s>[INST] Hãy tóm tắt văn bản sau đây một cách ngắn gọn và chính xác. Đảm bảo rằng bạn tạo ra một bản tóm tắt trừu tượng và nêu được những ý chính, thông tin quan trọng nhất của văn bản. Dưới đây là văn bản cần tóm tắt:
+    template = """<s>[INST] Hãy tóm tắt văn bản sau đây một cách ngắn gọn và chính xác. Đảm bảo rằng bạn tạo ra một bản tóm tắt trừu tượng và nêu được những ý chính, thông tin quan trọng nhất của văn bản. Dưới đây là văn bản cần tóm tắt:
 {} [/INST]"""
     prompt = template.format(sample)
     return prompt
