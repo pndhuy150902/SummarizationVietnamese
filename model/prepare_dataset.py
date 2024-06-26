@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 def prepare_prompt(i, df):
     context = df.iloc[i]['context']
     summarization = df.iloc[i]['summarization']
-    prompt = f"""<s>[INST] Bạn là một trợ lí AI tiếng Việt hữu ích. Bạn hãy tóm lược ngắn gọn nội dung chính của văn bản sau:
+    prompt = f"""<s>[INST] Hãy tóm tắt văn bản sau đây một cách ngắn gọn và chính xác. Đảm bảo rằng bạn tạo ra một bản tóm tắt trừu tượng và nêu được những ý chính, thông tin quan trọng nhất của văn bản. Dưới đây là văn bản cần tóm tắt:
 {context} [/INST] {summarization}</s>"""
     return prompt
 
