@@ -1,7 +1,7 @@
 processed_data:
-  train_data: "../dataset/train_tmp_loc_news.csv"
+  train_data: "../dataset/train_dataset_clean.csv"
   validation_data: "../dataset/vnds_validation_dataset.csv"
-  test_data: "../dataset/val_tmp_loc_news.csv"
+  test_data: "../dataset/test_dataset_clean.csv"
   train_data_with_title: "../dataset/full_train_data_title_summarization.csv"
 
 model_mixtral: "mistralai/Mixtral-8x7B-Instruct-v0.1"
@@ -10,15 +10,15 @@ model_mistral_new: "mistralai/Mistral-7B-Instruct-v0.3"
 model_mistral: "Viet-Mistral/Vistral-7B-Chat"
 
 args_training:
-  train_batch_size: 8
+  train_batch_size: 16
   eval_batch_size: 16
-  num_train_epochs: 15
+  num_train_epochs: 5
   learning_rate: 2e-5
   weight_decay: 0.1
   lr_scheduler_type: "cosine"
   gradient_accumulation_steps: 2
   gradient_checkpointing: true
-  save_total_limit: 2
+  save_total_limit: 5
   logging_steps: 10
   auto_find_batch_size: true
   load_best_model_at_end: true
@@ -41,5 +41,5 @@ deepspeed:
   stage_3_offload: "../config/deepspeed_stage_3_offload.json"
 
 length:
-  text: 4096
+  text: 3072
   summary: 1024
