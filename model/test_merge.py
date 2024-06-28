@@ -21,7 +21,7 @@ def create_prompt(sample):
 
 
 def generate_text():
-  for batch_1, batch_2 in tqdm(zip(torch.utils.data.DataLoader(full_data_test['context'], batch_size=1, shuffle=False), torch.utils.data.DataLoader(full_data_test['summarization'], batch_size=1, shuffle=False), strict=True), total=int(round(len(full_data_test)/1, 0))):
+  for batch_1, batch_2 in tqdm(zip(torch.utils.data.DataLoader(full_data_test['context'], batch_size=8, shuffle=False), torch.utils.data.DataLoader(full_data_test['summarization'], batch_size=8, shuffle=False), strict=True), total=int(round(len(full_data_test)/8, 0))):
     prompts = [create_prompt(context) for context in batch_1]
     inputs = tokenizer(prompts, add_special_tokens=True, padding=True, return_tensors="pt").to(device)
     outputs = model.generate(
@@ -51,10 +51,11 @@ if __name__ == "__main__":
         torch_dtype=torch.bfloat16,
         attn_implementation="flash_attention_2",
     )
+    model = torch.compile(model)
     tokenizer = AutoTokenizer.from_pretrained(qdora_merged)
     tokenizer.padding_side = "left"
-    model.eval()
-    generate_text()
+    with torch.inference_mode():
+      generate_text()
     full_data_test['abstract_predictions'] = predictions
     rouge_metric = evaluate.load("rouge")
     rouge_scores = rouge_metric.compute(references=references, predictions=predictions, use_stemmer=True, rouge_types=['rouge1', 'rouge2', 'rougeL'])
