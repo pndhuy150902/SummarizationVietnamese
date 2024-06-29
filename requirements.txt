@@ -1,6 +1,6 @@
 flash-attn
 xformers
-transformers==4.41.2
+transformers==4.42.3
 sentencepiece==0.2.0
 sentence-transformers==3.0.1
 peft==0.11.1
@@ -16,7 +16,7 @@ mpi4py==3.1.6
 gradio
 py3nvml
 glances
-wandb==0.17.2
+wandb==0.17.3
 tqdm
 huggingface_hub
 langchain
