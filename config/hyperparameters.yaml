@@ -41,5 +41,5 @@ deepspeed:
   stage_3_offload: "../config/deepspeed_stage_3_offload.json"
 
 length:
-  text: 3072
+  text: 4096
   summary: 1024
