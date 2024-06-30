@@ -49,6 +49,7 @@ if __name__ == "__main__":
                                             #eval_steps=1,
                                             #evaluation_strategy="steps",
                                             # evaluation_strategy="no",
+                                            torch_compile=True,
                                             fp16=True,
                                             )
     trainer = Seq2SeqTrainer(

@@ -54,7 +54,7 @@ if __name__ == "__main__":
     model = torch.compile(model)
     tokenizer = AutoTokenizer.from_pretrained(qdora_merged)
     tokenizer.padding_side = "left"
-    with torch.inference_mode():
+    with torch.no_grad():
       generate_text()
     full_data_test['abstract_predictions'] = predictions
     rouge_metric = evaluate.load("rouge")
