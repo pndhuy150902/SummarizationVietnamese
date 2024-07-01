@@ -45,7 +45,7 @@ if __name__ == "__main__":
                                             group_by_length=True,
                                             save_strategy="epoch",
                                             save_total_limit=3,
-                                            report_to="none",
+                                            report_to="wandb",
                                             #eval_steps=1,
                                             #evaluation_strategy="steps",
                                             # evaluation_strategy="no",
