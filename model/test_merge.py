@@ -44,8 +44,6 @@ if __name__ == "__main__":
     references = []
     predictions = []
     full_data_test = pd.read_csv('../dataset/test_dataset_clean.csv')
-    full_data_test = full_data_test.sample(n=400, random_state=42)
-    full_data_test.reset_index(drop=True, inplace=True)
     qdora_merged = "./model_vistral_merged_qdora_v2/"
     model = AutoModelForCausalLM.from_pretrained(
         qdora_merged,
@@ -53,13 +51,11 @@ if __name__ == "__main__":
         torch_dtype=torch.bfloat16,
         attn_implementation="flash_attention_2",
     )
-    model = torch.compile(model)
     tokenizer = AutoTokenizer.from_pretrained(qdora_merged)
     tokenizer.padding_side = "left"
-    with torch.no_grad():
-      generate_text()
+    generate_text()
     full_data_test['abstract_predictions'] = predictions
     rouge_metric = evaluate.load("rouge")
     rouge_scores = rouge_metric.compute(references=references, predictions=predictions, use_stemmer=True, rouge_types=['rouge1', 'rouge2', 'rougeL'])
     print(rouge_scores)
-    # full_data_test.to_csv('test_vistral_qdora_v2.csv', index=False)
+    full_data_test.to_csv('test_vistral_qdora_clean.csv', index=False)
