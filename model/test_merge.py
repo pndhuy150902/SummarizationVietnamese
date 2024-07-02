@@ -21,7 +21,7 @@ def create_prompt(sample):
 
 
 def generate_text():
-  for batch_1, batch_2 in tqdm(zip(torch.utils.data.DataLoader(full_data_test['context'], batch_size=8, shuffle=False), torch.utils.data.DataLoader(full_data_test['summarization'], batch_size=8, shuffle=False), strict=True), total=int(round(len(full_data_test)/8, 0))):
+  for batch_1, batch_2 in tqdm(zip(torch.utils.data.DataLoader(full_data_test['context'], batch_size=1, shuffle=False), torch.utils.data.DataLoader(full_data_test['summarization'], batch_size=1, shuffle=False), strict=True), total=int(round(len(full_data_test)/1, 0))):
     prompts = [create_prompt(context) for context in batch_1]
     inputs = tokenizer(prompts, add_special_tokens=True, padding=True, return_tensors="pt").to(device)
     outputs = model.generate(
