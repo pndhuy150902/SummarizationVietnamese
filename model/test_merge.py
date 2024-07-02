@@ -43,7 +43,9 @@ def generate_text():
 if __name__ == "__main__":
     references = []
     predictions = []
-    full_data_test = pd.read_csv('../dataset/val_tmp_loc_news.csv')
+    full_data_test = pd.read_csv('../dataset/test_dataset_clean.csv')
+    full_data_test = full_data_test.sample(n=400, random_state=42)
+    full_data_test.reset_index(drop=True, inplace=True)
     qdora_merged = "./model_vistral_merged_qdora_v2/"
     model = AutoModelForCausalLM.from_pretrained(
         qdora_merged,
